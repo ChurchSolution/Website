@@ -8,9 +8,9 @@
 
     public class NorthVirginiaChineseBaptistChurchTwBulletinBuilder : BulletinTextBuilder
     {
-        readonly char[] Commas = new[] { ',', '，' };
-        readonly char[] Semicollons = new[] { ';', '；' };
-        readonly char[] Collons = new[] { ':', '：' };
+        private readonly char[] Commas = new[] { ',', '，' };
+        private readonly char[] Semicollons = new[] { ';', '；' };
+        private readonly char[] Collons = new[] { ':', '：' };
 
         const string WordFromPasterSectionKey = "牧者的話  WORD FROM  PASTOR";
         const string LastWeekDataSectionKey = "上周主日出席人數：";

@@ -1,4 +1,10 @@
-﻿namespace Church
+﻿//-----------------------------------------------------------------------------
+// <copyright file="SectionSeparatorAttribute.cs">
+//     Copyright (c) Rui Min. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+
+namespace Church
 {
     using System;
 

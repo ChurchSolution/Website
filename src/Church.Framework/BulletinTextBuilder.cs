@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------------
-// <copyright file="IBulletinFactory.cs">
+// <copyright file="BulletinTextBuilder.cs">
 //     Copyright (c) Rui Min. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------------

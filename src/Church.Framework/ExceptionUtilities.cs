@@ -1,4 +1,10 @@
-﻿namespace Church.Model
+﻿//-----------------------------------------------------------------------------
+// <copyright file="ExceptionUtilities.cs">
+//     Copyright (c) Rui Min. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+
+namespace Church.Model
 {
     using System;
     using System.Collections.Generic;
