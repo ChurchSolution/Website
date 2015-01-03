@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HomeAbout_ChurchFellowship" xml:space="preserve">
+    <value>教会团契</value>
+    <comment>Church Fellowship</comment>
+  </data>
+  <data name="HomeAbout_ChurchFellowshipContent" xml:space="preserve">
+    <value>团契就是一种伙伴关系，是一个结构，更是生命，是彼此间处于相交的状态。在团契里，弟兄姐妹同有、同享、同心合意、同负一轭、互通有无，汲取生命的营养，看到生命的彰显。</value>
+    <comment>团契就是一种伙伴关系，是一个结构，更是生命，是彼此间处于相交的状态。在团契里，弟兄姐妹同有、同享、同心合意、同负一轭、互通有无，汲取生命的营养，看到生命的彰显。</comment>
+  </data>
+  <data name="HomeAbout_ChurchFellowshipTitle" xml:space="preserve">
+    <value>教会团契</value>
+    <comment>Church fellowship</comment>
+  </data>
+  <data name="HomeAbout_ChurchHistory" xml:space="preserve">
+    <value>教会历史</value>
+    <comment>Church history</comment>
+  </data>
+  <data name="HomeAbout_ChurchHistoryContent1" xml:space="preserve">
+    <value>［北维州华人浸信会］前身是美国浸信会的华语部（Northern Virginia Chinese Baptist Mission）。 开创之初是美国教会几位姊妹成立的祷告会，这个祷告会是专门为拯救华人而成立的祷告会。祷告会蒙神怜悯，终于在1992 年迎来了华语部敬拜！直到2005 年华语部正式独立为华语教会，并注册为［北维州华人浸信会］。2008 年2 月离开美国母会迁移到现在的Oak View Elementary School开始主日敬拜到至今。</value>
+    <comment>［北维州华人浸信会］前身是美国浸信会的华语部（Northern Virginia Chinese Baptist Mission）。 开创之初是美国教会几位姊妹成立的祷告会，这个祷告会是专门为拯救华人而成立的祷告会。祷告会蒙神怜悯，终于在1992 年迎来了华语部敬拜！直到2005 年华语部正式独立为华语教会，并注册为［北维州华人浸信会］。2008 年2 月离开美国母会迁移到现在的Oak View Elementary School开始主日敬拜到至今。</comment>
+  </data>
+  <data name="HomeAbout_ChurchHistoryContent2" xml:space="preserve">
+    <value>因为本教会是领受〈以弗所书〉四章十一节至十二节的教会行政原则。所以由牧师培养普通信徒让会众自己管理教会的行政模式。我们的活动是向任何人都是敞开的。教会欢迎你参与教会各项活动。当然我们更盼望早日看到您服侍大家，服侍教会！</value>
+    <comment>因为本教会是领受〈以弗所书〉四章十一节至十二节的教会行政原则。所以由牧师培养普通信徒让会众自己管理教会的行政模式。我们的活动是向任何人都是敞开的。教会欢迎你参与教会各项活动。当然我们更盼望早日看到您服侍大家，服侍教会！</comment>
+  </data>
+  <data name="HomeAbout_ChurchHistoryIcon" xml:space="preserve">
+    <value>教会历史图标</value>
+    <comment>Church history Icon</comment>
+  </data>
+  <data name="HomeAbout_ChurchMission" xml:space="preserve">
+    <value>教会宣教</value>
+    <comment>Church Mission</comment>
+  </data>
+  <data name="HomeAbout_ChurchMissionaryTitle" xml:space="preserve">
+    <value>教会宣教</value>
+    <comment>Church missionary</comment>
+  </data>
+  <data name="HomeAbout_ChurchMissionContent" xml:space="preserve">
+    <value>主耶穌从死里复活，他给了我们一个大使命：「所以你们要去，使万民作我的门徒，奉父子圣灵的名，给他们施洗。凡我所吩咐你们的，都教训他们遵守，我就常与你们同在，直到世界的末了」。</value>
+    <comment>主耶穌从死里复活，他给了我们一个大使命：「所以你们要去，使万民作我的门徒，奉父子圣灵的名，给他们施洗。凡我所吩咐你们的，都教训他们遵守，我就常与你们同在，直到世界的末了」。</comment>
+  </data>
+  <data name="HomeAbout_ChurchService" xml:space="preserve">
+    <value>教会服侍</value>
+    <comment>Church Service</comment>
+  </data>
+  <data name="HomeAbout_ChurchServiceContent" xml:space="preserve">
+    <value>教会是基督的身体，而这身体的意义就是服侍。如何成为这样的教会，像耶穌基督身子一样的活著，甚至成为这身体的一部分，这就是服侍的真正挑战，这也是我们一直以来的功课……</value>
+    <comment>教会是基督的身体，而这身体的意义就是服侍。如何成为这样的教会，像耶穌基督身子一样的活著，甚至成为这身体的一部分，这就是服侍的真正挑战，这也是我们一直以来的功课……</comment>
+  </data>
+  <data name="HomeAbout_ChurchServicesTitle" xml:space="preserve">
+    <value>教会服侍</value>
+    <comment>Church services</comment>
+  </data>
+  <data name="HomeAbout_ClickHereForMore" xml:space="preserve">
+    <value>请点击这里了解更多。</value>
+    <comment>Please click here for more information.</comment>
+  </data>
+  <data name="HomeIndex_BeyondOutreachFoundation" xml:space="preserve">
+    <value>彼岸关爱基金</value>
+    <comment>Beyond Outreach Foundation</comment>
+  </data>
+  <data name="HomeIndex_ChurchActivities" xml:space="preserve">
+    <value>教会活动</value>
+    <comment>Church Activities</comment>
+  </data>
+  <data name="HomeIndex_ChurchActivitiesHeaderLocation" xml:space="preserve">
+    <value>地点</value>
+    <comment>Location</comment>
+  </data>
+  <data name="HomeIndex_ChurchActivitiesHeaderName" xml:space="preserve">
+    <value>名称</value>
+    <comment>Name</comment>
+  </data>
+  <data name="HomeIndex_ChurchActivitiesHeaderPhone" xml:space="preserve">
+    <value>电话</value>
+    <comment>Phone</comment>
+  </data>
+  <data name="HomeIndex_ChurchActivitiesHeaderTime" xml:space="preserve">
+    <value>时间</value>
+    <comment>Time</comment>
+  </data>
+  <data name="HomeIndex_ChurchActivitiesTitle" xml:space="preserve">
+    <value>我们诚挚的欢迎您来参加以下的聚会：</value>
+    <comment>Sincerely welcome to our activities: </comment>
+  </data>
+  <data name="HomeIndex_ChurchNews" xml:space="preserve">
+    <value>教会新闻</value>
+    <comment>Church News</comment>
+  </data>
+  <data name="HomeIndex_DisplaySermonCompendium" xml:space="preserve">
+    <value>显示证道大纲</value>
+    <comment>Display sermon compendium</comment>
+  </data>
+  <data name="HomeIndex_HideSermonCompendium" xml:space="preserve">
+    <value>隐藏证道大纲</value>
+    <comment>Hide sermon compendium</comment>
+  </data>
+  <data name="HomeIndex_LatestSermon" xml:space="preserve">
+    <value>最新证道</value>
+    <comment>Latest Sermon</comment>
+  </data>
+  <data name="HomeIndex_RelatedLinks" xml:space="preserve">
+    <value>相关链接</value>
+    <comment>Related links</comment>
+  </data>
+  <data name="HomeIndex_SermonSpeaker" xml:space="preserve">
+    <value>讲员：{0}</value>
+    <comment>Speaker: {0}</comment>
+  </data>
+  <data name="HomeIndex_SermonTime" xml:space="preserve">
+    <value>时间：{0}</value>
+    <comment>Time: {0}</comment>
+  </data>
+  <data name="HomeIndex_SermonTitle" xml:space="preserve">
+    <value>题目：{0}</value>
+    <comment>Title: {0}</comment>
+  </data>
+  <data name="HomeIndex_SermonTitle_Format" xml:space="preserve">
+    <value>《{0}》</value>
+    <comment>"{0}"</comment>
+  </data>
+  <data name="HomeIndex_WelcomeWord" xml:space="preserve">
+    <value>欢迎你来到［北维州华人浸信会］！</value>
+    <comment>Welcome to North Virginia Chinese Baptist Church</comment>
+  </data>
+  <data name="HomeIndex_WelcomeWordContent1" xml:space="preserve">
+    <value>我是［北维州华人浸信会］的金春叶牧师，很高兴您给我们带来了主内服侍的机会！为了方便您未来在教会中的生活，容许我介绍以一下［北维州华人浸信会］。</value>
+    <comment>我是［北维州华人浸信会］的金春叶牧师，很高兴您给我们带来了主内服侍的机会！为了方便您未来在教会中的生活，容许我介绍以一下［北维州华人浸信会］。</comment>
+  </data>
+  <data name="HomeIndex_WelcomeWordContent2" xml:space="preserve">
+    <value>我们教会是因着耶稣基督的恩典来到一起相聚的团契。我们的宗旨是珍惜已经得到的恩典，并且不断追求在上帝里面更丰富的人生。我们祈盼恩典不仅能够存留在我们的生活当中，更渴望恩典能够广传，传播到同样需要恩典的生命！为的是让更多的生命蒙受神的恩典，让恩典传播的更多更远！这是我们［北维州华人浸信会］众弟兄姊妹的异象，也是北维州华人浸信会的生活与活动（虽然我们还不够完全）。</value>
+    <comment>我们教会是因着耶稣基督的恩典来到一起相聚的团契。我们的宗旨是珍惜已经得到的恩典，并且不断追求在上帝里面更丰富的人生。我们祈盼恩典不仅能够存留在我们的生活当中，更渴望恩典能够广传，传播到同样需要恩典的生命！为的是让更多的生命蒙受神的恩典，让恩典传播的更多更远！这是我们［北维州华人浸信会］众弟兄姊妹的异象，也是北维州华人浸信会的生活与活动（虽然我们还不够完全）。</comment>
+  </data>
+  <data name="HomeIndex_WelcomeWordContent3" xml:space="preserve">
+    <value>我们欢欣在基督里认识您，并且服侍您！真诚希望您早日共享我们的异象和生活，并参与在我们的活动当中。这也是我们在上帝面前的祈求愿上帝赐福您和您的亲人平安喜乐！</value>
+    <comment>我们欢欣在基督里认识您，并且服侍您！真诚希望您早日共享我们的异象和生活，并参与在我们的活动当中。这也是我们在上帝面前的祈求愿上帝赐福您和您的亲人平安喜乐！</comment>
+  </data>
+  <data name="HomeIndex_WelcomeWordContent4" xml:space="preserve">
+    <value>金春叶 牧师</value>
+    <comment>Pastor Chunye Jin</comment>
+  </data>
+  <data name="HomeIndex_Worship" xml:space="preserve">
+    <value>教会敬拜</value>
+    <comment>Worship</comment>
+  </data>
+  <data name="HomeIndex_WorshipContent" xml:space="preserve">
+    <value>主日早晨的崇拜是教会一周聚会的最主要崇拜聚会，若不是首先前来敬拜上帝，人是不配来事奉上帝的。崇拜就是人们首要的职责。当我们崇拜时，我们尊敬上帝，将上帝的荣耀归予祂，我们赞美祂、敬拜祂。我们将自己以及我们的礼物献给祂，因为祂是当得我们敬拜、赞美的神。</value>
+    <comment>主日早晨的崇拜是教会一周聚会的最主要崇拜聚会，若不是首先前来敬拜上帝，人是不配来事奉上帝的。崇拜就是人们首要的职责。当我们崇拜时，我们尊敬上帝，将上帝的荣耀归予祂，我们赞美祂、敬拜祂。我们将自己以及我们的礼物献给祂，因为祂是当得我们敬拜、赞美的神。</comment>
+  </data>
+  <data name="HomeIndex_WorshipContent2" xml:space="preserve">
+    <value>敬拜时间： 每周日上午10:00am到1:00pm</value>
+    <comment>Service time: 10:00am - 1:00pm on every Sunday</comment>
+  </data>
+  <data name="HomeIndex_WorshipContent3" xml:space="preserve">
+    <value>敬拜地点：『5035 Sideburn Rd, Fairfax, VA 22032』</value>
+    <comment>Service location: 5035 Sideburn Rd, Fairfax, VA 22032</comment>
+  </data>
+  <data name="HomeAbout_ChurchFellowshipDetails1" xml:space="preserve">
+    <value>团契（英语：fellowship或communion），即伙伴关系，源自《圣经》中的“相交”一词，意思为相互交往和建立关系，是指上帝与人之间的相交和基督徒之间相交的亲密关系。</value>
+    <comment>团契（英语：fellowship或communion），即伙伴关系，源自《圣经》中的“相交”一词，意思为相互交往和建立关系，是指上帝与人之间的相交和基督徒之间相交的亲密关系。</comment>
+  </data>
+  <data name="HomeAbout_ChurchFellowshipDetails2" xml:space="preserve">
+    <value>团契正式成立之前，教会弟兄姐妹每周相聚在查经班，与普通查经班不同的是团契生活除了查考圣经，更致力于生活分享，探讨心灵的成长，帮助每个人与上帝之间建立起亲密的关系。</value>
+    <comment>团契正式成立之前，教会弟兄姐妹每周相聚在查经班，与普通查经班不同的是团契生活除了查考圣经，更致力于生活分享，探讨心灵的成长，帮助每个人与上帝之间建立起亲密的关系。</comment>
+  </data>
+  <data name="HomeAbout_ChurchFellowshipDetails3" xml:space="preserve">
+    <value>在短短的三年中我们从最初的 青年团契（同心同行的前身）发展壮大成目前的七个团契，蒙恩团契，同心同行团契系列，青少年团契，还有常青团契；这一路上都看到神与我们同在。每一个参加团契的弟兄姐妹每周五聚集在一起，查经祷告，分享生活，互相帮助，共同汲取生命的灵粮。</value>
+    <comment>在短短的三年中我们从最初的 青年团契（同心同行的前身）发展壮大成目前的七个团契，蒙恩团契，同心同行团契系列，青少年团契，还有常青团契；这一路上都看到神与我们同在。每一个参加团契的弟兄姐妹每周五聚集在一起，查经祷告，分享生活，互相帮助，共同汲取生命的灵粮。</comment>
+  </data>
+  <data name="HomeAbout_ChurchMissionDetails1" xml:space="preserve">
+    <value>宣教日记</value>
+    <comment>宣教日记</comment>
+  </data>
+  <data name="HomeAbout_ChurchMissionDetails2" xml:space="preserve">
+    <value>更新中...</value>
+    <comment>Updating...</comment>
+  </data>
+  <data name="HomeAbout_ChurchServiceDetails1" xml:space="preserve">
+    <value>生命成长</value>
+    <comment>生命成长</comment>
+  </data>
+  <data name="HomeAbout_ChurchServiceDetails2" xml:space="preserve">
+    <value>一个生命从孕育，成长到最后出生的过程实在是件奇迹，有无穷无尽的奥秘藏在其全部过程当中。属灵的重生和成长，也同样是件奇迹，主耶稣把这属灵的重生比作刮风。“风”本身是看不见的，但看到树叶的摇动后，谁也不能否认风在吹。重生也是如此，我们不能完全理解属灵重生的全部过程，但我们通过观察重生的人在生活上的转变，可以知道他已经在属灵上重生了。换句话说就是接受神的新生命，接受永生。也可以称之为悔改，得救。总而言之，重生是一个人在基督里完全变成新人的奇迹，重生的人在圣灵的帮助下，会逐渐的结出仁爱、喜乐、和平、忍耐、恩慈、良善、信实、温柔、节制等圣灵的果子。</value>
+    <comment>一个生命从孕育，成长到最后出生的过程实在是件奇迹，有无穷无尽的奥秘藏在其全部过程当中。属灵的重生和成长，也同样是件奇迹，主耶稣把这属灵的重生比作刮风。“风”本身是看不见的，但看到树叶的摇动后，谁也不能否认风在吹。重生也是如此，我们不能完全理解属灵重生的全部过程，但我们通过观察重生的人在生活上的转变，可以知道他已经在属灵上重生了。换句话说就是接受神的新生命，接受永生。也可以称之为悔改，得救。总而言之，重生是一个人在基督里完全变成新人的奇迹，重生的人在圣灵的帮助下，会逐渐的结出仁爱、喜乐、和平、忍耐、恩慈、良善、信实、温柔、节制等圣灵的果子。</comment>
+  </data>
+  <data name="HomeAbout_ChurchServiceDetails3" xml:space="preserve">
+    <value>社会服侍</value>
+    <comment>社会服侍</comment>
+  </data>
+  <data name="HomeAbout_ChurchServiceDetails4" xml:space="preserve">
+    <value>参与社区侍奉一直是我们长期以来的异象，从探访老人院，参与儿童圣诞鞋盒事工，扶持学生团契到参与county的社会服务等一直看到神给我们的带领。我们也相信教会的福音工作不仅仅来自于教会内部，更多地是要走出去。</value>
+    <comment>参与社区侍奉一直是我们长期以来的异象，从探访老人院，参与儿童圣诞鞋盒事工，扶持学生团契到参与county的社会服务等一直看到神给我们的带领。我们也相信教会的福音工作不仅仅来自于教会内部，更多地是要走出去。</comment>
+  </data>
+  <data name="HomeBulletin_Announcements" xml:space="preserve">
+    <value>教会消息</value>
+    <comment>Announcements</comment>
+  </data>
+  <data name="HomeBulletin_FamilyWorship" xml:space="preserve">
+    <value>家庭崇拜</value>
+    <comment>Family Worship</comment>
+  </data>
+  <data name="HomeBulletin_NewSongForPraisingLord" xml:space="preserve">
+    <value>颂主新歌</value>
+    <comment>颂主新歌</comment>
+  </data>
+  <data name="HomeBulletin_PrayRequests" xml:space="preserve">
+    <value>感恩代祷</value>
+    <comment>Pray Requests</comment>
+  </data>
+  <data name="HomeBulletin_SermonCompendium" xml:space="preserve">
+    <value>证道大纲</value>
+    <comment>Sermon Compendium</comment>
+  </data>
+  <data name="HomeBulletin_Services" xml:space="preserve">
+    <value>主日事工</value>
+    <comment>Sunday Services</comment>
+  </data>
+  <data name="HomeBulletin_ServicesNextWeek" xml:space="preserve">
+    <value>下周</value>
+    <comment>Next week</comment>
+  </data>
+  <data name="HomeBulletin_ServicesThisWeek" xml:space="preserve">
+    <value>本周</value>
+    <comment>This week</comment>
+  </data>
+  <data name="HomeBulletin_WordFromPaster" xml:space="preserve">
+    <value>牧者的话</value>
+    <comment>Word from Pastor</comment>
+  </data>
+  <data name="HomeBulletin_Worship" xml:space="preserve">
+    <value>主日崇拜</value>
+    <comment>Sunday Worship</comment>
+  </data>
+  <data name="HomeBulletin_WorshipItem" xml:space="preserve">
+    <value>{0}（{1}）</value>
+    <comment>{0}({1})</comment>
+  </data>
+  <data name="HomeBulletin_WorshipSermonSpeaker" xml:space="preserve">
+    <value>讲员：{0}</value>
+    <comment>Speaker: {0}</comment>
+  </data>
+  <data name="HomeBulletin_WorshipSermonTitle" xml:space="preserve">
+    <value>题目：{0}</value>
+    <comment>Title: {0}</comment>
+  </data>
+  <data name="HomeBulletin_WorshipSermonVerses" xml:space="preserve">
+    <value>经文：{0}</value>
+    <comment>Verses: {0}</comment>
+  </data>
+  <data name="HomeBulletin_FamilyWorship_PraiseSong" xml:space="preserve">
+    <value>诗歌: 《&lt;a href="{1}" target="_blank"&gt;{0}&lt;/a&gt;》</value>
+    <comment>诗歌: 《&lt;a href="{1}" target="_blank"&gt;{0}&lt;/a&gt;》</comment>
+  </data>
+  <data name="HomeBulletin_FamilyWorship_Verse" xml:space="preserve">
+    <value>经文：{0}</value>
+    <comment>经文：{0}</comment>
+  </data>
+  <data name="HomeBulletin_MemorizedVerses" xml:space="preserve">
+    <value>记忆经文</value>
+    <comment>记忆经文</comment>
+  </data>
+  <data name="HomeBulletin_MemorizedVerses_LastWeek" xml:space="preserve">
+    <value>上周：{0}</value>
+    <comment>上周：{0}</comment>
+  </data>
+  <data name="HomeBulletin_MemorizedVerses_ThisWeek" xml:space="preserve">
+    <value>本周：{0}</value>
+    <comment>本周：{0}</comment>
+  </data>
+  <data name="HomeBulletin_WordFromPaster_Author" xml:space="preserve">
+    <value>作者：{0}</value>
+    <comment>Author:{0}</comment>
+  </data>
+</root>

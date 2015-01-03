@@ -1,0 +1,98 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/jquery-ui")
+@Styles.Render("~/Content/Custom/homeAbout.css")
+
+<div>
+    <h3><img src="@Url.Content("~/Content/images/ChurchHistory.jpg")" alt="@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchHistoryIcon")" />@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchHistory")</h3>
+    <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchHistoryContent1")</div>
+    <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchHistoryContent2")</div>
+</div>
+
+<div>
+    <div>
+        <div class="MissionHeader">
+            <h3>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchFellowship")</h3>
+            <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchFellowshipContent")</div>
+            <br />
+            <div><a id="ShowFellowship" href="#">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ClickHereForMore")</a></div>
+        </div>
+
+        <div class="MissionHeader">
+            <h3>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchService")</h3>
+            <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchServiceContent")</div>
+            <br />
+            <div><a id="ShowServices" href="#">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ClickHereForMore")</a></div>
+        </div>
+
+        <div class="MissionHeader">
+            <h3>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchMission")</h3>
+            <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchMissionContent")</div>
+            <br />
+            <div><a id="ShowMissionary" href="#">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ClickHereForMore")</a></div>
+        </div>
+    </div>
+    <div class="clear" />
+    <div id="FellowshipPanel" class="ui-helper-hidden" title="@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchFellowshipTitle")">
+        <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchFellowshipDetails1")</div>
+        <br />
+        <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchFellowshipDetails2")</div>
+        <br />
+        <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchFellowshipDetails3")</div>
+    </div>
+    <div id="ServicesPanel" class="ui-helper-hidden" title="@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchServicesTitle")">
+        <h3>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchServiceDetails1")</h3>
+        <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchServiceDetails2")</div>
+        <br />
+        <h3>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchServiceDetails3")</h3>
+        <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchServiceDetails4")</div>
+    </div>
+    <div id="MissionaryPanel" class="ui-helper-hidden" title="@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchMissionaryTitle")">
+        <h3>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchMissionDetails1")</h3>
+        <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeAbout_ChurchMissionDetails2")</div>
+    </div>
+</div>
+
+<div class="clear" />
+
+@section scripts {
+    @Scripts.Render("~/bundles/jquery-ui")
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            $('#ShowFellowship').mouseover(function (e) {
+                $('#FellowshipPanel').dialog({
+                    resizable: false,
+                    position: [e.pageX, e.pageY],
+                    width: '512',
+                    height: 'auto'
+                });
+            }).mouseout(function () {
+                $('#FellowshipPanel').dialog('close');
+            });
+            $('#ShowServices').mouseover(function (e) {
+                $('#ServicesPanel').dialog({
+                    resizable: false,
+                    position: [e.pageX, e.pageY],
+                    width: '512',
+                    height: 'auto'
+                });
+            }).mouseout(function () {
+                $('#ServicesPanel').dialog('close');
+            });
+            $('#ShowMissionary').mouseover(function (e) {
+                $('#MissionaryPanel').dialog({
+                    resizable: false,
+                    position: [e.pageX, e.pageY],
+                    width: '512',
+                    height: 'auto'
+                });
+            }).mouseout(function () {
+                $('#MissionaryPanel').dialog('close');
+            });
+        });
+        //]]>
+    </script>
+}

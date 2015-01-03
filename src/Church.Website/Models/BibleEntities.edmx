@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Church.Webste.Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BibleBooks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BibleId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Abbreviation" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="Order" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BibleChapters">
+          <Key>
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="Order" />
+          </Key>
+          <Property Name="BookId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Order" Type="int" Nullable="false" />
+          <Property Name="VerseStrings" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bibles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Version" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="Culture" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="Language" Type="nvarchar" MaxLength="32" />
+          <Property Name="IsDefault" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BibleBibleBook">
+          <End Role="Bibles" Type="Self.Bibles" Multiplicity="1" />
+          <End Role="BibleBooks" Type="Self.BibleBooks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bibles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BibleBooks">
+              <PropertyRef Name="BibleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BibleBookBibleChapter">
+          <End Role="BibleBooks" Type="Self.BibleBooks" Multiplicity="1" />
+          <End Role="BibleChapters" Type="Self.BibleChapters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BibleBooks">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BibleChapters">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ChurchWebsteModelsStoreContainer">
+          <EntitySet Name="BibleBooks" EntityType="Self.BibleBooks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BibleChapters" EntityType="Self.BibleChapters" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bibles" EntityType="Self.Bibles" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BibleBibleBook" Association="Self.FK_BibleBibleBook">
+            <End Role="Bibles" EntitySet="Bibles" />
+            <End Role="BibleBooks" EntitySet="BibleBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BibleBookBibleChapter" Association="Self.FK_BibleBookBibleChapter">
+            <End Role="BibleBooks" EntitySet="BibleBooks" />
+            <End Role="BibleChapters" EntitySet="BibleChapters" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Church.Webste.Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BibleBook">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="BibleId" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Abbreviation" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bible" Relationship="Self.FK_BibleBibleBook" FromRole="BibleBooks" ToRole="Bibles" />
+          <NavigationProperty Name="BibleChapters" Relationship="Self.FK_BibleBookBibleChapter" FromRole="BibleBooks" ToRole="BibleChapters" />
+        </EntityType>
+        <EntityType Name="BibleChapter">
+          <Key>
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="Order" />
+          </Key>
+          <Property Name="BookId" Type="Guid" Nullable="false" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <Property Name="VerseStrings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="BibleBook" Relationship="Self.FK_BibleBookBibleChapter" FromRole="BibleChapters" ToRole="BibleBooks" />
+        </EntityType>
+        <EntityType Name="Bible">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Version" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Culture" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Language" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BibleBooks" Relationship="Self.FK_BibleBibleBook" FromRole="Bibles" ToRole="BibleBooks" />
+        </EntityType>
+        <Association Name="FK_BibleBibleBook">
+          <End Role="Bibles" Type="Self.Bible" Multiplicity="1" />
+          <End Role="BibleBooks" Type="Self.BibleBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bibles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BibleBooks">
+              <PropertyRef Name="BibleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BibleBookBibleChapter">
+          <End Role="BibleBooks" Type="Self.BibleBook" Multiplicity="1" />
+          <End Role="BibleChapters" Type="Self.BibleChapter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BibleBooks">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BibleChapters">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BibleEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BibleBooks" EntityType="Self.BibleBook" />
+          <EntitySet Name="BibleChapters" EntityType="Self.BibleChapter" />
+          <EntitySet Name="Bibles" EntityType="Self.Bible" />
+          <AssociationSet Name="FK_BibleBibleBook" Association="Self.FK_BibleBibleBook">
+            <End Role="Bibles" EntitySet="Bibles" />
+            <End Role="BibleBooks" EntitySet="BibleBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BibleBookBibleChapter" Association="Self.FK_BibleBookBibleChapter">
+            <End Role="BibleBooks" EntitySet="BibleBooks" />
+            <End Role="BibleChapters" EntitySet="BibleChapters" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ChurchWebsteModelsStoreContainer" CdmEntityContainer="BibleEntities">
+          <EntitySetMapping Name="BibleBooks">
+            <EntityTypeMapping TypeName="Church.Webste.Models.BibleBook">
+              <MappingFragment StoreEntitySet="BibleBooks">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BibleId" ColumnName="BibleId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Abbreviation" ColumnName="Abbreviation" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BibleChapters">
+            <EntityTypeMapping TypeName="Church.Webste.Models.BibleChapter">
+              <MappingFragment StoreEntitySet="BibleChapters">
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="VerseStrings" ColumnName="VerseStrings" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bibles">
+            <EntityTypeMapping TypeName="Church.Webste.Models.Bible">
+              <MappingFragment StoreEntitySet="Bibles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Culture" ColumnName="Culture" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

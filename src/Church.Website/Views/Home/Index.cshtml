@@ -1,0 +1,143 @@
+﻿@using System.Globalization
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var bulletin = (this.ViewBag.Bulletin == null) ? null : this.ViewBag.Bulletin.Properties;
+}
+
+@Styles.Render("~/Content/jquery-ui")
+@Styles.Render("~/Content/Custom/homeIndex.css")
+
+<div id="IndexLeftPanel">
+    @if (0 < this.ViewBag.Incidents.Length)
+    {
+        <div id="RecentEvent">
+            <fieldset>
+                <legend>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_ChurchNews")</legend>
+                <br />
+                @foreach (var i in ViewBag.Incidents)
+                {
+                    <li class="keep-space">@Church.Website.Models.Utilities.ToHtml(i.Description)</li>
+                }
+            </fieldset>
+        </div>
+        <br />
+    }
+    @if (null != bulletin)
+    {
+        <div id="RecentSermon">
+            <fieldset>
+                <legend>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_LatestSermon")</legend>
+                <br />
+                <img class="float-left" src="@Url.Content("~/Content/images/SermonIcon.jpg")" alt="Sermon icon" />
+                <div>
+                    <div>@string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTime") as string, bulletin.Date.ToString(HttpContext.GetGlobalResourceObject("Framework", "SiteWide_Date_Format") as string))</div>
+                    <div>@string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonSpeaker") as string, bulletin.Speaker)</div>
+                    <div>
+                        @MvcHtmlString.Create(string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTitle") as string, string.Format(
+                            CultureInfo.CurrentUICulture, HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTitle_Format") as string,
+                            (null == ViewBag.Sermon) ? bulletin.MessageTitle : "<a href=\"" + ViewBag.Sermon.FileUrl + "\">" + bulletin.MessageTitle + "</a>")))
+                </div>
+                <div><a href="#" class="SermonCompendiumToggle">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_DisplaySermonCompendium")</a></div>
+                <div><a href="#" class="SermonCompendiumToggle ui-helper-hidden">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_HideSermonCompendium")</a></div>
+                </div>
+                <div id="SermonCompendium" class="ui-helper-hidden">
+                    @if (null != bulletin.SermonCompendium)
+                    {
+                        foreach (var s in bulletin.SermonCompendium)
+                        {
+                            @s<br />
+                        }
+                    }
+                </div>
+            </fieldset>
+        </div>
+        <br />
+    }
+    <div id="RelatedLinks">
+        <fieldset>
+            <legend>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_RelatedLinks")</legend>
+            @{
+                if (null != bulletin && null != bulletin.Activities)
+                {
+                    <div><a id="ShowActivities" href="#">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_ChurchActivities")</a></div>
+                }
+            }
+            <div><a href="http://www.bofusa.org/" target="_blank">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_BeyondOutreachFoundation")</a></div>
+        </fieldset>
+
+        @if (null != bulletin && null != bulletin.Activities)
+        {
+            var grid = new WebGrid(source: bulletin.Activities, canPage: false, canSort: false);
+            WebGridColumn[] columns = grid.Columns(
+                grid.Column(header: HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_ChurchActivitiesHeaderName") as string, format: item => item.Name, style: "text-align-center"),
+                grid.Column(header: HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_ChurchActivitiesHeaderTime") as string, format: item => item.Time, style: "text-align-center"),
+                grid.Column(header: HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_ChurchActivitiesHeaderLocation") as string, format: item => new HtmlString(item.LocationOrContact + (string.IsNullOrEmpty(item.LocationMap) ? string.Empty : "(" + item.LocationMap + ")")), style: "text-align-center"),
+                grid.Column(header: HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_ChurchActivitiesHeaderPhone") as string, format: item => item.Phone, style: "text-align-center"));
+
+            <div id="ActivityPanel" class="ui-helper-hidden" title="@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_ChurchActivities")">
+                @HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_ChurchActivitiesTitle")
+                @grid.GetHtml(
+                    tableStyle: "webgrid",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    rowStyle: "webgrid-row",
+                    columns: columns
+                )
+            </div>
+        }
+        <br />
+    </div>
+</div>
+
+<div id="IndexRightPanel">
+    <div id="WelcomeWord">
+        <h5>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_WelcomeWord")</h5>
+        <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_WelcomeWordContent1")</div>
+        <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_WelcomeWordContent2")</div>
+        <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_WelcomeWordContent3")</div>
+        <div class="float-right"><img src="@Url.Content("~/Content/images/PastorIcon.jpg")" alt="Pastor icon" />@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_WelcomeWordContent4")</div>
+        <div class="clear"></div>
+    </div>
+    <div id="Worship">
+        <h3>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_Worship")</h3>
+        <img class="float-left" src="@Url.Content("~/Content/images/WorshipIcon.jpg")" alt="Worship icon" />
+        <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_WorshipContent")</div>
+        <div>
+            <div class="clear">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_WorshipContent2")</div>
+            <div>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_WorshipContent3")<a target="_blank" href="http://maps.google.com/maps?q=5035+Sideburn+Rd,+Fairfax,+VA+22032&hl=en&hnear=5035+Sideburn+Rd,+Fairfax,+Virginia+22032&t=m&z=16" style="color:#0000FF;text-align:left">Robinson Secondary School</a></div>
+        </div>
+    </div>
+</div>
+
+<div class="clear"></div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jquery-ui")
+    @*@Scripts.Render("~/Scripts/Site.js")*@
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            $('.SermonCompendiumToggle').click(function () {
+                $('.SermonCompendiumToggle').toggle();
+                $('#SermonCompendium').toggle('blind', {}, 500);
+                return false;
+            });
+            //Website.SearchBibleVerses('#SermonCompendium');
+        });
+        //]]>
+    </script>
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            $('#ShowActivities').click(function () {
+                $('#ActivityPanel').dialog({
+                    resizable: false,
+                    width: 'auto',
+                    height: 'auto'
+                });
+            });
+        });
+        //]]>
+    </script>
+}

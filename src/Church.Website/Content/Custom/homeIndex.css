@@ -1,0 +1,17 @@
+﻿/*For Home Index page*/
+#IndexLeftPanel
+{
+    float: left;
+    width: 24%; 
+}
+
+#IndexRightPanel
+{
+    float: right;
+    width: 74%;
+}
+
+#WelcomeWord div img
+{
+    height: 50px;
+}

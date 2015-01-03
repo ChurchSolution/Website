@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/jquery-ui")
+@Styles.Render("~/Content/Custom/homeBible.css")
+
+<div id="bible-panel">
+    <div class="float-left">
+        <div>
+            <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Version")</label>
+            <select data-bind="options: versions, optionsText: 'name', optionsValue: 'id', value: selectedVersion"></select>
+        </div>
+        <div>
+            <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Book")</label>
+            <select data-bind="options: books, optionsText: 'name', optionsValue: 'id', value: selectedBook"></select>
+        </div>
+        <div>
+            <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Chapter")</label>
+            <select data-bind="options: chapters, optionsText: 'name', optionsValue: 'id', value: selectedChapter"></select>
+        </div>
+    </div>
+
+    <div class="float-right">
+        <div id="search-panel">
+            <input id="abbreviation" type="text" value="" placeholder="@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_SearchPlaceholder")" />
+        </div>
+    </div>
+
+    <div class="clear" />
+
+    <div id="verse-panel" data-bind="foreach: verses">
+        <div>
+            <label data-bind="text: order"></label> <span data-bind="text: value"></span>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/Scripts/knockout/knockout.mapping.js")
+    @Scripts.Render("~/Scripts/knockout/knockout.datePicker.js")
+    @Scripts.Render("~/Scripts/knockout/knockout.file.js")
+    @Scripts.Render("~/Scripts/Models/bibleModel.js")
+    @Scripts.Render("~/Scripts/ViewModels/frameworkViewModel.js")
+
+    <script type="text/javascript">
+        //<![CDATA[
+        $(function () {
+            church.dataModel.bibleModel.getByCulture("").done(function (data) {
+                var viewModel = new church.viewModel.BibleViewModel(data);
+                ko.applyBindings(viewModel, $("#bible-panel")[0]);
+            }).fail(function (xhr) {
+                alert(xhr.responseJSON.ExceptionMessage);
+            });
+        });
+        //]]>
+    </script>
+}

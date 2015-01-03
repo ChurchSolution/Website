@@ -1,0 +1,11 @@
+﻿.left-panel
+{
+    float: left;
+    width: 58%;
+}
+
+.right-panel
+{
+    float: right;
+    width: 40%;
+}

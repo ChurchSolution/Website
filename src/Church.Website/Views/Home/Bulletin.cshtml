@@ -1,0 +1,153 @@
+﻿@using System.Globalization
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var bulletin = (this.ViewBag.Bulletin == null) ? null : this.ViewBag.Bulletin.Properties;
+    if (null == bulletin)
+    {
+        <div class="error">@HttpContext.GetGlobalResourceObject("Framework", "HomeBulletin_NoBulletinUploaded")</div>
+        return;
+    }
+
+    var services = bulletin.Services;
+    var gridService = new WebGrid(source: services.Keys, canPage: false, canSort: false);
+    WebGridColumn[] columns = gridService.Columns(
+        gridService.Column(header: string.Empty, format: item => item, style: "text-align-center"),
+        gridService.Column(header: HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_ServicesThisWeek") as string, format: item => string.Join("，", services[item.Value].People), style: "text-align-center"),
+        gridService.Column(header: HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_ServicesNextWeek") as string, format: item => string.Join("，", services[item.Value].PeopleForNext), style: "text-align-center")
+        );
+}
+
+@Styles.Render("~/Content/jquery-ui")
+@Styles.Render("~/Content/Custom/homeBulletin.css")
+
+<div id="Subject">
+    <h2>@bulletin.Date.ToString(HttpContext.GetGlobalResourceObject("Framework", "SiteWide_Date_Format") as string)</h2>
+</div>
+
+<div class="left-panel">
+    <h2><a href="#">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_Worship")</a></h2>
+    <div id="WorshipProgram">
+        <ul>
+            @foreach (var item in bulletin.WorshipProgram)
+            {
+                var name = item.Name;
+                var value = item.Value;
+                var nameInEnglish = item.NameInEnglish;
+                if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(nameInEnglish))
+                {
+                    if (nameInEnglish.StartsWith("Praise") || nameInEnglish.StartsWith("Hymn"))
+                    {
+                        var parts = value.Split('-');
+                        var itemId = parts[0] + "@" + (1 == parts.Length ? string.Empty : (HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_NewSongForPraisingLord") as string) + "#" + parts[1]);
+                        <li>@name (@nameInEnglish) - <a href="#" itemid="@itemId" class="Hymn">@value</a></li>
+                    }
+                    else if (nameInEnglish.StartsWith("Sermon", StringComparison.OrdinalIgnoreCase)
+                        || nameInEnglish.StartsWith("Testimony", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <li>
+                            @string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_WorshipItem") as string, @name, @nameInEnglish)
+                            <br />@string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_WorshipSermonSpeaker") as string, bulletin.Speaker)
+                            @*<br />@MvcHtmlString.Create(string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_WorshipSermonTitle") as string, string.Format(
+                                CultureInfo.CurrentUICulture, HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTitle_Format") as string,
+                                (null == ViewBag.Sermon) ? bulletin.MessageTitle : "<a href=\"" + ViewBag.Sermon.FileUrl + "\">" + bulletin.MessageTitle + "</a>")))*@
+                            <br /><span id="MessageVerseAbbr">@string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_WorshipSermonVerses") as string, bulletin.MessageVerseAbbr)</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            @string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_WorshipItem") as string, @name, @nameInEnglish)
+                        </li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+
+    <h2><a href="#">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_Announcements")</a></h2>
+    <div>
+        @if (null != bulletin.Announcements)
+        {
+            foreach (var s in bulletin.Announcements)
+            {
+                @s <br />
+            }
+        }
+    </div>
+
+    <h2><a href="#">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_PrayRequests")</a></h2>
+    <div>
+        @if (null != bulletin.PrayerRequests)
+        {
+            foreach (var s in bulletin.PrayerRequests)
+            {
+                @s <br />
+            }
+        }
+    </div>
+
+    <h2><a href="#">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_SermonCompendium")</a></h2>
+    <div id="SermonCompendium">
+        @if (null != bulletin.SermonCompendium)
+        {
+            foreach (var s in bulletin.SermonCompendium)
+            {
+                @s <br />
+            }
+        }
+    </div>
+
+    <h2><a href="#">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_WordFromPaster")</a></h2>
+    <div id="WordFromPastor">
+        @string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_WordFromPaster_Author") as string, bulletin.PastorName)<br />
+        @foreach (var p in bulletin.WordFromPastor)
+        {
+            @p<br />
+        }
+    </div>
+
+    <h2><a href="#">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_FamilyWorship")</a></h2>
+    <div id="FamilyWorship">
+        @{
+            var familyWorship = bulletin.FamilyWorship;
+        }
+        @MvcHtmlString.Create(string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_FamilyWorship_PraiseSong") as string, familyWorship.PraiseName, familyWorship.PraiseUri))<br />
+        @string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_FamilyWorship_Verse") as string, familyWorship.Verse)<br />
+        <h3>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_MemorizedVerses")</h3>
+        @string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_MemorizedVerses_LastWeek") as string, bulletin.MemorizedVerses[0])<br />
+        @string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_MemorizedVerses_ThisWeek") as string, bulletin.MemorizedVerses[1])
+    </div>
+
+</div>
+
+<div class="right-panel">
+    <div id="Service">
+        <fieldset>
+            <legend>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_Services")</legend>
+            @gridService.GetHtml(
+                tableStyle: "webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                rowStyle: "webgrid-row",
+                columns: columns
+            )
+        </fieldset>
+    </div>
+</div>
+
+<div class="clear" />
+
+@section scripts {
+    @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/Scripts/Site.js")
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            $(".left-panel").accordion({ header: 'h2' });
+            Website.NailHymns('.Hymn');
+            //Website.SearchBibleVerses('#MessageVerseAbbr', '#SermonCompendium', '#WordFromPastor', '#FamilyWorship');
+        });
+        //]]>
+    </script>
+}

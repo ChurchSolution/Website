@@ -1,0 +1,100 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/jquery-ui")
+@Styles.Render("~/Content/jquery.dataTables.css")
+@Styles.Render("~/Content/Custom/homeLibrary.css")
+
+<div id="message-panel" data-bind="css: messageStyle, text: message"></div>
+
+<div class="left-panel">
+    <div id="bulletin-panel">
+        @Html.Partial("_Bulletin")
+    </div>
+    <br />
+    <div id="sermon-panel">
+        @Html.Partial("_Sermons")
+    </div>
+</div>
+
+<div class="right-panel">
+    <div id="material-panel">
+        @Html.Partial("_Materials")
+    </div>
+</div>
+
+<div class="clear" />
+
+<div id="uploadBulletinPanel" class="ui-helper-hidden" title="周報上載">
+    <div>
+        <div class="editor-label">
+            <label for="Date">日期</label>
+        </div>
+        <div class="editor-field">
+            <input type="text" data-bind="value: bulletinDate, datePicker: calendar" />
+        </div>
+        <div class="editor-label">
+            <label for="TextFile">文本文件</label>
+        </div>
+        <div class="editor-field">
+            <input type="file" data-bind="file: textFile, fileContent: textFileContent" />
+        </div>
+        <div class="editor-label">
+            <label for="PrintableFile">可打印文件</label>
+        </div>
+        <div class="editor-field">
+            <input type="file" data-bind="file: printFile, fileContent: printFileContent" />
+        </div>
+        <div class="editor-label">
+            <button data-bind="click: uploadBulletin">上載</button>
+            <button data-bind="click: closeDialog">關閉</button>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/Scripts/knockout/knockout.mapping.js")
+    @Scripts.Render("~/Scripts/knockout/knockout.datePicker.js")
+    @Scripts.Render("~/Scripts/knockout/knockout.file.js")
+    @Scripts.Render("~/bundles/dataTables")
+    @Scripts.Render("~/Scripts/ViewModels/frameworkViewModel.js")
+    @Scripts.Render("~/Scripts/Models/bulletinsModel.js")
+    @Scripts.Render("~/Scripts/Models/sermonsModel.js")
+    @Scripts.Render("~/Scripts/Models/materialsModel.js")
+
+    <script type="text/javascript">
+        //<![CDATA[
+        $(function () {
+            church.dataModel.bulletinsModel.getById("0").done(function (data) {
+                var viewModel = new church.viewModel.BulletinViewModel(data);
+                ko.applyBindings(viewModel, $("#bulletin-panel")[0]);
+            }).fail(function (xhr) {
+                alert(xhr.responseJSON.ExceptionMessage);
+            });
+
+            church.dataModel.sermonsModel.get().done(function (data) {
+                var viewModel = new church.viewModel.SermonsViewModel(data);
+                ko.applyBindings(viewModel, $("#sermon-panel")[0]);
+            }).fail(function (xhr) {
+                alert(xhr.responseJSON.ExceptionMessage);
+            });
+
+            church.dataModel.materialsModel.get().done(function (data) {
+                var viewModel = new church.viewModel.MaterialsViewModel(data);
+                ko.applyBindings(viewModel, $("#material-panel")[0]);
+            }).fail(function (xhr) {
+                alert(xhr.responseJSON.ExceptionMessage);
+            });
+
+            var messageViewModel = new church.viewModel.MessageViewModel();
+            ko.applyBindings(messageViewModel, $('#message-panel')[0]);
+
+            var bulletinViewModel = new church.viewModel.UploadBulletinViewModel(messageViewModel);
+            ko.applyBindings(bulletinViewModel, $("#uploadBulletinPanel")[0]);
+        });
+        //]]>
+    </script>
+}

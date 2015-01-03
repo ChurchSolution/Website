@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HomeAbout_Title" xml:space="preserve">
+    <value>教会介绍</value>
+    <comment>About</comment>
+  </data>
+  <data name="HomeBible_Book" xml:space="preserve">
+    <value>书卷</value>
+    <comment>Book</comment>
+  </data>
+  <data name="HomeBible_Chapter" xml:space="preserve">
+    <value>章节</value>
+    <comment>Chapter</comment>
+  </data>
+  <data name="HomeBible_SearchPlaceholder" xml:space="preserve">
+    <value>查找... 例如，创1：1-31</value>
+    <comment>Search... for example, Gen.1:1-31</comment>
+  </data>
+  <data name="HomeBible_Title" xml:space="preserve">
+    <value>圣经</value>
+    <comment>Bible</comment>
+  </data>
+  <data name="HomeBible_Version" xml:space="preserve">
+    <value>版本</value>
+    <comment>Version</comment>
+  </data>
+  <data name="HomeBulletin_NoBulletinUploaded" xml:space="preserve">
+    <value>至今还没有周报上载。</value>
+    <comment>No bulletin was uploaded yet.</comment>
+  </data>
+  <data name="HomeBulletin_Title" xml:space="preserve">
+    <value>主日周报</value>
+    <comment>Bulletin</comment>
+  </data>
+  <data name="HomeIndex_Title" xml:space="preserve">
+    <value>首页</value>
+    <comment>Home</comment>
+  </data>
+  <data name="HomeLibrary_Title" xml:space="preserve">
+    <value>图书馆</value>
+    <comment>Library</comment>
+  </data>
+  <data name="Home_Bulletin_Date" xml:space="preserve">
+    <value>日期：</value>
+    <comment>Date:</comment>
+  </data>
+  <data name="Home_Bulletin_Legend" xml:space="preserve">
+    <value>周报查询</value>
+    <comment>Bulletin</comment>
+  </data>
+  <data name="Home_Bulletin_PrintableVersion" xml:space="preserve">
+    <value>可打印版本</value>
+    <comment>Printable version</comment>
+  </data>
+  <data name="Home_Bulletin_Search" xml:space="preserve">
+    <value>查询</value>
+    <comment>Search</comment>
+  </data>
+  <data name="Home_Bulletin_Speaker" xml:space="preserve">
+    <value>讲员：</value>
+    <comment>Speaker:</comment>
+  </data>
+  <data name="Home_Bulletin_Title" xml:space="preserve">
+    <value>题目：《{0}》</value>
+    <comment>Title:{0}</comment>
+  </data>
+  <data name="Home_Bulletin_Upload" xml:space="preserve">
+    <value>上载</value>
+    <comment>Upload</comment>
+  </data>
+  <data name="Home_Materials_Legend" xml:space="preserve">
+    <value>教会资料</value>
+    <comment>Materials</comment>
+  </data>
+  <data name="Home_Sermons_Legend" xml:space="preserve">
+    <value>证道集锦</value>
+    <comment>Sermons</comment>
+  </data>
+  <data name="SharedError_Content" xml:space="preserve">
+    <value>当处理您的请求时出现一个错误。</value>
+    <comment>An error occurred while processing your request.</comment>
+  </data>
+  <data name="SharedError_Header" xml:space="preserve">
+    <value>错误。</value>
+    <comment>Error.</comment>
+  </data>
+  <data name="SharedError_Title" xml:space="preserve">
+    <value>错误</value>
+    <comment>Error</comment>
+  </data>
+  <data name="Shared_Layout_About" xml:space="preserve">
+    <value>教会介绍</value>
+    <comment>The Church</comment>
+  </data>
+  <data name="Shared_Layout_ApplicationName" xml:space="preserve">
+    <value>北维州华人浸信会</value>
+    <comment>North Virginia Chinese Baptist Church</comment>
+  </data>
+  <data name="Shared_Layout_Bible" xml:space="preserve">
+    <value>圣经</value>
+    <comment>Bible</comment>
+  </data>
+  <data name="Shared_Layout_Bulletin" xml:space="preserve">
+    <value>主日周报</value>
+    <comment>Bulletin</comment>
+  </data>
+  <data name="Shared_Layout_Footer_Format" xml:space="preserve">
+    <value>© {0}　-　北维州华人浸信会　|　11094 Lee Highway, A103　|　Fairfax VA | 22030　|　703.451.0815</value>
+    <comment>© {0} - North Virginia Chinese Baptist Church | 11094 Lee Highway, A103 | Fairfax VA | 22030　|　703.451.0815</comment>
+  </data>
+  <data name="Shared_Layout_Index" xml:space="preserve">
+    <value>首页</value>
+    <comment>Home</comment>
+  </data>
+  <data name="Shared_Layout_Library" xml:space="preserve">
+    <value>图书馆</value>
+    <comment>Library</comment>
+  </data>
+  <data name="Shared_LoginPartial_LogIn" xml:space="preserve">
+    <value>登录</value>
+    <comment>Log in</comment>
+  </data>
+  <data name="Shared_LoginPartial_LogOff" xml:space="preserve">
+    <value>注销</value>
+    <comment>Log off</comment>
+  </data>
+  <data name="Shared_LoginPartial_Register" xml:space="preserve">
+    <value>注册</value>
+    <comment>Register</comment>
+  </data>
+  <data name="SiteWide_Date_Format" xml:space="preserve">
+    <value>yyyy年MM月dd日</value>
+    <comment>MM/dd/yyyy</comment>
+  </data>
+  <data name="SiteWide_Title_Format" xml:space="preserve">
+    <value>北维州华人浸信会 - {0}</value>
+    <comment>North Virginia Chinese Baptist Church - {0}</comment>
+  </data>
+</root>
