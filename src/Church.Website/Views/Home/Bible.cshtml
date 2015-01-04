@@ -48,11 +48,11 @@
     <script type="text/javascript">
         //<![CDATA[
         $(function () {
-            church.dataModel.bibleModel.getByCulture("").done(function (data) {
+            church.dataModel.bibleModel.get(1, 1, "", "").done(function (data) {
                 var viewModel = new church.viewModel.BibleViewModel(data);
                 ko.applyBindings(viewModel, $("#bible-panel")[0]);
             }).fail(function (xhr) {
-                alert(xhr.responseJSON.ExceptionMessage);
+                alert(xhr.responseJSON.exceptionMessage);
             });
         });
         //]]>

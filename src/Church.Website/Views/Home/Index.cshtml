@@ -23,6 +23,7 @@
         </div>
         <br />
     }
+    
     @if (null != bulletin)
     {
         <div id="RecentSermon">
@@ -114,7 +115,8 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/jquery-ui")
-    @*@Scripts.Render("~/Scripts/Site.js")*@
+    @Scripts.Render("~/Scripts/Models/bibleModel.js")
+    @Scripts.Render("~/Scripts/utilities.js")
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
@@ -123,13 +125,6 @@
                 $('#SermonCompendium').toggle('blind', {}, 500);
                 return false;
             });
-            //Website.SearchBibleVerses('#SermonCompendium');
-        });
-        //]]>
-    </script>
-    <script type="text/javascript">
-        //<![CDATA[
-        $(document).ready(function () {
             $('#ShowActivities').click(function () {
                 $('#ActivityPanel').dialog({
                     resizable: false,
@@ -137,6 +132,7 @@
                     height: 'auto'
                 });
             });
+            church.utilities.searchBibleVerses('#SermonCompendium');
         });
         //]]>
     </script>

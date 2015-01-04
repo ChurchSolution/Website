@@ -140,13 +140,14 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/jquery-ui")
-    @Scripts.Render("~/Scripts/Site.js")
+    @Scripts.Render("~/Scripts/Models/bibleModel.js")
+    @Scripts.Render("~/Scripts/utilities.js")
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
             $(".left-panel").accordion({ header: 'h2' });
-            Website.NailHymns('.Hymn');
-            //Website.SearchBibleVerses('#MessageVerseAbbr', '#SermonCompendium', '#WordFromPastor', '#FamilyWorship');
+            //Website.NailHymns('.Hymn');
+            church.utilities.searchBibleVerses('#MessageVerseAbbr', '#SermonCompendium', '#WordFromPastor', '#FamilyWorship');
         });
         //]]>
     </script>

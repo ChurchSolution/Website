@@ -13,6 +13,14 @@ namespace Church.Model
 
     public static class ExceptionUtilities
     {
+        public static void ThrowArgumentNullExceptionIfEmpty(string item, string paramName, string message = null)
+        {
+            if (string.IsNullOrWhiteSpace(item) == null)
+            {
+                throw message == null ? new ArgumentNullException(paramName) : new ArgumentNullException(paramName, message);
+            }
+        }
+
         public static void ThrowArgumentNullExceptionIfEmpty<T>(T item, string paramName, string message = null)
         {
             if (item == null)

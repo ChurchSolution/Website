@@ -4,16 +4,21 @@ church.dataModel = church.dataModel || {};
 church.dataModel.bibleModel = (function (window, undefined) {
     "use strict";
 
-    function getByCulture(culture) {
-        return $.getJSON("/api/bible?culture=" + culture);
+    function get(book, chapter, id) {
+        return $.getJSON(encodeURI("/api/bible/" + book + "/" + chapter + "?id=" + id));
     };
 
-    function get(id, book, chapter) {
-        return $.getJSON("/api/bible/" + id + "?bookOrder=" + book + "&chapterOrder=" + chapter);
+    function getVersePattern(culture) {
+        return $.getJSON(encodeURI("/api/bible/versePattern?culture=" + culture));
+    };
+
+    function getVerses(abbreviation, id) {
+        return $.getJSON(encodeURI("/api/bible/" + abbreviation + "?id=" + id));
     };
 
     return {
-        getByCulture: getByCulture,
         get: get,
+        getVersePattern: getVersePattern,
+        getVerses: getVerses,
     };
 })(window);

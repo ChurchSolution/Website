@@ -14,11 +14,12 @@ namespace Church.Website
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            // Configure routes
+            config.Routes.MapHttpRoute("BibleVersePattern", "api/bible/versePattern", new { controller = "bible", action = "GetVersePattern", });
+            config.Routes.MapHttpRoute("Bible", "api/bible/{book}/{chapter}", new { controller = "bible", action = "GetBible" });
+            config.Routes.MapHttpRoute("BibleVerses", "api/bible/{Abbreviation}", new { controller = "bible", action = "GetVerses", });
+
+            config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
         }
     }
 }

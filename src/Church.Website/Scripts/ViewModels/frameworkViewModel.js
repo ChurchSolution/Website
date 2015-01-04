@@ -17,7 +17,7 @@ church.viewModel = (function (window, undefined) {
                 self.title(data.bulletin.messageTitle);
                 self.sermonUrl(data.sermon == null ? undefined : data.sermon.fileUrl);
             }).fail(function (xhr) {
-                alert(xhr.responseJSON.ExceptionMessage);
+                alert(xhr.responseJSON.exceptionMessage);
             })
         };
         this.uploadBulletin = function () {
@@ -63,7 +63,7 @@ church.viewModel = (function (window, undefined) {
                 messageViewModel.message('successful');
             }).fail(function (xhr) {
                 messageViewModel.messageStyle('message-error');
-                alert(xhr.responseJSON.ExceptionMessage);
+                alert(xhr.responseJSON.exceptionMessage);
             }).always(function () {
                 self.closeDialog();
             });
@@ -103,12 +103,12 @@ church.viewModel = (function (window, undefined) {
 
     function bibleViewModel(data) {
         var self = this;
-        var getBible = function (version, book, chapter) {
-            var promise = church.dataModel.bibleModel.get(version, book, chapter);
+        var getBible = function (id, book, chapter) {
+            var promise = church.dataModel.bibleModel.get(book, chapter, id);
             promise.done(function (data) {
                 ko.mapping.fromJS(data, self);
             }).fail(function (xhr) {
-                alert(xhr.responseJSON.ExceptionMessage);
+                alert(xhr.responseJSON.exceptionMessage);
             });
         };
 

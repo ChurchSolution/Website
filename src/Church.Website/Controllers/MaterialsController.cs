@@ -1,65 +1,71 @@
 ﻿namespace Church.Website.Controllers
 {
+    using Church.Website.Models;
     using System;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
-    using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.Description;
 
-    using Church.Website.Models;
-
     public class MaterialsController : ApiController
     {
-        private FrameworkEntities db = new FrameworkEntities();
+        private FrameworkEntities entities;
+
+        public MaterialsController()
+            : this(new FrameworkEntities())
+        {
+        }
+
+        internal MaterialsController(FrameworkEntities entities)
+        {
+            this.entities = entities;
+        }
 
         // GET api/Materials
         public IQueryable<Material> GetMaterials()
         {
-            return db.Materials;
+            return this.entities.Materials;
         }
 
         // GET api/Materials/5
         [ResponseType(typeof(Material))]
         public IHttpActionResult GetMaterial(Guid id)
         {
-            var material = db.Materials.Find(id);
+            var material = this.entities.Materials.Find(id);
             if (material == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return Ok(material);
+            return this.Ok(material);
         }
 
         // PUT api/Materials/5
         public IHttpActionResult PutMaterial(Guid id, Material material)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(ModelState);
             }
 
             if (id != material.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            db.Entry(material).State = EntityState.Modified;
+            this.entities.Entry(material).State = EntityState.Modified;
 
             try
             {
-                db.SaveChanges();
+                this.entities.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MaterialExists(id))
+                if (!this.MaterialExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
                 else
                 {
@@ -67,29 +73,29 @@
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return this.StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST api/Materials
         [ResponseType(typeof(Material))]
         public IHttpActionResult PostMaterial(Material material)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(ModelState);
             }
 
-            db.Materials.Add(material);
+            this.entities.Materials.Add(material);
 
             try
             {
-                db.SaveChanges();
+                this.entities.SaveChanges();
             }
             catch (DbUpdateException)
             {
-                if (MaterialExists(material.Id))
+                if (this.MaterialExists(material.Id))
                 {
-                    return Conflict();
+                    return this.Conflict();
                 }
                 else
                 {
@@ -97,30 +103,30 @@
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = material.Id }, material);
+            return this.CreatedAtRoute("DefaultApi", new { id = material.Id }, material);
         }
 
         // DELETE api/Materials/5
         [ResponseType(typeof(Material))]
         public IHttpActionResult DeleteMaterial(Guid id)
         {
-            var material = db.Materials.Find(id);
+            var material = this.entities.Materials.Find(id);
             if (material == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            db.Materials.Remove(material);
-            db.SaveChanges();
+            this.entities.Materials.Remove(material);
+            this.entities.SaveChanges();
 
-            return Ok(material);
+            return this.Ok(material);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                this.entities.Dispose();
             }
 
             base.Dispose(disposing);
@@ -128,7 +134,7 @@
 
         private bool MaterialExists(Guid id)
         {
-            return db.Materials.Count(e => e.Id == id) > 0;
+            return this.entities.Materials.Count(e => e.Id == id) > 0;
         }
     }
 }

@@ -1,65 +1,71 @@
 ﻿namespace Church.Website.Controllers
 {
+    using Church.Website.Models;
     using System;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
-    using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.Description;
 
-    using Church.Website.Models;
-
     public class HymnsController : ApiController
     {
-        private FrameworkEntities db = new FrameworkEntities();// DataProvider.Instance.FrameworkDatabase;
+        private FrameworkEntities entities;
+
+        public HymnsController()
+            : this(new FrameworkEntities())
+        {
+        }
+
+        internal HymnsController(FrameworkEntities entities)
+        {
+            this.entities = entities;
+        }
 
         // GET api/Hymns
         public IQueryable<Hymn> GetHymns()
         {
-            return db.Hymns;
+            return this.entities.Hymns;
         }
 
         // GET api/Hymns/5
         [ResponseType(typeof(Hymn))]
         public IHttpActionResult GetHymn(Guid id)
         {
-            var sermon = db.Hymns.Find(id);
+            var sermon = this.entities.Hymns.Find(id);
             if (sermon == null)
             {
                 return NotFound();
             }
 
-            return Ok(sermon);
+            return this.Ok(sermon);
         }
 
         // PUT api/Sermons/5
         public IHttpActionResult PutHymn(Guid id, Sermon sermon)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(ModelState);
             }
 
             if (id != sermon.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            db.Entry(sermon).State = EntityState.Modified;
+            this.entities.Entry(sermon).State = EntityState.Modified;
 
             try
             {
-                db.SaveChanges();
+                entities.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HymnExists(id))
+                if (!this.HymnExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
                 else
                 {
@@ -67,29 +73,29 @@
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return this.StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST api/Hymns
         [ResponseType(typeof(Hymn))]
         public IHttpActionResult PostHymn(Sermon sermon)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(ModelState);
             }
 
-            db.Sermons.Add(sermon);
+            this.entities.Sermons.Add(sermon);
 
             try
             {
-                db.SaveChanges();
+                this.entities.SaveChanges();
             }
             catch (DbUpdateException)
             {
-                if (HymnExists(sermon.Id))
+                if (this.HymnExists(sermon.Id))
                 {
-                    return Conflict();
+                    return this.Conflict();
                 }
                 else
                 {
@@ -97,30 +103,30 @@
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = sermon.Id }, sermon);
+            return this.CreatedAtRoute("DefaultApi", new { id = sermon.Id }, sermon);
         }
 
         // DELETE api/Hymns/5
         [ResponseType(typeof(Hymn))]
         public IHttpActionResult DeleteSermon(Guid id)
         {
-            var sermon = db.Sermons.Find(id);
+            var sermon = this.entities.Sermons.Find(id);
             if (sermon == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            db.Sermons.Remove(sermon);
-            db.SaveChanges();
+            this.entities.Sermons.Remove(sermon);
+            this.entities.SaveChanges();
 
-            return Ok(sermon);
+            return this.Ok(sermon);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                this.entities.Dispose();
             }
 
             base.Dispose(disposing);
@@ -128,7 +134,7 @@
 
         private bool HymnExists(Guid id)
         {
-            return db.Hymns.Count(e => e.Id == id) > 0;
+            return this.entities.Hymns.Count(e => e.Id == id) > 0;
         }
     }
 }
