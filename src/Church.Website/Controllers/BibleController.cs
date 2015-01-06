@@ -7,6 +7,7 @@
     using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
+    using System.Net.Http;
     using System.Text.RegularExpressions;
     using System.Web.Http;
 
@@ -25,16 +26,15 @@
         }
 
         [HttpGet]
-        public IHttpActionResult GetBible(string book, int chapter, IEnumerable<int> indexes, string id)
+        public HttpResponseMessage GetBible(string book, int chapter, IEnumerable<int> indexes, Guid? id)
         {
             const char SplitChar = '|';
 
             ExceptionUtilities.ThrowArgumentNullExceptionIfEmpty(book, "book");
             ExceptionUtilities.ThrowArgumentNullExceptionIfEmpty(chapter, "chapter");
 
-            var bibles = entities.Bibles.OrderBy(b => b.Culture);
-            var bible = string.IsNullOrEmpty(id) ? entities.Bibles.FirstOrDefault(b => b.Culture == CultureInfo.CurrentUICulture.Name && b.IsDefault) ?? bibles.First(b => b.IsDefault) :
-                bibles.First(b => b.Id.ToString() == id);
+            var bibles = this.entities.Bibles.OrderBy(b => b.Culture);
+            var bible = id.HasValue ? this.entities.GetBible(id.Value) : this.entities.GetDefaultBible(CultureInfo.CurrentUICulture.Name);
             var books = bible.BibleBooks;
             int bookOrder;
             var selectedBook = int.TryParse(book, out bookOrder) ? books.First(b => b.Order == bookOrder) :
@@ -46,23 +46,11 @@
 
             var model = new
             {
-                Versions = bibles.OrderBy(b => b.Culture).Select(b => new
-                {
-                    Id = b.Id,
-                    Name = b.Language + b.Version
-                }),
+                Versions = bibles.Select(b => new { Id = b.Id, Text = b.Language + b.Version }),
                 SelectedVersion = bible.Id,
-                Books = books.OrderBy(b => b.Order).Select(b => new
-                {
-                    Id = b.Order,
-                    Name = b.Name
-                }),
+                Books = books.OrderBy(b => b.Order).Select(b => new { Id = b.Order, Text = b.Name }),
                 SelectedBook = selectedBook.Order,
-                Chapters = chapters.OrderBy(c => c.Order).Select(c => new
-                {
-                    Id = c.Order,
-                    Name = c.Order
-                }),
+                Chapters = chapters.OrderBy(c => c.Order).Select(c => new { Id = c.Order, Text = c.Order.ToString() }),
                 SelectedChapter = selectedChapter.Order,
                 Verses = selectedChapter.VerseStrings.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(v =>
                 {
@@ -70,21 +58,21 @@
                     Trace.Assert(2 == segments.Length, string.Format("The verse string '{0}' is incorrect.", v));
                     int order;
                     Trace.Assert(int.TryParse(segments[0], out order), string.Format("The order '{0}' is not an integer", segments[0]));
-                    return new { Order = order, Value = segments[1] };
-                }).Where(v => indexSet.Contains(v.Order)),
+                    return new { Id = order, Text = segments[1] };
+                }).Where(v => indexSet.Contains(v.Id)),
             };
 
-            return this.Ok(model);
+            return this.Request.CreateResponse(model);
         }
 
         [HttpGet]
-        public IHttpActionResult GetVerses(string abbreviation, string id)
+        public HttpResponseMessage GetVerses(string abbreviation, Guid? id)
         {
             ExceptionUtilities.ThrowArgumentNullExceptionIfEmpty(abbreviation, "abbreviation");
 
             // TODO Need to handle ":" in abbreviation
 
-            var culture = string.IsNullOrWhiteSpace(id)? CultureInfo.CurrentUICulture.Name:this.entities.Bibles.First(b => b.Id.ToString() == id).Culture;
+            var culture = id.HasValue ? this.entities.Bibles.First(b => b.Id == id.Value).Culture : CultureInfo.CurrentUICulture.Name;
             var pattern = this.GetVersePattern(culture);
             var match = Regex.Match(abbreviation, pattern, RegexOptions.IgnoreCase);
             ExceptionUtilities.ThrowFormatExceptionIfFalse(match.Success && match.Groups.Count >= 3, "Found an incorrect abbreviation '{0}'", abbreviation);
@@ -105,11 +93,10 @@
                 culture = CultureInfo.CurrentUICulture.Name;
             }
 
-            var bibles = this.entities.Bibles.OrderBy(b => b.Culture);
-            var bible = this.entities.Bibles.FirstOrDefault(b => b.Culture == culture && b.IsDefault) ?? bibles.First(b => b.IsDefault);
+            var bookNames = this.entities.GetDefaultBible(culture).BibleBooks.SelectMany(b => new[] { b.Name, b.Abbreviation });
 
             // TODO Considering to move to Bible handler for multiple languages.
-            return "(" + string.Join("|", bible.BibleBooks.SelectMany(b => new[] { b.Name, b.Abbreviation })) + ")[ ]*([0-9]+)[ ]*[:：]([ ]*[0-9]+(-[ ]*[0-9]+)?([，,][ ]*[0-9]+(-[ ]*[0-9]+)?)*)";
+            return "(" + string.Join("|", bookNames) + ")[ ]*([0-9]+)[ ]*[:：]([ ]*[0-9]+(-[ ]*[0-9]+)?([，,][ ]*[0-9]+(-[ ]*[0-9]+)?)*)";
         }
 
         protected override void Dispose(bool disposing)

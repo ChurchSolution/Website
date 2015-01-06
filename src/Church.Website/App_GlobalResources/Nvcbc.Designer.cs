@@ -574,16 +574,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 题目：{0}.
-        /// </summary>
-        internal static string HomeIndex_SermonTitle {
-            get {
-                return ResourceManager.GetString("HomeIndex_SermonTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 《{0}》.
+        ///   Looks up a localized string similar to 题目：《{0}》.
         /// </summary>
         internal static string HomeIndex_SermonTitle_Format {
             get {

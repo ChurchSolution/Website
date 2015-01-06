@@ -1,20 +1,17 @@
 ﻿namespace Church.Website.Controllers
 {
+    using Church.Model;
+    using Church.Website.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Web;
     using System.Web.Http;
     using System.Web.Http.Description;
-    using System.IO;
-    using System.Web;
-
-    using Church;
-    using Church.Website.Models;
 
     public class BulletinsController : ApiController
     {
@@ -33,36 +30,36 @@
         // GET api/Bulletins
         public IQueryable<Bulletin> GetBulletins()
         {
-            return entities.Bulletins;
+            return this.entities.Bulletins;
         }
 
         // GET api/Bulletins/5
         //[ResponseType(typeof(Bulletin))]
-        public IHttpActionResult Get(int id)
+        public HttpResponseMessage Get(int id)
         {
-            var bulletin = entities.Bulletins.OrderByDescending(b => b.Date).FirstOrDefault(b => b.Culture == CultureInfo.CurrentUICulture.Name);
+            var bulletin = this.entities.Bulletins.OrderByDescending(b => b.Date).FirstOrDefault(b => b.Culture == CultureInfo.CurrentUICulture.Name);
             if (bulletin == null)
             {
-                return NotFound();
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
-            return this.GetBulletin(bulletin);
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.GetBulletin(bulletin));
         }
 
         // GET api/Bulletins?date={date}
         [ResponseType(typeof(Bulletin))]
-        public IHttpActionResult Get(DateTime date)
+        public HttpResponseMessage Get(DateTime date)
         {
-            var bulletin = entities.Bulletins.FirstOrDefault(b => b.Date == date && b.Culture == CultureInfo.CurrentUICulture.Name);
+            var bulletin = this.entities.Bulletins.FirstOrDefault(b => b.Date == date && b.Culture == CultureInfo.CurrentUICulture.Name);
             if (bulletin == null)
             {
-                return NotFound();
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
-            return this.GetBulletin(bulletin);
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.GetBulletin(bulletin));
         }
 
-        private IHttpActionResult GetBulletin(Bulletin bulletin)
+        private WeeklyBulletin GetBulletin(Bulletin bulletin)
         {
             var factory = Utilities.CreateFactory(CultureInfo.CreateSpecificCulture(bulletin.Culture));
             var weeklyBulletin = factory.CreateBulletin(bulletin.Date, bulletin.FileUrl, bulletin.PlainText);
@@ -81,7 +78,7 @@
             //    Sermon = sermon,
             //};
 
-            return Ok(weeklyBulletin);
+            return weeklyBulletin;
         }
 
         // POST api/Bulletins
@@ -89,9 +86,9 @@
         [ResponseType(typeof(Bulletin))]
         public IHttpActionResult Post([FromBody]BulletinRequest request)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(ModelState);
             }
 
             string fileUrl = string.Empty;
@@ -107,7 +104,7 @@
                 fileUrl = Utilities.Configuration.ContentFolder.BulletinFolder + "/" + printFile.Filename;
             }
 
-            var bulletin = entities.Bulletins.FirstOrDefault(b => b.Date == request.Date && b.Culture == CultureInfo.CurrentUICulture.Name);
+            var bulletin = this.entities.Bulletins.FirstOrDefault(b => b.Date == request.Date && b.Culture == CultureInfo.CurrentUICulture.Name);
             if (null == bulletin)
             {
                 bulletin = new Bulletin
@@ -118,24 +115,24 @@
                     Id = Guid.NewGuid(),
                     FileUrl = fileUrl,
                 };
-                entities.Bulletins.Add(bulletin);
+                this.entities.Bulletins.Add(bulletin);
             }
             else
             {
                 bulletin.PlainText = request.TextFileContent;
                 bulletin.FileUrl = fileUrl;
-                entities.Entry(bulletin).State = EntityState.Modified;
+                this.entities.Entry(bulletin).State = EntityState.Modified;
             }
 
             try
             {
-                entities.SaveChanges();
+                this.entities.SaveChanges();
             }
             catch (DbUpdateException)
             {
                 if (BulletinExists(bulletin.Id))
                 {
-                    return Conflict();
+                    return this.Conflict();
                 }
                 else
                 {
@@ -143,14 +140,14 @@
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = bulletin.Id }, bulletin);
+            return this.CreatedAtRoute("DefaultApi", new { id = bulletin.Id }, bulletin);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                entities.Dispose();
+                this.entities.Dispose();
             }
 
             base.Dispose(disposing);
@@ -158,7 +155,7 @@
 
         private bool BulletinExists(Guid id)
         {
-            return entities.Bulletins.Count(e => e.Id == id) > 0;
+            return this.entities.Bulletins.Count(e => e.Id == id) > 0;
         }
     }
 }

@@ -229,13 +229,9 @@
     <value>时间：{0}</value>
     <comment>Time: {0}</comment>
   </data>
-  <data name="HomeIndex_SermonTitle" xml:space="preserve">
-    <value>题目：{0}</value>
-    <comment>Title: {0}</comment>
-  </data>
   <data name="HomeIndex_SermonTitle_Format" xml:space="preserve">
-    <value>《{0}》</value>
-    <comment>"{0}"</comment>
+    <value>题目：《{0}》</value>
+    <comment>"Title: {0}"</comment>
   </data>
   <data name="HomeIndex_WelcomeWord" xml:space="preserve">
     <value>欢迎你来到［北维州华人浸信会］！</value>

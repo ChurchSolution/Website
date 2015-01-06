@@ -20,17 +20,17 @@ church.utilities = (function (window, $, undefined) {
                 showVerses(abbreviation);
             });
         }).fail(function (xhr) {
-            alert(xhr.responseJSON.exceptionMessage);
+            alert(xhr.statusText);
         });
     }
 
     function showVerses(abbreviation) {
-        // : cannot be transferred in RESTful
+        // ':' cannot be transferred in RESTful
         var promise = church.dataModel.bibleModel.getVerses(abbreviation, "");
         promise.done(function (response) {
             var lines = [];
             $.each(response.verses, function () {
-                lines.push(response.selectedChapter + ':' + this.order + ' ' + this.value);
+                lines.push(response.selectedChapter + ':' + this.id + ' ' + this.text);
             });
             var dig = '<div class="ui-helper-hidden" title="' + abbreviation + '">' + lines.join('<br />') + '</div>';
             $(dig).dialog({
@@ -39,7 +39,7 @@ church.utilities = (function (window, $, undefined) {
                 height: "auto"
             });
         }).fail(function (xhr) {
-            alert(xhr.responseJSON.exceptionMessage);
+            alert(xhr.statusText);
         });
     }
 

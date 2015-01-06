@@ -37,6 +37,18 @@ church.viewModel = (function (window, undefined) {
         this.sermonUrl = ko.observable(data.sermon == null ? undefined : data.sermon.fileUrl);
     }
 
+    function sermonViewModel(dataModel) {
+        var self = this;
+        var promise = church.dataModel.sermonsModel.getBySpeakerDateTitle(dataModel.speaker, dataModel.date, dataModel.title);
+        promise.done(function (data) {
+            ko.mapping.fromJS(data, self);
+        }).fail(function (xhr) {
+            ko.mapping.fromJS(dataModel, self);
+        })
+
+        ko.mapping.fromJS(dataModel, {}, self);
+    }
+
     function messageViewModel() {
         var self = this;
 
@@ -126,6 +138,7 @@ church.viewModel = (function (window, undefined) {
 
     return {
         BulletinViewModel: bulletinViewModel,
+        SermonViewModel: sermonViewModel,
         MessageViewModel: messageViewModel,
         UploadBulletinViewModel: uploadBulletinViewModel,
         SermonsViewModel: sermonsViewModel,

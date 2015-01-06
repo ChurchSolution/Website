@@ -6,6 +6,7 @@
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.Description;
 
@@ -31,15 +32,15 @@
 
         // GET api/Hymns/5
         [ResponseType(typeof(Hymn))]
-        public IHttpActionResult GetHymn(Guid id)
+        public HttpResponseMessage GetHymn(Guid id)
         {
             var sermon = this.entities.Hymns.Find(id);
             if (sermon == null)
             {
-                return NotFound();
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
-            return this.Ok(sermon);
+            return this.Request.CreateResponse(HttpStatusCode.OK, sermon);
         }
 
         // PUT api/Sermons/5
@@ -59,7 +60,7 @@
 
             try
             {
-                entities.SaveChanges();
+                this.entities.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {

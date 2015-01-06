@@ -246,6 +246,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Models\BibleEntitiesExtension.cs" />
     <Compile Include="Models\BinaryFile.cs" />
     <Compile Include="Models\Bulletin.cs">
       <DependentUpon>FrameworkEntities.tt</DependentUpon>

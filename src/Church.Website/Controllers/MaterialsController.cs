@@ -6,6 +6,7 @@
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.Description;
 
@@ -31,15 +32,15 @@
 
         // GET api/Materials/5
         [ResponseType(typeof(Material))]
-        public IHttpActionResult GetMaterial(Guid id)
+        public HttpResponseMessage GetMaterial(Guid id)
         {
             var material = this.entities.Materials.Find(id);
             if (material == null)
             {
-                return this.NotFound();
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
-            return this.Ok(material);
+            return this.Request.CreateResponse(HttpStatusCode.OK, material);
         }
 
         // PUT api/Materials/5

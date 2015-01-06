@@ -15,25 +15,40 @@
 
     public class SermonsController : ApiController
     {
-        private FrameworkEntities db = new FrameworkEntities();
+        private FrameworkEntities entities;
+
+        public SermonsController()
+            : this(new FrameworkEntities())
+        {
+        }
+
+        internal SermonsController(FrameworkEntities entities)
+        {
+            this.entities = entities;
+        }
 
         // GET api/Sermons
         public IQueryable<Sermon> GetSermons()
         {
-            return db.Sermons;
+            return this.entities.Sermons;
         }
 
         // GET api/Sermons/5
         [ResponseType(typeof(Sermon))]
-        public IHttpActionResult GetSermon(Guid id)
+        public HttpResponseMessage GetSermon(string id, string speaker, DateTime date, string title)
         {
-            var sermon = db.Sermons.Find(id);
+            Guid sermonId;
+            var sermon = Guid.TryParse(id, out sermonId) ? this.entities.Sermons.Find(id) :
+                this.entities.Sermons.FirstOrDefault(
+                s => s.Speaker.Equals(speaker, StringComparison.OrdinalIgnoreCase)
+                    && s.Date == date
+                    && s.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
             if (sermon == null)
             {
-                return NotFound();
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
-            return Ok(sermon);
+            return this.Request.CreateResponse(HttpStatusCode.OK, sermon);
         }
 
         // PUT api/Sermons/5
@@ -41,25 +56,25 @@
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(ModelState);
             }
 
             if (id != sermon.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            db.Entry(sermon).State = EntityState.Modified;
+            this.entities.Entry(sermon).State = EntityState.Modified;
 
             try
             {
-                db.SaveChanges();
+                this.entities.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!SermonExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
                 else
                 {
@@ -67,29 +82,29 @@
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return this.StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST api/Sermons
         [ResponseType(typeof(Sermon))]
         public IHttpActionResult PostSermon(Sermon sermon)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(ModelState);
             }
 
-            db.Sermons.Add(sermon);
+            this.entities.Sermons.Add(sermon);
 
             try
             {
-                db.SaveChanges();
+                this.entities.SaveChanges();
             }
             catch (DbUpdateException)
             {
-                if (SermonExists(sermon.Id))
+                if (this.SermonExists(sermon.Id))
                 {
-                    return Conflict();
+                    return this.Conflict();
                 }
                 else
                 {
@@ -97,30 +112,30 @@
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = sermon.Id }, sermon);
+            return this.CreatedAtRoute("DefaultApi", new { id = sermon.Id }, sermon);
         }
 
         // DELETE api/Sermons/5
         [ResponseType(typeof(Sermon))]
         public IHttpActionResult DeleteSermon(Guid id)
         {
-            var sermon = db.Sermons.Find(id);
+            var sermon = this.entities.Sermons.Find(id);
             if (sermon == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            db.Sermons.Remove(sermon);
-            db.SaveChanges();
+            this.entities.Sermons.Remove(sermon);
+            this.entities.SaveChanges();
 
-            return Ok(sermon);
+            return this.Ok(sermon);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                this.entities.Dispose();
             }
 
             base.Dispose(disposing);
@@ -128,7 +143,7 @@
 
         private bool SermonExists(Guid id)
         {
-            return db.Sermons.Count(e => e.Id == id) > 0;
+            return this.entities.Sermons.Count(e => e.Id == id) > 0;
         }
     }
 }

@@ -9,15 +9,15 @@
     <div class="float-left">
         <div>
             <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Version")</label>
-            <select data-bind="options: versions, optionsText: 'name', optionsValue: 'id', value: selectedVersion"></select>
+            <select data-bind="options: versions, optionsText: 'text', optionsValue: 'id', value: selectedVersion"></select>
         </div>
         <div>
             <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Book")</label>
-            <select data-bind="options: books, optionsText: 'name', optionsValue: 'id', value: selectedBook"></select>
+            <select data-bind="options: books, optionsText: 'text', optionsValue: 'id', value: selectedBook"></select>
         </div>
         <div>
             <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Chapter")</label>
-            <select data-bind="options: chapters, optionsText: 'name', optionsValue: 'id', value: selectedChapter"></select>
+            <select data-bind="options: chapters, optionsText: 'text', optionsValue: 'id', value: selectedChapter"></select>
         </div>
     </div>
 
@@ -31,7 +31,7 @@
 
     <div id="verse-panel" data-bind="foreach: verses">
         <div>
-            <label data-bind="text: order"></label> <span data-bind="text: value"></span>
+            <label data-bind="text: id"></label> <span data-bind="text: text"></span>
         </div>
     </div>
 </div>

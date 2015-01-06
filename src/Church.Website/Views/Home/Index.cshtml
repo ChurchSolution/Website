@@ -31,25 +31,24 @@
                 <legend>@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_LatestSermon")</legend>
                 <br />
                 <img class="float-left" src="@Url.Content("~/Content/images/SermonIcon.jpg")" alt="Sermon icon" />
-                <div>
+                <div id="sermonPanel">
                     <div>@string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTime") as string, bulletin.Date.ToString(HttpContext.GetGlobalResourceObject("Framework", "SiteWide_Date_Format") as string))</div>
                     <div>@string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonSpeaker") as string, bulletin.Speaker)</div>
-                    <div>
-                        @MvcHtmlString.Create(string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTitle") as string, string.Format(
-                            CultureInfo.CurrentUICulture, HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTitle_Format") as string,
-                            (null == ViewBag.Sermon) ? bulletin.MessageTitle : "<a href=\"" + ViewBag.Sermon.FileUrl + "\">" + bulletin.MessageTitle + "</a>")))
+                    <div>@MvcHtmlString.Create(string.Format(CultureInfo.CurrentUICulture, HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTitle_Format") as string,
+                        "<a data-bind=\"visible: fileUrl()!=null, attr: { href: fileUrl }, text: title\"></a><span data-bind=\"visible: fileUrl()==null, text: title\"></span>"))</div>
                 </div>
-                <div><a href="#" class="SermonCompendiumToggle">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_DisplaySermonCompendium")</a></div>
-                <div><a href="#" class="SermonCompendiumToggle ui-helper-hidden">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_HideSermonCompendium")</a></div>
-                </div>
-                <div id="SermonCompendium" class="ui-helper-hidden">
-                    @if (null != bulletin.SermonCompendium)
-                    {
-                        foreach (var s in bulletin.SermonCompendium)
+                <div>
+                    <div><a href="#" class="SermonCompendiumToggle">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_DisplaySermonCompendium")</a></div>
+                    <div><a href="#" class="SermonCompendiumToggle ui-helper-hidden">@HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_HideSermonCompendium")</a></div>
+                    <div id="SermonCompendium" class="ui-helper-hidden">
+                        @if (null != bulletin.SermonCompendium)
                         {
-                            @s<br />
+                            foreach (var s in bulletin.SermonCompendium)
+                            {
+                                @s<br />
+                            }
                         }
-                    }
+                    </div>
                 </div>
             </fieldset>
         </div>
@@ -115,11 +114,25 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/Scripts/knockout/knockout.mapping.js")
+    @Scripts.Render("~/Scripts/ViewModels/frameworkViewModel.js")
+    @Scripts.Render("~/Scripts/Models/sermonsModel.js")
     @Scripts.Render("~/Scripts/Models/bibleModel.js")
     @Scripts.Render("~/Scripts/utilities.js")
+
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
+            var dataModel = {
+                speaker : '@bulletin.Speaker',
+                date : '@bulletin.Date',
+                title: '@bulletin.MessageTitle',
+                fileUrl : null,
+            };
+            var viewModel = new church.viewModel.SermonViewModel(dataModel);
+            ko.applyBindings(viewModel, $("#sermonPanel")[0]);
+
             $('.SermonCompendiumToggle').click(function () {
                 $('.SermonCompendiumToggle').toggle();
                 $('#SermonCompendium').toggle('blind', {}, 500);
