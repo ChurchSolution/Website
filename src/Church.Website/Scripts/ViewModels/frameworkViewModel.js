@@ -43,7 +43,7 @@ church.viewModel = (function (window, undefined) {
         promise.done(function (data) {
             ko.mapping.fromJS(data, self);
         }).fail(function (xhr) {
-            ko.mapping.fromJS(dataModel, self);
+            // Do nothing
         })
 
         ko.mapping.fromJS(dataModel, {}, self);

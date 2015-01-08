@@ -32,9 +32,13 @@
 
         // GET api/Hymns/5
         [ResponseType(typeof(Hymn))]
-        public HttpResponseMessage GetHymn(Guid id)
+        public HttpResponseMessage GetHymn(string id, string name, string source)
         {
-            var sermon = this.entities.Hymns.Find(id);
+            Guid sermonId;
+            var sermon = Guid.TryParse(id, out sermonId) ? this.entities.Hymns.Find(id) :
+                this.entities.Hymns.FirstOrDefault(
+                s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase)
+                    && s.Source.Equals(source, StringComparison.OrdinalIgnoreCase));
             if (sermon == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);

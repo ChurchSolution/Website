@@ -40,17 +40,16 @@
                     {
                         var parts = value.Split('-');
                         var itemId = parts[0] + "@" + (1 == parts.Length ? string.Empty : (HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_NewSongForPraisingLord") as string) + "#" + parts[1]);
-                        <li>@name (@nameInEnglish) - <a href="#" itemid="@itemId" class="Hymn">@value</a></li>
+                        <li>@name (@nameInEnglish) - <a href="#" itemid="@itemId" class="hymn">@value</a></li>
                     }
                     else if (nameInEnglish.StartsWith("Sermon", StringComparison.OrdinalIgnoreCase)
                         || nameInEnglish.StartsWith("Testimony", StringComparison.OrdinalIgnoreCase))
                     {
-                        <li>
+                        <li id="sermonPanel">
                             @string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_WorshipItem") as string, @name, @nameInEnglish)
                             <br />@string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_WorshipSermonSpeaker") as string, bulletin.Speaker)
-                            @*<br />@MvcHtmlString.Create(string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_WorshipSermonTitle") as string, string.Format(
-                                CultureInfo.CurrentUICulture, HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTitle_Format") as string,
-                                (null == ViewBag.Sermon) ? bulletin.MessageTitle : "<a href=\"" + ViewBag.Sermon.FileUrl + "\">" + bulletin.MessageTitle + "</a>")))*@
+                            <br />@MvcHtmlString.Create(string.Format(CultureInfo.CurrentUICulture, HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTitle_Format") as string,
+                                "<a data-bind=\"visible: fileUrl()!=null, attr: { href: fileUrl }, text: title\"></a><span data-bind=\"visible: fileUrl()==null, text: title\"></span>"))
                             <br /><span id="MessageVerseAbbr">@string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeBulletin_WorshipSermonVerses") as string, bulletin.MessageVerseAbbr)</span>
                         </li>
                     }
@@ -140,13 +139,26 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/Scripts/knockout/knockout.mapping.js")
+    @Scripts.Render("~/Scripts/ViewModels/frameworkViewModel.js")
+    @Scripts.Render("~/Scripts/Models/sermonsModel.js")
+    @Scripts.Render("~/Scripts/Models/hymnsModel.js")
     @Scripts.Render("~/Scripts/Models/bibleModel.js")
     @Scripts.Render("~/Scripts/utilities.js")
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
             $(".left-panel").accordion({ header: 'h2' });
-            //Website.NailHymns('.Hymn');
+            var dataModel = {
+                speaker: '@bulletin.Speaker',
+                date: '@bulletin.Date',
+                title: '@bulletin.MessageTitle',
+                fileUrl: null,
+            };
+            var viewModel = new church.viewModel.SermonViewModel(dataModel);
+            ko.applyBindings(viewModel, $("#sermonPanel")[0]);
+            church.utilities.nailHymns('.hymn');
             church.utilities.searchBibleVerses('#MessageVerseAbbr', '#SermonCompendium', '#WordFromPastor', '#FamilyWorship');
         });
         //]]>

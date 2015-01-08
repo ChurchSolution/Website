@@ -429,6 +429,7 @@
     <Content Include="Scripts\knockout\knockout.mapping.js" />
     <Content Include="Scripts\Models\bibleModel.js" />
     <Content Include="Scripts\Models\bulletinsModel.js" />
+    <Content Include="Scripts\Models\hymnsModel.js" />
     <Content Include="Scripts\Models\materialsModel.js" />
     <Content Include="Scripts\Models\sermonsModel.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />

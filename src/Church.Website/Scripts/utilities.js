@@ -43,36 +43,36 @@ church.utilities = (function (window, $, undefined) {
         });
     }
 
-    //Website.NailHymns = function () {
-    //    var panels = arguments;
-    //    $.each(panels, function (index, panel) {
-    //        $(panel).click(function () {
-    //            var _this = this;
-    //            if (null == $(_this).next().html()) {
-    //                var url = "/Library/Hymns/" + $(_this).attr('itemid');
-    //                var parts = url.split('@');
-    //                $.getJSON(encodeURI(parts[0] + '?_=' + Website.S4() + Website.S4()), { source: parts[1] })
-    //                    .success(function (hymn) {
-    //                        var lyrics = JSON.parse(hymn.Lyrics);
-    //                        var lines = [];
-    //                        $.each(lyrics, function () {
-    //                            lines.push((this.Type == 1 ? '* ' : '') + this.Text.join('  '));
-    //                        });
-    //                        $(_this).after('<span><br />' + lines.join('<br />') + '</span>');
-    //                    })
-    //                    .error(function (e) {
-    //                        //TODO Message should be nice
-    //                        alert(e.responseText);
-    //                    });
-    //            } else {
-    //                $(_this).next().toggle();
-    //            }
-    //            return false;
-    //        });
-    //    });
-    //}
+    function nailHymns() {
+        var panels = arguments;
+
+        $.each(panels, function (index, panel) {
+            $(panel).click(function () {
+                var self = this;
+                if (null == $(self).next().html()) {
+                    var parts = $(self).attr('itemid').split('@');
+                    var promise = church.dataModel.hymnsModel.getByNameSource(parts[0], parts[1]);
+                    promise.done(function (response) {
+                        var lyrics = JSON.parse(response.lyrics);
+                            var lines = [];
+                            $.each(lyrics, function () {
+                                lines.push((this.Type == 1 ? '* ' : '') + this.Text.join('  '));
+                            });
+                            $(self).after('<span><br />' + lines.join('<br />') + '</span>');
+                        })
+                        .fail(function (xhr) {
+                            // Do nothing
+                        });
+                } else {
+                    $(self).next().toggle();
+                }
+                return false;
+            });
+        });
+    }
 
     return {
         searchBibleVerses: searchBibleVerses,
+        nailHymns: nailHymns,
     };
 })(window, jQuery);
