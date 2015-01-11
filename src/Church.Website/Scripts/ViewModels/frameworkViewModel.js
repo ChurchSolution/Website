@@ -115,25 +115,37 @@ church.viewModel = (function (window, undefined) {
 
     function bibleViewModel(data) {
         var self = this;
-        var getBible = function (id, book, chapter) {
-            var promise = church.dataModel.bibleModel.get(book, chapter, id);
+        var updatePage = function () {
+            var abbreviation = self.abbreviation();
+            var promise = abbreviation === '' ? church.dataModel.bibleModel.get(self.selectedBook(), self.selectedChapter(), self.selectedVersion()) :
+                church.dataModel.bibleModel.getVerses(abbreviation, self.selectedVersion());
             promise.done(function (data) {
+                data.errorMessage = '';
                 ko.mapping.fromJS(data, self);
             }).fail(function (xhr) {
-                alert(xhr.responseJSON.exceptionMessage);
+                self.errorMessage(xhr.statusText);
             });
-        };
+        }
 
         ko.mapping.fromJS(data, {}, self);
         self.selectedVersion.subscribe(function (item) {
-            getBible(item, self.selectedBook(), self.selectedChapter());
+            self.abbreviation('');
+            updatePage();
         });
         self.selectedBook.subscribe(function (item) {
-            getBible(self.selectedVersion(), item, 1);
+            updatePage();
         });
         self.selectedChapter.subscribe(function (item) {
-            getBible(self.selectedVersion(), self.selectedBook(), item);
-        })
+            updatePage();
+        });
+        self.abbreviation.subscribe(function (item) {
+            var abbreviation = self.abbreviation().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+            self.abbreviation(abbreviation);
+            updatePage();
+        });
+        self.getVerses = function () {
+            // Do nothing
+        };
     }
 
     return {

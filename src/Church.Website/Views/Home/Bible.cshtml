@@ -6,25 +6,24 @@
 @Styles.Render("~/Content/Custom/homeBible.css")
 
 <div id="bible-panel">
+    <div>
+        <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Version")</label>
+        <select data-bind="options: versions, optionsText: 'text', optionsValue: 'id', value: selectedVersion"></select>
+    </div>
     <div class="float-left">
         <div>
-            <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Version")</label>
-            <select data-bind="options: versions, optionsText: 'text', optionsValue: 'id', value: selectedVersion"></select>
-        </div>
-        <div>
             <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Book")</label>
-            <select data-bind="options: books, optionsText: 'text', optionsValue: 'id', value: selectedBook"></select>
+            <select data-bind="enable: abbreviation()=='', options: books, optionsText: 'text', optionsValue: 'id', value: selectedBook"></select>
         </div>
         <div>
             <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Chapter")</label>
-            <select data-bind="options: chapters, optionsText: 'text', optionsValue: 'id', value: selectedChapter"></select>
+            <select data-bind="enable: abbreviation()=='', options: chapters, optionsText: 'text', optionsValue: 'id', value: selectedChapter"></select>
         </div>
     </div>
 
     <div class="float-right">
-        <div id="search-panel">
-            <input id="abbreviation" type="text" value="" placeholder="@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_SearchPlaceholder")" />
-        </div>
+        <div id="search-panel"><input data-bind="value: abbreviation, executeOnEnter: getVerses" type="text" placeholder="@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_SearchPlaceholder")" /></div>
+        <div><label data-bind="text: errorMessage" /></div>
     </div>
 
     <div class="clear" />
@@ -42,6 +41,7 @@
     @Scripts.Render("~/Scripts/knockout/knockout.mapping.js")
     @Scripts.Render("~/Scripts/knockout/knockout.datePicker.js")
     @Scripts.Render("~/Scripts/knockout/knockout.file.js")
+    @Scripts.Render("~/Scripts/knockout/knockout.executeOnEnter.js")
     @Scripts.Render("~/Scripts/Models/bibleModel.js")
     @Scripts.Render("~/Scripts/ViewModels/frameworkViewModel.js")
 
@@ -49,6 +49,8 @@
         //<![CDATA[
         $(function () {
             church.dataModel.bibleModel.get(1, 1, "", "").done(function (data) {
+                data.abbreviation = '';
+                data.errorMessage = '';
                 var viewModel = new church.viewModel.BibleViewModel(data);
                 ko.applyBindings(viewModel, $("#bible-panel")[0]);
             }).fail(function (xhr) {

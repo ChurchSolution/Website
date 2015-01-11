@@ -427,6 +427,7 @@
     <Content Include="Scripts\knockout.dataTables.js" />
     <Content Include="Scripts\knockout\knockout.file.js" />
     <Content Include="Scripts\knockout\knockout.mapping.js" />
+    <Content Include="Scripts\knockout\knockout.executeOnEnter.js" />
     <Content Include="Scripts\Models\bibleModel.js" />
     <Content Include="Scripts\Models\bulletinsModel.js" />
     <Content Include="Scripts\Models\hymnsModel.js" />
