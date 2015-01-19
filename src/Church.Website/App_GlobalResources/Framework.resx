@@ -245,10 +245,6 @@
     <value>注册</value>
     <comment>Register</comment>
   </data>
-  <data name="SiteWide_Date_Format" xml:space="preserve">
-    <value>yyyy年MM月dd日</value>
-    <comment>MM/dd/yyyy</comment>
-  </data>
   <data name="SiteWide_Title_Format" xml:space="preserve">
     <value>北维州华人浸信会 - {0}</value>
     <comment>North Virginia Chinese Baptist Church - {0}</comment>

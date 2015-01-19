@@ -17,9 +17,12 @@ namespace Church.Model
     {
         protected Dictionary<string, string> handlers;
 
-        protected BulletinTextBuilder()
+        protected CultureInfo culture;
+
+        protected BulletinTextBuilder(CultureInfo culture)
         {
             this.handlers = new Dictionary<string, string>();
+            this.culture = culture;
 
             var members = this.GetType().GetMembers(BindingFlags.NonPublic | BindingFlags.Instance)
                 .Where(m => m.GetCustomAttributes(typeof(SectionSeparatorAttribute), false).Any());

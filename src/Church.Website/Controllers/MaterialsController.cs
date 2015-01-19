@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Description;
 
@@ -25,16 +26,18 @@
         }
 
         // GET api/Materials
-        public IQueryable<Material> GetMaterials()
+        [HttpGet]
+        public Task<IQueryable<Material>> GetMaterials()
         {
-            return this.entities.Materials;
+            return Task.FromResult<IQueryable<Material>>(this.entities.Materials);
         }
 
         // GET api/Materials/5
+        [HttpGet]
         [ResponseType(typeof(Material))]
-        public HttpResponseMessage GetMaterial(Guid id)
+        public async Task<HttpResponseMessage> GetMaterialAsync(Guid id)
         {
-            var material = this.entities.Materials.Find(id);
+            var material = await this.entities.Materials.FindAsync(id);
             if (material == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);

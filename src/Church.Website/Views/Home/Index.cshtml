@@ -32,7 +32,7 @@
                 <br />
                 <img class="float-left" src="@Url.Content("~/Content/images/SermonIcon.jpg")" alt="Sermon icon" />
                 <div id="sermonPanel">
-                    <div>@string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTime") as string, bulletin.Date.ToString(HttpContext.GetGlobalResourceObject("Framework", "SiteWide_Date_Format") as string))</div>
+                    <div>@string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTime") as string, bulletin.DateString)</div>
                     <div>@string.Format(HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonSpeaker") as string, bulletin.Speaker)</div>
                     <div>@MvcHtmlString.Create(string.Format(CultureInfo.CurrentUICulture, HttpContext.GetGlobalResourceObject("Nvcbc", "HomeIndex_SermonTitle_Format") as string,
                         "<a data-bind=\"visible: fileUrl()!=null, attr: { href: fileUrl }, text: title\"></a><span data-bind=\"visible: fileUrl()==null, text: title\"></span>"))</div>

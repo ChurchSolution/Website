@@ -349,15 +349,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to yyyy年MM月dd日.
-        /// </summary>
-        internal static string SiteWide_Date_Format {
-            get {
-                return ResourceManager.GetString("SiteWide_Date_Format", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 北维州华人浸信会 - {0}.
         /// </summary>
         internal static string SiteWide_Title_Format {

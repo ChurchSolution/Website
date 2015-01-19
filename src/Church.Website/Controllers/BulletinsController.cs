@@ -9,6 +9,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
     using System.Web.Http.Description;
@@ -28,57 +29,38 @@
         }
 
         // GET api/Bulletins
-        public IQueryable<Bulletin> GetBulletins()
+        [HttpGet]
+        public Task<IQueryable<Bulletin>> GetBulletins()
         {
-            return this.entities.Bulletins;
+            return Task.FromResult<IQueryable<Bulletin>>(this.entities.Bulletins);
         }
 
         // GET api/Bulletins/5
-        //[ResponseType(typeof(Bulletin))]
-        public HttpResponseMessage Get(int id)
+        [HttpGet]
+        [ResponseType(typeof(Bulletin))]
+        public async Task<HttpResponseMessage> GetAsync(int id)
         {
-            var bulletin = this.entities.Bulletins.OrderByDescending(b => b.Date).FirstOrDefault(b => b.Culture == CultureInfo.CurrentUICulture.Name);
+            var bulletin = await this.entities.GetDefaultBulletinAsync(CultureInfo.CurrentUICulture.Name);
             if (bulletin == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, this.GetBulletin(bulletin));
+            return this.Request.CreateResponse(HttpStatusCode.OK, bulletin);
         }
 
         // GET api/Bulletins?date={date}
+        [HttpGet]
         [ResponseType(typeof(Bulletin))]
-        public HttpResponseMessage Get(DateTime date)
+        public async Task<HttpResponseMessage> GetAsync(DateTime date)
         {
-            var bulletin = this.entities.Bulletins.FirstOrDefault(b => b.Date == date && b.Culture == CultureInfo.CurrentUICulture.Name);
+            var bulletin = await this.entities.GetBulletinByDateAsync(date, CultureInfo.CurrentUICulture.Name);
             if (bulletin == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, this.GetBulletin(bulletin));
-        }
-
-        private WeeklyBulletin GetBulletin(Bulletin bulletin)
-        {
-            var factory = Utilities.CreateFactory(CultureInfo.CreateSpecificCulture(bulletin.Culture));
-            var weeklyBulletin = factory.CreateBulletin(bulletin.Date, bulletin.FileUrl, bulletin.PlainText);
-
-            //var date = builder.Bulletin.Date;
-            //var title = builder.Bulletin.MessageTitle;
-            //var speaker = builder.Bulletin.Speaker;
-
-            //var sermon = entities.Sermons.FirstOrDefault(s => s.Date == date
-            //    && s.Title.Equals(title, StringComparison.CurrentCultureIgnoreCase)
-            //    && s.Title.Equals(speaker, StringComparison.CurrentCultureIgnoreCase));
-
-            //var model = new
-            //{
-            //    Bulletin = builder.Bulletin,
-            //    Sermon = sermon,
-            //};
-
-            return weeklyBulletin;
+            return this.Request.CreateResponse(HttpStatusCode.OK, bulletin);
         }
 
         // POST api/Bulletins

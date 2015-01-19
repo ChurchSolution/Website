@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-
-namespace Church.Website.Models
+﻿namespace Church.Website.Models
 {
+    using System;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public static class BibleEntitiesExtension
     {
-        public static Bible GetDefaultBible(this BibleEntities entities, string culture)
+        public static async Task<Bible> GetDefaultBibleAsync(this BibleEntities entities, string cultureName)
         {
-            return entities.Bibles.FirstOrDefault(b => b.Culture == culture && b.IsDefault) ??
-                entities.Bibles.OrderBy(b => b.Culture).First(b => b.IsDefault);
+            return await entities.Bibles.FirstOrDefaultAsync(b => cultureName.Equals(b.Culture, StringComparison.Ordinal) && b.IsDefault) ??
+                await entities.Bibles.OrderBy(b => b.Culture).FirstAsync(b => b.IsDefault);
         }
 
-        public static Bible GetBible(this BibleEntities entities, Guid id)
+        public static Task<Bible> GetBibleAsync(this BibleEntities entities, Guid id)
         {
-            return entities.Bibles.First(b => b.Id == id);
+            return entities.Bibles.FirstAsync(b => b.Id == id);
         }
     }
 }

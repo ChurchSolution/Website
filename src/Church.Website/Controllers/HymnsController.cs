@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Description;
 
@@ -25,20 +26,21 @@
         }
 
         // GET api/Hymns
-        public IQueryable<Hymn> GetHymns()
+        [HttpGet]
+        public Task<IQueryable<Hymn>> GetHymns()
         {
-            return this.entities.Hymns;
+            return Task.FromResult<IQueryable<Hymn>>(this.entities.Hymns);
         }
 
         // GET api/Hymns/5
+        [HttpGet]
         [ResponseType(typeof(Hymn))]
-        public HttpResponseMessage GetHymn(string id, string name, string source)
+        public async Task<HttpResponseMessage> GetHymnAsync(string id, string name, string source)
         {
             Guid sermonId;
-            var sermon = Guid.TryParse(id, out sermonId) ? this.entities.Hymns.Find(id) :
-                this.entities.Hymns.FirstOrDefault(
-                s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase)
-                    && s.Source.Equals(source, StringComparison.OrdinalIgnoreCase));
+            var sermon = Guid.TryParse(id, out sermonId) ? await this.entities.Hymns.FindAsync(id) :
+                await this.entities.Hymns.FirstOrDefaultAsync(
+                s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && s.Source.Equals(source, StringComparison.OrdinalIgnoreCase));
             if (sermon == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);

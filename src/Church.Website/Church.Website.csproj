@@ -271,6 +271,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Models\FrameworkEntitiesExtension.cs" />
     <Compile Include="Models\Hymn.cs">
       <DependentUpon>FrameworkEntities.tt</DependentUpon>
     </Compile>

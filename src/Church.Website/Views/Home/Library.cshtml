@@ -72,21 +72,21 @@
                 var viewModel = new church.viewModel.BulletinViewModel(data);
                 ko.applyBindings(viewModel, $("#bulletin-panel")[0]);
             }).fail(function (xhr) {
-                alert(xhr.responseJSON.ExceptionMessage);
+                alert(xhr.statusText);
             });
 
             church.dataModel.sermonsModel.get().done(function (data) {
                 var viewModel = new church.viewModel.SermonsViewModel(data);
                 ko.applyBindings(viewModel, $("#sermon-panel")[0]);
             }).fail(function (xhr) {
-                alert(xhr.responseJSON.ExceptionMessage);
+                alert(xhr.statusText);
             });
 
             church.dataModel.materialsModel.get().done(function (data) {
                 var viewModel = new church.viewModel.MaterialsViewModel(data);
                 ko.applyBindings(viewModel, $("#material-panel")[0]);
             }).fail(function (xhr) {
-                alert(xhr.responseJSON.ExceptionMessage);
+                alert(xhr.statusText);
             });
 
             var messageViewModel = new church.viewModel.MessageViewModel();

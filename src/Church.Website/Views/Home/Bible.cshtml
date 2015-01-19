@@ -54,7 +54,7 @@
                 var viewModel = new church.viewModel.BibleViewModel(data);
                 ko.applyBindings(viewModel, $("#bible-panel")[0]);
             }).fail(function (xhr) {
-                alert(xhr.responseJSON.exceptionMessage);
+                alert(xhr.statusText);
             });
         });
         //]]>

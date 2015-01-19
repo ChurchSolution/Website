@@ -26,7 +26,13 @@ namespace Church.Model
 
         public static WeeklyBulletin Create(DateTime date, string fileUri, CultureInfo culture, IWeeklyBulletinProperties properties)
         {
-            return new WeeklyBulletin { Date = date, FileUri = fileUri, Culture = culture, Properties = properties };
+            return new WeeklyBulletin
+            {
+                Date = date,
+                FileUri = fileUri,
+                Culture = culture,
+                Properties = properties,
+            };
         }
     }
 }

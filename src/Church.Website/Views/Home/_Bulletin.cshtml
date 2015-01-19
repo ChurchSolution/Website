@@ -7,7 +7,7 @@
     </div>
 
     <div>
-        <div>@HttpContext.GetGlobalResourceObject("Framework", "Home_Bulletin_Date")<a data-bind="attr: { href: url }, text: date" target="_blank"></a>
+        <div>@HttpContext.GetGlobalResourceObject("Framework", "Home_Bulletin_Date")<a data-bind="attr: { href: url }, text: dateString" target="_blank"></a>
             <a data-bind="visible: bulletinUrl()!='', attr: { href: bulletinUrl }" target="_blank">@HttpContext.GetGlobalResourceObject("Framework", "Home_Bulletin_PrintableVersion")</a></div>
         <div>@HttpContext.GetGlobalResourceObject("Framework", "Home_Bulletin_Speaker")<label data-bind="text: speaker"></label></div>
         <div>@MvcHtmlString.Create(string.Format(HttpContext.GetGlobalResourceObject("Framework", "Home_Bulletin_Title") as string,"<a data-bind=\"visible: sermonUrl()!==undefined && sermonUrl()!=null, attr: { href: sermonUrl }, text: title\"></a><span data-bind=\"visible: sermonUrl()===undefined || sermonUrl()==null, text: title\"></span>"))</div>

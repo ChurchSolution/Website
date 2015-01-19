@@ -77,6 +77,8 @@
 
         public DateTime Date { get; internal set; }
 
+        public string DateString { get; internal set; }
+
         public IEnumerable<string> WordFromPastor { get; internal set; }
 
         public Dictionary<string, decimal> LastWeekData { get; internal set; }

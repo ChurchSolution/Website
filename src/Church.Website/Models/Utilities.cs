@@ -36,8 +36,14 @@ using System.Web.Security;
             new Lazy<IWebConfiguration>(() => ConfigurationManager.GetSection("churchWeb") as ChurchWebSection);
         public static IWebConfiguration Configuration { get { return configuration.Value; } }
 
-        public static IFactory CreateFactory(CultureInfo culture)
+        public static IFactory CreateFactory(string cultureName)
         {
+            // Set culture infomation and set LongDatePattern if needed
+            var culture = CultureInfo.CurrentUICulture.Name == cultureName ?
+                CultureInfo.CurrentUICulture :
+                CultureInfo.CreateSpecificCulture(cultureName);
+            Resources.Framework.Culture = culture;
+
             // Read from disk if the assembly is not loaded yet
             var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name.Equals(Configuration.ChurchWebsiteLibrary)) ??
                 Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath, Configuration.ChurchWebsiteLibrary) + ".dll");

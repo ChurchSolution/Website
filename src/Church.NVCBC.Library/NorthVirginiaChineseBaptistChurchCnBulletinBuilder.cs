@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.Linq;
 
     public class NorthVirginiaChineseBaptistChurchCnBulletinBuilder : BulletinTextBuilder
@@ -20,6 +21,7 @@
         const string ServicesSectionKey = "主日崇拜事奉分工";
         const string MemorizedVersesSectionKey = "记忆经文  MEMORY VERSE OF THE WEEK";
         const string AnnouncementsSectionKey = "报告事项   ANNOUNCEMENTS";
+        const string AnnouncementsSectionKey2 = "报告事项 ANNOUNCEMENTS";
         const string PrayerRequestsSectionKey = "代祷事项  PRAYER REQUESTS";
         const string GroupLeadersSectionKey = "事工组负责人  GROUP LEADERS";
         const string ActivitiesSectionKey = "教会活动  ACTIVITIES";
@@ -28,6 +30,8 @@
         const string SermonCompendiumSectionKey2 = "见证分享：";
         const string WeeklyReadingSectionKey = "本周读经表";
         const string ChurchOfficeSectionKey = "* 教会办公室地址";
+
+        public NorthVirginiaChineseBaptistChurchCnBulletinBuilder(CultureInfo culture) : base(culture) { }
 
         [SectionSeparator(WordFromPasterSectionKey)]
         protected IEnumerable<string> ProcessWordFromPastor(NorthVirginiaChineseBaptistChurchBulletin bulletin, IEnumerable<string> lines)
@@ -186,6 +190,7 @@
             DateTime date;
             ExceptionUtilities.ThrowFormatExceptionIfFalse(DateTime.TryParse(cells[0], out date), "Could not parse the date '{0}'", cells[0]);
             bulletin.Date = date;
+            bulletin.DateString = date.ToString("D", this.culture.DateTimeFormat);
 
             var worshipProgram = new List<NorthVirginiaChineseBaptistChurchBulletin.ProgramItem>();
             foreach (string l in lines.Skip(2).Where(l => !string.IsNullOrWhiteSpace(l) && !l.StartsWith("*")))
@@ -257,7 +262,7 @@
             return Enumerable.Empty<string>();
         }
 
-        [SectionSeparator(AnnouncementsSectionKey)]
+        [SectionSeparator(AnnouncementsSectionKey, AnnouncementsSectionKey2)]
         protected IEnumerable<string> ProcessAnnouncements(NorthVirginiaChineseBaptistChurchBulletin bulletin, IEnumerable<string> lines)
         {
             ExceptionUtilities.ThrowArgumentNullExceptionIfEmpty(lines, "lines", "No input line.");

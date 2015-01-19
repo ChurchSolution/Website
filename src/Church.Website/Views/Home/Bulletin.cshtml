@@ -22,7 +22,7 @@
 @Styles.Render("~/Content/Custom/homeBulletin.css")
 
 <div id="Subject">
-    <h2>@bulletin.Date.ToString(HttpContext.GetGlobalResourceObject("Framework", "SiteWide_Date_Format") as string)</h2>
+    <h2>@bulletin.DateString</h2>
 </div>
 
 <div class="left-panel">

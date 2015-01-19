@@ -21,8 +21,8 @@
             {
                 culture = culture,
                 builder = culture.Name == "zh-TW" ?
-                     new NorthVirginiaChineseBaptistChurchTwBulletinBuilder() as BulletinTextBuilder :
-                     new NorthVirginiaChineseBaptistChurchCnBulletinBuilder() as BulletinTextBuilder,
+                     new NorthVirginiaChineseBaptistChurchTwBulletinBuilder(culture) as BulletinTextBuilder :
+                     new NorthVirginiaChineseBaptistChurchCnBulletinBuilder(culture) as BulletinTextBuilder,
             };
         }
 

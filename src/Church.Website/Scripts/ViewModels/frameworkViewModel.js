@@ -11,13 +11,14 @@ church.viewModel = (function (window, undefined) {
         this.searchBulletin = function () {
             church.dataModel.bulletinsModel.getByDate(self.selectedDate()).done(function (data) {
                 self.date(data.bulletin.date);
+                self.dateString(data.bulletin.properties.dateString);
                 self.bulletinUrl(data.bulletin.fileUrl);
                 self.url("/Home/Bulletin?date=" + data.bulletin.date);
                 self.speaker(data.bulletin.speaker);
                 self.title(data.bulletin.messageTitle);
                 self.sermonUrl(data.sermon == null ? undefined : data.sermon.fileUrl);
             }).fail(function (xhr) {
-                alert(xhr.responseJSON.exceptionMessage);
+                alert(xhr.statusText);
             })
         };
         this.uploadBulletin = function () {
@@ -30,6 +31,7 @@ church.viewModel = (function (window, undefined) {
         }
 
         this.date = ko.observable(data.date);
+        this.dateString = ko.observable(data.properties.dateString);
         this.bulletinUrl = ko.observable(data.fileUri);
         this.url = ko.observable("/Home/Bulletin?date=" + data.date);
         this.speaker = ko.observable(data.properties.speaker);
@@ -75,7 +77,7 @@ church.viewModel = (function (window, undefined) {
                 messageViewModel.message('successful');
             }).fail(function (xhr) {
                 messageViewModel.messageStyle('message-error');
-                alert(xhr.responseJSON.exceptionMessage);
+                alert(xhr.statusText);
             }).always(function () {
                 self.closeDialog();
             });

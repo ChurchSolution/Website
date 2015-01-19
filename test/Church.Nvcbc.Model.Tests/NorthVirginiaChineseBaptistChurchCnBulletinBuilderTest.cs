@@ -4,19 +4,33 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
     [TestClass]
     public class NorthVirginiaChineseBaptistChurchCnBulletinBuilderTest
     {
+        private NorthVirginiaChineseBaptistChurchCnBulletinBuilder builder;
+
+        [ClassInitialize]
+        public static void TestsSetup(TestContext context)
+        {
+        }
+
+        [TestInitialize]
+        public void TestInit()
+        {
+            var culture = CultureInfo.CreateSpecificCulture("zh-CN");
+            this.builder = new NorthVirginiaChineseBaptistChurchCnBulletinBuilder(culture);
+        }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ShouldThrowExceptionIfInputLineEmpty()
         {
             // Arrange
-            var builder = new NorthVirginiaChineseBaptistChurchCnBulletinBuilder();
-            var privateObject = new PrivateObject(builder);
+            var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
             var lines = Enumerable.Empty<string>();
 
@@ -40,8 +54,7 @@
                 " ",
                 "",
             };
-            var builder = new NorthVirginiaChineseBaptistChurchCnBulletinBuilder();
-            var privateObject = new PrivateObject(builder);
+            var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
 
             // Action
@@ -66,8 +79,7 @@
                 "    爱心：$3	彼岸基金：$4	震灾：",
                 "",
             };
-            var builder = new NorthVirginiaChineseBaptistChurchCnBulletinBuilder();
-            var privateObject = new PrivateObject(builder);
+            var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
 
             // Action
@@ -96,8 +108,7 @@
                 "下周主日崇拜事奉分工",
                 @"会司TBD清点奉献谢靖, 霍静领歌场地郑金平、王忠诚、马念 学龄儿童崇拜Sharon, 谢靖",
             };
-            var builder = new NorthVirginiaChineseBaptistChurchCnBulletinBuilder();
-            var privateObject = new PrivateObject(builder);
+            var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
 
             // Action
@@ -122,8 +133,7 @@
             {
                 "北  维  州  华  人  浸  信  会",
                 "NORTHERN  VIRGINIA  CHINESE  BAPTIST CHURCH",                "Oak View Elementary School, 5004 Sideburn Rd, Fairfax, VA 22032",                " 电话703-451-0815   牧师手机703-474-7076       http://www.nvcbc.org",                "讲员：金春叶牧师      	  	    司琴：Daniel Song",                "",            };
-            var builder = new NorthVirginiaChineseBaptistChurchCnBulletinBuilder();
-            var privateObject = new PrivateObject(builder);
+            var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
 
             // Action
@@ -145,8 +155,7 @@
             {
                 "主 日 崇 拜",
                 "4/1/2012  上午10:45时",                "",                "赞美诗一	和散那	Praise#1",                "☆序乐	625、主在圣殿中	Prelude",                "☆ 祷告		Prayer",                "",                "* 有☆符号的地方请大家站立",                "",            };
-            var builder = new NorthVirginiaChineseBaptistChurchCnBulletinBuilder();
-            var privateObject = new PrivateObject(builder);
+            var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
 
             // Action
@@ -179,8 +188,7 @@
                 "主日崇拜事奉分工",
                 @"招待高建生, 邓宇彪场地黄永星、王忠诚、马念学龄儿童崇拜Sharon, 谢靖领歌",
             };
-            var builder = new NorthVirginiaChineseBaptistChurchCnBulletinBuilder();
-            var privateObject = new PrivateObject(builder);
+            var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
 
             // Action
@@ -204,8 +212,7 @@
             {
                 "本周家庭崇拜诗歌经文",
                 "诗歌: 《直到主耶穌再來時候》，经文：约16：33",                "网上播放:	 http://www.youtube.com/watch?v=UGXsz8RDp9g&feature=related",                "",                "",            };
-            var builder = new NorthVirginiaChineseBaptistChurchCnBulletinBuilder();
-            var privateObject = new PrivateObject(builder);
+            var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
 
             // Action
@@ -229,10 +236,8 @@
                 plainText = sr.ReadToEnd();
             }
 
-            var builder = new NorthVirginiaChineseBaptistChurchCnBulletinBuilder();
-
             // Action
-            var properties = builder.Make<NorthVirginiaChineseBaptistChurchBulletin>(plainText);
+            var properties = this.builder.Make<NorthVirginiaChineseBaptistChurchBulletin>(plainText);
 
             // Assert
             Assert.IsTrue(properties is NorthVirginiaChineseBaptistChurchBulletin);

@@ -4,11 +4,13 @@
     using Church.Website.Models;
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
     using System.Net.Http;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     public class BibleController : ApiController
@@ -26,7 +28,7 @@
         }
 
         [HttpGet]
-        public HttpResponseMessage GetBible(string book, int chapter, IEnumerable<int> indexes, Guid? id)
+        public async Task<HttpResponseMessage> GetBibleAsync(string book, int chapter, IEnumerable<int> indexes, Guid? id)
         {
             const char SplitChar = '|';
 
@@ -34,7 +36,8 @@
             ExceptionUtilities.ThrowArgumentNullExceptionIfEmpty(chapter, "chapter");
 
             var bibles = this.entities.Bibles.OrderBy(b => b.Culture);
-            var bible = id.HasValue ? this.entities.GetBible(id.Value) : this.entities.GetDefaultBible(CultureInfo.CurrentUICulture.Name);
+            var bible = id.HasValue ? await this.entities.GetBibleAsync(id.Value) :
+                await this.entities.GetDefaultBibleAsync(CultureInfo.CurrentUICulture.Name);
             var books = bible.BibleBooks;
             int bookOrder;
             var selectedBook = int.TryParse(book, out bookOrder) ? books.First(b => b.Order == bookOrder) :
@@ -66,14 +69,14 @@
         }
 
         [HttpGet]
-        public HttpResponseMessage GetVerses(string abbreviation, Guid? id)
+        public async Task<HttpResponseMessage> GetVersesAsync(string abbreviation, Guid? id)
         {
             ExceptionUtilities.ThrowArgumentNullExceptionIfEmpty(abbreviation, "abbreviation");
 
             // TODO Need to handle ":" in abbreviation
 
-            var culture = id.HasValue ? this.entities.Bibles.First(b => b.Id == id.Value).Culture : CultureInfo.CurrentUICulture.Name;
-            var pattern = this.GetVersePattern(culture);
+            var culture = id.HasValue ? (await this.entities.GetBibleAsync(id.Value)).Culture : CultureInfo.CurrentUICulture.Name;
+            var pattern = await this.GetVersePatternAsync(culture);
             var match = Regex.Match(abbreviation, pattern, RegexOptions.IgnoreCase);
             ExceptionUtilities.ThrowFormatExceptionIfFalse(match.Success && match.Groups.Count >= 3, "Found an incorrect abbreviation '{0}'", abbreviation);
 
@@ -82,18 +85,19 @@
             var others = match.Groups[3].Value;
 
             // TODO Considering to move to Bible handler for multiple languages.
-            return this.GetBible(book, chapter, this.GetIndexes(others.Split(',', '，'), abbreviation), id);
+            return await this.GetBibleAsync(book, chapter, this.GetIndexes(others.Split(',', '，'), abbreviation), id);
         }
 
         [HttpGet]
-        public string GetVersePattern(string culture)
+        public async Task<string> GetVersePatternAsync(string culture)
         {
             if(string.IsNullOrWhiteSpace(culture))
             {
                 culture = CultureInfo.CurrentUICulture.Name;
             }
 
-            var bookNames = this.entities.GetDefaultBible(culture).BibleBooks.SelectMany(b => new[] { b.Name, b.Abbreviation });
+            var bible = await this.entities.GetDefaultBibleAsync(culture);
+            var bookNames = bible.BibleBooks.SelectMany(b => new[] { b.Name, b.Abbreviation });
 
             // TODO Considering to move to Bible handler for multiple languages.
             return "(" + string.Join("|", bookNames) + ")[ ]*([0-9]+)[ ]*[:：]([ ]*[0-9]+(-[ ]*[0-9]+)?([，,][ ]*[0-9]+(-[ ]*[0-9]+)?)*)";
