@@ -12,6 +12,7 @@
     using System.Web.Http.Description;
 
     using Church.Website.Models;
+    using System.Threading.Tasks;
 
     public class SermonsController : ApiController
     {
@@ -28,18 +29,18 @@
         }
 
         // GET api/Sermons
-        public IQueryable<Sermon> GetSermons()
+        public Task<IQueryable<Sermon>> GetSermons()
         {
-            return this.entities.Sermons;
+            return Task.FromResult<IQueryable<Sermon>>(this.entities.Sermons);
         }
 
         // GET api/Sermons/5
         [ResponseType(typeof(Sermon))]
-        public HttpResponseMessage GetSermon(string id, string speaker, DateTime date, string title)
+        public async Task<HttpResponseMessage> GetSermonAsync(string id, string speaker, DateTime date, string title)
         {
             Guid sermonId;
-            var sermon = Guid.TryParse(id, out sermonId) ? this.entities.Sermons.Find(id) :
-                this.entities.Sermons.FirstOrDefault(
+            var sermon = Guid.TryParse(id, out sermonId) ? await this.entities.Sermons.FindAsync(id) :
+                await this.entities.Sermons.FirstOrDefaultAsync(
                 s => s.Speaker.Equals(speaker, StringComparison.OrdinalIgnoreCase)
                     && s.Date == date
                     && s.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
