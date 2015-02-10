@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-
-namespace Church.Website
+﻿namespace Church.Website
 {
+    using Microsoft.Nebula.ResourceProvider.Models;
+    using System.Web.Http;
+    using System.Web.Http.ExceptionHandling;
+
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
@@ -20,6 +19,8 @@ namespace Church.Website
             config.Routes.MapHttpRoute("BibleVerses", "api/bible/{Abbreviation}", new { controller = "bible", action = "GetVersesAsync", });
 
             config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
+
+            config.Services.Add(typeof(IExceptionLogger), new DatabaseExceptionLogger());
         }
     }
 }

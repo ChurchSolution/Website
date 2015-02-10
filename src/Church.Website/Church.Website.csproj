@@ -280,6 +280,7 @@
       <DependentUpon>FrameworkEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Interfaces.cs" />
+    <Compile Include="Models\DatabaseExceptionLogger.cs" />
     <Compile Include="Models\Material.cs">
       <DependentUpon>FrameworkEntities.tt</DependentUpon>
     </Compile>

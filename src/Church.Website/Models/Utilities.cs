@@ -1,18 +1,21 @@
-﻿namespace Church.Website.Models
+﻿//-----------------------------------------------------------------------------
+// <copyright file="Utilities.cs" company="Church">
+//     Copyright (c) Rui Min. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+
+namespace Church.Website.Models
 {
     using Church.Model;
-using System;
-using System.ComponentModel;
-using System.Configuration;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net.Mail;
-using System.Reflection;
-using System.Resources;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
+    using System;
+    using System.Configuration;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.Mvc;
 
     public static class SiteConstants
     {
@@ -50,6 +53,24 @@ using System.Web.Security;
             var type = assembly.GetTypes().First(t => typeof(IFactory).IsAssignableFrom(t) && 0 == (TypeAttributes.Interface & t.Attributes));
 
             return type.GetMethod("Create").Invoke(null, new object[] { culture }) as IFactory;
+        }
+
+        public static string GetClientIp(HttpRequestMessage request)
+        {
+            if (request.Properties.ContainsKey("MS_HttpContext"))
+            {
+                return ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.UserHostAddress;
+            }
+            //else if (request.Properties.ContainsKey(RemoteEndpointMessageProperty.Name))
+            //{
+            //    RemoteEndpointMessageProperty prop;
+            //    prop = (RemoteEndpointMessageProperty)this.Request.Properties[RemoteEndpointMessageProperty.Name];
+            //    return prop.Address;
+            //}
+            else
+            {
+                return string.Empty;
+            }
         }
 
         //    private static readonly Lazy<ILogger> dataLogger =
