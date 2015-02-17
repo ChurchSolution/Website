@@ -15,14 +15,15 @@ namespace Microsoft.Nebula.ResourceProvider.Models
 
     public class DatabaseExceptionLogger : ExceptionLogger
     {
-        private static Lazy<FrameworkEntities> entities = new Lazy<FrameworkEntities>(() => new FrameworkEntities());
-
         public override Task LogAsync(ExceptionLoggerContext context, CancellationToken cancellationToken)
         {
-            var ipAddress = Utilities.GetClientIp(context.Request);
-            var username = context.RequestContext.Principal.Identity.Name;
+            using (var entity = new FrameworkEntities())
+            {
+                var ipAddress = Utilities.GetClientIp(context.Request);
+                var username = context.RequestContext.Principal.Identity.Name;
 
-            return DatabaseExceptionLogger.entities.Value.LogExceptionAsync(ipAddress, username, context.Exception);
+                return entity.LogExceptionAsync(ipAddress, username, context.Exception);
+            }
         }
     }
 }
