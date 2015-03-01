@@ -61,6 +61,96 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 第一页.
+        /// </summary>
+        internal static string Control_DataTable_LanguageFirst {
+            get {
+                return ResourceManager.GetString("Control_DataTable_LanguageFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 一共_TOTAL_条记录，显示其中的_START_到_END_.
+        /// </summary>
+        internal static string Control_DataTable_LanguageInfo {
+            get {
+                return ResourceManager.GetString("Control_DataTable_LanguageInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 没有可用的记录.
+        /// </summary>
+        internal static string Control_DataTable_LanguageInfoEmpty {
+            get {
+                return ResourceManager.GetString("Control_DataTable_LanguageInfoEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to （从_MAX_条记录中过滤）.
+        /// </summary>
+        internal static string Control_DataTable_LanguageInfoFiltered {
+            get {
+                return ResourceManager.GetString("Control_DataTable_LanguageInfoFiltered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 最后一页.
+        /// </summary>
+        internal static string Control_DataTable_LanguageLast {
+            get {
+                return ResourceManager.GetString("Control_DataTable_LanguageLast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 每页显示_MENU_条记录.
+        /// </summary>
+        internal static string Control_DataTable_LanguageLengthMenu {
+            get {
+                return ResourceManager.GetString("Control_DataTable_LanguageLengthMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 后一页.
+        /// </summary>
+        internal static string Control_DataTable_LanguageNext {
+            get {
+                return ResourceManager.GetString("Control_DataTable_LanguageNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 前一页.
+        /// </summary>
+        internal static string Control_DataTable_LanguagePrevious {
+            get {
+                return ResourceManager.GetString("Control_DataTable_LanguagePrevious", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 查找：.
+        /// </summary>
+        internal static string Control_DataTable_LanguageSearch {
+            get {
+                return ResourceManager.GetString("Control_DataTable_LanguageSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 抱歉，没有任何记录.
+        /// </summary>
+        internal static string Control_DataTable_LanguageZeroRecords {
+            get {
+                return ResourceManager.GetString("Control_DataTable_LanguageZeroRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 教会介绍.
         /// </summary>
         internal static string HomeAbout_Title {
@@ -223,11 +313,83 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 作者.
+        /// </summary>
+        internal static string Home_Materials_TitleAuthor {
+            get {
+                return ResourceManager.GetString("Home_Materials_TitleAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 日期.
+        /// </summary>
+        internal static string Home_Materials_TitleDate {
+            get {
+                return ResourceManager.GetString("Home_Materials_TitleDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 题目.
+        /// </summary>
+        internal static string Home_Materials_TitleTitle {
+            get {
+                return ResourceManager.GetString("Home_Materials_TitleTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 类型.
+        /// </summary>
+        internal static string Home_Materials_TitleType {
+            get {
+                return ResourceManager.GetString("Home_Materials_TitleType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 证道集锦.
         /// </summary>
         internal static string Home_Sermons_Legend {
             get {
                 return ResourceManager.GetString("Home_Sermons_Legend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 日期.
+        /// </summary>
+        internal static string Home_Sermons_TitleDate {
+            get {
+                return ResourceManager.GetString("Home_Sermons_TitleDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 讲员.
+        /// </summary>
+        internal static string Home_Sermons_TitleSpeaker {
+            get {
+                return ResourceManager.GetString("Home_Sermons_TitleSpeaker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 题目.
+        /// </summary>
+        internal static string Home_Sermons_TitleTitle {
+            get {
+                return ResourceManager.GetString("Home_Sermons_TitleTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 类型.
+        /// </summary>
+        internal static string Home_Sermons_TitleType {
+            get {
+                return ResourceManager.GetString("Home_Sermons_TitleType", resourceCulture);
             }
         }
         

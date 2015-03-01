@@ -117,6 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Control_DataTable_LanguageFirst" xml:space="preserve">
+    <value>第一页</value>
+    <comment>First</comment>
+  </data>
+  <data name="Control_DataTable_LanguageInfo" xml:space="preserve">
+    <value>一共_TOTAL_条记录，显示其中的_START_到_END_</value>
+    <comment>Showing _START_ to _END_ of _TOTAL_ records</comment>
+  </data>
+  <data name="Control_DataTable_LanguageInfoEmpty" xml:space="preserve">
+    <value>没有可用的记录</value>
+    <comment>No records available</comment>
+  </data>
+  <data name="Control_DataTable_LanguageInfoFiltered" xml:space="preserve">
+    <value>（从_MAX_条记录中过滤）</value>
+    <comment>(filtered from _MAX_ total records)</comment>
+  </data>
+  <data name="Control_DataTable_LanguageLast" xml:space="preserve">
+    <value>最后一页</value>
+    <comment>Last</comment>
+  </data>
+  <data name="Control_DataTable_LanguageLengthMenu" xml:space="preserve">
+    <value>每页显示_MENU_条记录</value>
+    <comment>Display _MENU_ records per page</comment>
+  </data>
+  <data name="Control_DataTable_LanguageNext" xml:space="preserve">
+    <value>后一页</value>
+    <comment>Next</comment>
+  </data>
+  <data name="Control_DataTable_LanguagePrevious" xml:space="preserve">
+    <value>前一页</value>
+    <comment>Previous</comment>
+  </data>
+  <data name="Control_DataTable_LanguageSearch" xml:space="preserve">
+    <value>查找：</value>
+    <comment>Search:</comment>
+  </data>
+  <data name="Control_DataTable_LanguageZeroRecords" xml:space="preserve">
+    <value>抱歉，没有任何记录</value>
+    <comment>Nothing found - sorry</comment>
+  </data>
   <data name="HomeAbout_Title" xml:space="preserve">
     <value>教会介绍</value>
     <comment>About</comment>
@@ -189,9 +229,41 @@
     <value>教会资料</value>
     <comment>Materials</comment>
   </data>
+  <data name="Home_Materials_TitleAuthor" xml:space="preserve">
+    <value>作者</value>
+    <comment>Author</comment>
+  </data>
+  <data name="Home_Materials_TitleDate" xml:space="preserve">
+    <value>日期</value>
+    <comment>Date</comment>
+  </data>
+  <data name="Home_Materials_TitleTitle" xml:space="preserve">
+    <value>题目</value>
+    <comment>Title</comment>
+  </data>
+  <data name="Home_Materials_TitleType" xml:space="preserve">
+    <value>类型</value>
+    <comment>Type</comment>
+  </data>
   <data name="Home_Sermons_Legend" xml:space="preserve">
     <value>证道集锦</value>
     <comment>Sermons</comment>
+  </data>
+  <data name="Home_Sermons_TitleDate" xml:space="preserve">
+    <value>日期</value>
+    <comment>Date</comment>
+  </data>
+  <data name="Home_Sermons_TitleSpeaker" xml:space="preserve">
+    <value>讲员</value>
+    <comment>Speaker</comment>
+  </data>
+  <data name="Home_Sermons_TitleTitle" xml:space="preserve">
+    <value>题目</value>
+    <comment>Title</comment>
+  </data>
+  <data name="Home_Sermons_TitleType" xml:space="preserve">
+    <value>类型</value>
+    <comment>Type</comment>
   </data>
   <data name="SharedError_Content" xml:space="preserve">
     <value>当处理您的请求时出现一个错误。</value>

@@ -1,4 +1,23 @@
-﻿<fieldset>
+﻿@{
+    var title = "[{ sTitle: '" + HttpContext.GetGlobalResourceObject("Framework", "Home_Sermons_TitleType") +
+        "' }, { sTitle: '" + HttpContext.GetGlobalResourceObject("Framework", "Home_Sermons_TitleDate") +
+        "' }, { sTitle: '" + HttpContext.GetGlobalResourceObject("Framework", "Home_Sermons_TitleSpeaker") +
+        "' }, { sTitle: '" + HttpContext.GetGlobalResourceObject("Framework", "Home_Sermons_TitleTitle") +
+        "' }]";
+    var language = "{ sLengthMenu: '" + HttpContext.GetGlobalResourceObject("Framework", "Control_DataTable_LanguageLengthMenu") +
+        "' , sZeroRecords: '" + HttpContext.GetGlobalResourceObject("Framework", "Control_DataTable_LanguageZeroRecords") +
+        "' , sInfo: '" + HttpContext.GetGlobalResourceObject("Framework", "Control_DataTable_LanguageInfo") +
+        "' , sInfoEmpty: '" + HttpContext.GetGlobalResourceObject("Framework", "Control_DataTable_LanguageInfoEmpty") +
+        "' , sInfoFiltered: '" + HttpContext.GetGlobalResourceObject("Framework", "Control_DataTable_LanguageInfoFiltered") +
+        "' , sSearch: '" + HttpContext.GetGlobalResourceObject("Framework", "Control_DataTable_LanguageSearch") +
+        "' , oPaginate: { sFirst: '" + HttpContext.GetGlobalResourceObject("Framework", "Control_DataTable_LanguageFirst") +
+        "', sLast: '" + HttpContext.GetGlobalResourceObject("Framework", "Control_DataTable_LanguageLast") +
+        "', sNext: '" + HttpContext.GetGlobalResourceObject("Framework", "Control_DataTable_LanguageNext") +
+        "', sPrevious: '" + HttpContext.GetGlobalResourceObject("Framework", "Control_DataTable_LanguagePrevious") +
+        "' } }";
+}
+
+<fieldset>
     <legend>@HttpContext.GetGlobalResourceObject("Framework", "Home_Sermons_Legend")</legend>
-    <table data-bind="dataTable: { data: sermons, options: { aoColumns: [{ sTitle: '类型' }, { sTitle: '日期' }, { sTitle: '讲员' }, { sTitle: '题目' }]}}"></table>
+    <table data-bind="dataTable: { data: sermons, options: { aoColumns: @title, oLanguage: @language }}"></table>
 </fieldset>
