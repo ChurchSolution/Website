@@ -182,8 +182,8 @@
     <comment>Version</comment>
   </data>
   <data name="HomeBulletin_NoBulletinUploaded" xml:space="preserve">
-    <value>至今还没有周报上载。</value>
-    <comment>No bulletin was uploaded yet.</comment>
+    <value>找不到这样的周报。</value>
+    <comment>No bulletin is available.</comment>
   </data>
   <data name="HomeBulletin_Title" xml:space="preserve">
     <value>主日周报</value>

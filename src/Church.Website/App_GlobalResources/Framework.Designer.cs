@@ -205,7 +205,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 至今还没有周报上载。.
+        ///   Looks up a localized string similar to 找不到这样的周报。.
         /// </summary>
         internal static string HomeBulletin_NoBulletinUploaded {
             get {

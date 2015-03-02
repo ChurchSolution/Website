@@ -253,6 +253,7 @@
     </Compile>
     <Compile Include="Models\BulletinRequest.cs" />
     <Compile Include="Models\ChurchWebSection.cs" />
+    <Compile Include="Models\CultureFilterAttribute.cs" />
     <Compile Include="Models\Event.cs">
       <DependentUpon>FrameworkEntities.tt</DependentUpon>
     </Compile>
