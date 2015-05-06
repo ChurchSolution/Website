@@ -15,7 +15,7 @@ namespace Church.Model
     {
         public static void ThrowArgumentNullExceptionIfEmpty(string item, string paramName, string message = null)
         {
-            if (string.IsNullOrWhiteSpace(item) == null)
+            if (string.IsNullOrWhiteSpace(item))
             {
                 throw message == null ? new ArgumentNullException(paramName) : new ArgumentNullException(paramName, message);
             }
