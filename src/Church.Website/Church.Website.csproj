@@ -538,16 +538,6 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Church.Framework\Church.Framework.csproj">
-      <Project>{2f89e8a8-8a38-4c86-87b7-7909e41a0db8}</Project>
-      <Name>Church.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Church.NVCBC.Library\Church.Nvcbc.Model.csproj">
-      <Project>{4ef99f88-c2af-4c2c-9f8d-d7c36e01e61d}</Project>
-      <Name>Church.Nvcbc.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="App_GlobalResources\Framework.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Framework.Designer.cs</LastGenOutput>
@@ -559,6 +549,20 @@
       <LastGenOutput>Nvcbc.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Church.Models.EntityFramework\Church.Models.EntityFramework.csproj">
+      <Project>{54093695-bbcd-4d3c-91b1-1274f8e87a0e}</Project>
+      <Name>Church.Models.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Church.Models\Church.Models.csproj">
+      <Project>{f9343c30-1652-4aa0-bcc1-cd88680b9760}</Project>
+      <Name>Church.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Church.Nvcbc.Models\Church.Nvcbc.Models.csproj">
+      <Project>{4ef99f88-c2af-4c2c-9f8d-d7c36e01e61d}</Project>
+      <Name>Church.Nvcbc.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

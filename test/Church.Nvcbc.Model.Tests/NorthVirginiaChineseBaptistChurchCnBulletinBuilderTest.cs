@@ -1,6 +1,6 @@
 ﻿namespace Church.Nvcbc.Model.Tests
 {
-    using Church.Model;
+    using Church.Models;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
     using System.Collections.Generic;
@@ -106,7 +106,20 @@
             var Lines = new[]
             {
                 "下周主日崇拜事奉分工",
-                @"会司TBD清点奉献谢靖, 霍静领歌场地郑金平、王忠诚、马念 学龄儿童崇拜Sharon, 谢靖",
+                @"会司
+TBD
+清点奉献
+谢靖, 霍静
+领歌
+
+场地
+郑金平、王忠诚、马念
+ 学龄儿童崇拜
+Sharon, 谢靖
+
+
+
+",
             };
             var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
@@ -132,7 +145,12 @@
             var Lines = new[]
             {
                 "北  维  州  华  人  浸  信  会",
-                "NORTHERN  VIRGINIA  CHINESE  BAPTIST CHURCH",                "Oak View Elementary School, 5004 Sideburn Rd, Fairfax, VA 22032",                " 电话703-451-0815   牧师手机703-474-7076       http://www.nvcbc.org",                "讲员：金春叶牧师      	  	    司琴：Daniel Song",                "",            };
+                "NORTHERN  VIRGINIA  CHINESE  BAPTIST CHURCH",
+                "Oak View Elementary School, 5004 Sideburn Rd, Fairfax, VA 22032",
+                " 电话703-451-0815   牧师手机703-474-7076       http://www.nvcbc.org",
+                "讲员：金春叶牧师      	  	    司琴：Daniel Song",
+                "",
+            };
             var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
 
@@ -154,7 +172,15 @@
             var Lines = new[]
             {
                 "主 日 崇 拜",
-                "4/1/2012  上午10:45时",                "",                "赞美诗一	和散那	Praise#1",                "☆序乐	625、主在圣殿中	Prelude",                "☆ 祷告		Prayer",                "",                "* 有☆符号的地方请大家站立",                "",            };
+                "4/1/2012  上午10:45时",
+                "",
+                "赞美诗一	和散那	Praise#1",
+                "☆序乐	625、主在圣殿中	Prelude",
+                "☆ 祷告		Prayer",
+                "",
+                "* 有☆符号的地方请大家站立",
+                "",
+            };
             var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
 
@@ -186,7 +212,16 @@
             var Lines = new[]
             {
                 "主日崇拜事奉分工",
-                @"招待高建生, 邓宇彪场地黄永星、王忠诚、马念学龄儿童崇拜Sharon, 谢靖领歌",
+                @"招待
+高建生, 邓宇彪
+场地
+黄永星、王忠诚、马念
+学龄儿童崇拜
+Sharon, 谢靖
+领歌
+
+
+",
             };
             var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
@@ -211,7 +246,11 @@
             var Lines = new[]
             {
                 "本周家庭崇拜诗歌经文",
-                "诗歌: 《直到主耶穌再來時候》，经文：约16：33",                "网上播放:	 http://www.youtube.com/watch?v=UGXsz8RDp9g&feature=related",                "",                "",            };
+                "诗歌: 《直到主耶穌再來時候》，经文：约16：33",
+                "网上播放:	 http://www.youtube.com/watch?v=UGXsz8RDp9g&feature=related",
+                "",
+                "",
+            };
             var privateObject = new PrivateObject(this.builder);
             var bulletin = new NorthVirginiaChineseBaptistChurchBulletin();
 

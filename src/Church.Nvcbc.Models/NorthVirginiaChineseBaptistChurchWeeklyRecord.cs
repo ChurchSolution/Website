@@ -1,4 +1,4 @@
-﻿namespace Church.Model
+﻿namespace Church.Models
 {
     using System.Diagnostics;
 

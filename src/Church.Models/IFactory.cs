@@ -1,17 +1,19 @@
 ﻿//-----------------------------------------------------------------------------
-// <copyright file="IWeeklyBulletinProperties.cs">
+// <copyright file="IFactory.cs">
 //     Copyright (c) Rui Min. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------------
 
-namespace Church.Model
+namespace Church.Models
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
-    public interface IWeeklyBulletinProperties
+    public interface IFactory
     {
-        Dictionary<string, decimal> LastWeekData { get; }
-
-        bool Verify();
+        WeeklyBulletin CreateBulletin(DateTime date, string fileUri, string plainText);
     }
 }

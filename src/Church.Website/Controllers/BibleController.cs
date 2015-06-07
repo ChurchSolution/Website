@@ -1,7 +1,5 @@
 ﻿namespace Church.Website.Controllers
 {
-    using Church.Model;
-    using Church.Website.Models;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
@@ -12,6 +10,9 @@
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using System.Web.Http;
+
+    using Church.Models;
+    using Church.Website.Models;
 
     public class BibleController : ApiController
     {

@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------------
 
-namespace Church.Model
+namespace Church.Models
 {
     using System;
     using System.Collections.Generic;

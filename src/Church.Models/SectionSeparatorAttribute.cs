@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------------
 
-namespace Church
+namespace Church.Models
 {
     using System;
 

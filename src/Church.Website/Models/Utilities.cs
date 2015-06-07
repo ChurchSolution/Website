@@ -6,7 +6,6 @@
 
 namespace Church.Website.Models
 {
-    using Church.Model;
     using System;
     using System.Configuration;
     using System.Globalization;
@@ -16,6 +15,8 @@ namespace Church.Website.Models
     using System.Reflection;
     using System.Web;
     using System.Web.Mvc;
+
+    using Church.Models;
 
     public static class SiteConstants
     {

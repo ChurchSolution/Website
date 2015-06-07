@@ -107,6 +107,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Church.Models\Church.Models.csproj">
+      <Project>{f9343c30-1652-4aa0-bcc1-cd88680b9760}</Project>
+      <Name>Church.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Church.Website\Church.Website.csproj">
       <Project>{78D0B608-A4F7-4172-AED9-2AE84558538A}</Project>
       <Name>Church.Website</Name>

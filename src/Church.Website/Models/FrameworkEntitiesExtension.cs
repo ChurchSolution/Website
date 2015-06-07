@@ -1,6 +1,6 @@
 ﻿namespace Church.Website.Models
 {
-    using Church.Model;
+    using Church.Models;
     using System;
     using System.Data.Entity;
     using System.Linq;

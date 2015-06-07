@@ -54,13 +54,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Church.Framework\Church.Framework.csproj">
-      <Project>{2f89e8a8-8a38-4c86-87b7-7909e41a0db8}</Project>
-      <Name>Church.Framework</Name>
+    <ProjectReference Include="..\..\src\Church.Models\Church.Models.csproj">
+      <Project>{f9343c30-1652-4aa0-bcc1-cd88680b9760}</Project>
+      <Name>Church.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Church.NVCBC.Library\Church.Nvcbc.Model.csproj">
+    <ProjectReference Include="..\..\src\Church.Nvcbc.Models\Church.Nvcbc.Models.csproj">
       <Project>{4ef99f88-c2af-4c2c-9f8d-d7c36e01e61d}</Project>
-      <Name>Church.Nvcbc.Model</Name>
+      <Name>Church.Nvcbc.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

@@ -1,17 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Church.Framework", "src\Church.Framework\Church.Framework.csproj", "{2F89E8A8-8A38-4C86-87B7-7909E41A0DB8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Church.Nvcbc.Model", "src\Church.NVCBC.Library\Church.Nvcbc.Model.csproj", "{4EF99F88-C2AF-4C2C-9F8D-D7C36E01E61D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Church.Website", "src\Church.Website\Church.Website.csproj", "{78D0B608-A4F7-4172-AED9-2AE84558538A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Church.Nvcbc.Model.Tests", "test\Church.Nvcbc.Model.Tests\Church.Nvcbc.Model.Tests.csproj", "{632F35BD-969B-4ADB-BAE9-3AB3AAB953AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Church.Website.Tests", "test\Church.Website.Tests\Church.Website.Tests.csproj", "{4A0C3717-48A7-47DB-A3D9-93F464D0ED21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Church.Models.EntityFramework", "src\Church.Models.EntityFramework\Church.Models.EntityFramework.csproj", "{54093695-BBCD-4D3C-91B1-1274F8E87A0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Church.Models", "src\Church.Models\Church.Models.csproj", "{F9343C30-1652-4AA0-BCC1-CD88680B9760}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Church.Nvcbc.Models", "src\Church.Nvcbc.Models\Church.Nvcbc.Models.csproj", "{4EF99F88-C2AF-4C2C-9F8D-D7C36E01E61D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2F89E8A8-8A38-4C86-87B7-7909E41A0DB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F89E8A8-8A38-4C86-87B7-7909E41A0DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F89E8A8-8A38-4C86-87B7-7909E41A0DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F89E8A8-8A38-4C86-87B7-7909E41A0DB8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4EF99F88-C2AF-4C2C-9F8D-D7C36E01E61D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4EF99F88-C2AF-4C2C-9F8D-D7C36E01E61D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4EF99F88-C2AF-4C2C-9F8D-D7C36E01E61D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4EF99F88-C2AF-4C2C-9F8D-D7C36E01E61D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{78D0B608-A4F7-4172-AED9-2AE84558538A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78D0B608-A4F7-4172-AED9-2AE84558538A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78D0B608-A4F7-4172-AED9-2AE84558538A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +33,18 @@ Global
 		{4A0C3717-48A7-47DB-A3D9-93F464D0ED21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A0C3717-48A7-47DB-A3D9-93F464D0ED21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A0C3717-48A7-47DB-A3D9-93F464D0ED21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54093695-BBCD-4D3C-91B1-1274F8E87A0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54093695-BBCD-4D3C-91B1-1274F8E87A0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54093695-BBCD-4D3C-91B1-1274F8E87A0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54093695-BBCD-4D3C-91B1-1274F8E87A0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9343C30-1652-4AA0-BCC1-CD88680B9760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9343C30-1652-4AA0-BCC1-CD88680B9760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9343C30-1652-4AA0-BCC1-CD88680B9760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9343C30-1652-4AA0-BCC1-CD88680B9760}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EF99F88-C2AF-4C2C-9F8D-D7C36E01E61D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EF99F88-C2AF-4C2C-9F8D-D7C36E01E61D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EF99F88-C2AF-4C2C-9F8D-D7C36E01E61D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EF99F88-C2AF-4C2C-9F8D-D7C36E01E61D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
