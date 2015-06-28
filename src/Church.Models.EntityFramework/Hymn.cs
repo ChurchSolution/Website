@@ -7,17 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Church.Website.Models
+namespace Church.Models.EntityFramework
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Incident
+    public partial class Hymn
     {
         public System.Guid Id { get; set; }
-        public System.DateTime Time { get; set; }
-        public string Username { get; set; }
-        public string Fullname { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; }
+        public string Source { get; set; }
+        public string Lyrics { get; set; }
+        public string Links { get; set; }
+        public string Culture { get; set; }
     }
 }

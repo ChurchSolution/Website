@@ -30,8 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,7 +50,140 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bible.cs">
+      <DependentUpon>BibleEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BibleBook.cs">
+      <DependentUpon>BibleEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BibleChapter.cs">
+      <DependentUpon>BibleEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BibleEntities.Context.cs">
+      <DependentUpon>BibleEntities.Context.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="BibleEntities.cs">
+      <DependentUpon>BibleEntities.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="BibleEntities.Designer.cs">
+      <DependentUpon>BibleEntities.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="BibleEntitiesAddon.cs" />
+    <Compile Include="BibleEntitiesExtensions.cs" />
+    <Compile Include="BibleProvider.cs" />
+    <Compile Include="Bulletin.cs">
+      <DependentUpon>FrameworkEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Event.cs">
+      <DependentUpon>FrameworkEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FrameworkEntities.Context.cs">
+      <DependentUpon>FrameworkEntities.Context.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="FrameworkEntities.cs">
+      <DependentUpon>FrameworkEntities.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="FrameworkEntities.Designer.cs">
+      <DependentUpon>FrameworkEntities.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="FrameworkEntitiesAddon.cs" />
+    <Compile Include="FrameworkEntitiesExtensions.cs" />
+    <Compile Include="Hymn.cs">
+      <DependentUpon>FrameworkEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HymnAddon.cs" />
+    <Compile Include="Incident.cs">
+      <DependentUpon>FrameworkEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IncidentAddon.cs" />
+    <Compile Include="Material.cs">
+      <DependentUpon>FrameworkEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Person.cs">
+      <DependentUpon>FrameworkEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository.cs" />
+    <Compile Include="Sermon.cs">
+      <DependentUpon>FrameworkEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MaterialAddon.cs" />
+    <Compile Include="SermonAddon.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="FrameworkEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FrameworkEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FrameworkEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FrameworkEntities.edmx</DependentUpon>
+      <LastGenOutput>FrameworkEntities.Context.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FrameworkEntities.edmx.diagram">
+      <DependentUpon>FrameworkEntities.edmx</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FrameworkEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FrameworkEntities.edmx</DependentUpon>
+      <LastGenOutput>FrameworkEntities.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="BibleEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BibleEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BibleEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BibleEntities.edmx</DependentUpon>
+      <LastGenOutput>BibleEntities.Context.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BibleEntities.edmx.diagram">
+      <DependentUpon>BibleEntities.edmx</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BibleEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BibleEntities.edmx</DependentUpon>
+      <LastGenOutput>BibleEntities.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Church.Models\Church.Models.csproj">
+      <Project>{f9343c30-1652-4aa0-bcc1-cd88680b9760}</Project>
+      <Name>Church.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

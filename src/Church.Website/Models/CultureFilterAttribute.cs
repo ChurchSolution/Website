@@ -7,7 +7,7 @@
 
     public class CultureFilterAttribute : ActionFilterAttribute
     {
-        private const string CultureKey = "Culture";
+        private const string CultureKey = "culture";
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {

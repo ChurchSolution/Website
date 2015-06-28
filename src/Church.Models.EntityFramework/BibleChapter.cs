@@ -7,18 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Church.Website.Models
+namespace Church.Models.EntityFramework
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Material
+    public partial class BibleChapter
     {
-        public System.Guid Id { get; set; }
-        public string Type { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
-        public string Authors { get; set; }
-        public string Title { get; set; }
-        public string FileUrl { get; set; }
+        public System.Guid BookId { get; set; }
+        public int Order { get; set; }
+        public string VerseStrings { get; set; }
+    
+        public virtual BibleBook BibleBook { get; set; }
     }
 }

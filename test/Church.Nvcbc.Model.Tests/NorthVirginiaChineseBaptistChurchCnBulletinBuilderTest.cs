@@ -1,12 +1,12 @@
 ﻿namespace Church.Nvcbc.Model.Tests
 {
-    using Church.Models;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
+
+    using Church.Models;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class NorthVirginiaChineseBaptistChurchCnBulletinBuilderTest
@@ -21,8 +21,7 @@
         [TestInitialize]
         public void TestInit()
         {
-            var culture = CultureInfo.CreateSpecificCulture("zh-CN");
-            this.builder = new NorthVirginiaChineseBaptistChurchCnBulletinBuilder(culture);
+            this.builder = new NorthVirginiaChineseBaptistChurchCnBulletinBuilder();
         }
 
         [TestMethod]

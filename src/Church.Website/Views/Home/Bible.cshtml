@@ -8,16 +8,16 @@
 <div id="bible-panel">
     <div>
         <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Version")</label>
-        <select data-bind="options: versions, optionsText: 'text', optionsValue: 'id', value: selectedVersion"></select>
+        <select data-bind="options: versions, optionsText: 'language', optionsValue: 'id', value: selectedVersion"></select>
     </div>
     <div class="float-left">
         <div>
             <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Book")</label>
-            <select data-bind="enable: abbreviation()=='', options: books, optionsText: 'text', optionsValue: 'id', value: selectedBook"></select>
+            <select data-bind="enable: abbreviation()=='', options: books, optionsText: 'name', optionsValue: 'order', value: selectedBook"></select>
         </div>
         <div>
             <label class="selector">@HttpContext.GetGlobalResourceObject("Framework", "HomeBible_Chapter")</label>
-            <select data-bind="enable: abbreviation()=='', options: chapters, optionsText: 'text', optionsValue: 'id', value: selectedChapter"></select>
+            <select data-bind="enable: abbreviation()=='', options: chapters, optionsText: 'order', optionsValue: 'order', value: selectedChapter"></select>
         </div>
     </div>
 
@@ -30,7 +30,7 @@
 
     <div id="verse-panel" data-bind="foreach: verses">
         <div>
-            <label data-bind="text: id"></label> <span data-bind="text: text"></span>
+            <label data-bind="text: order"></label> <span data-bind="text: text"></span>
         </div>
     </div>
 </div>
@@ -46,17 +46,17 @@
     @Scripts.Render("~/Scripts/ViewModels/frameworkViewModel.js")
 
     <script type="text/javascript">
-        //<![CDATA[
-        $(function () {
-            church.dataModel.bibleModel.get(1, 1, "", "").done(function (data) {
-                data.abbreviation = '';
-                data.errorMessage = '';
-                var viewModel = new church.viewModel.BibleViewModel(data);
+    //<![CDATA[
+        $(function() {
+            church.dataModel.bibleModel.getChapter("@ViewBag.BibleId", 0, 0).done(function (model) {
+                model.abbreviation = "";
+                model.errorMessage = "";
+                var viewModel = new church.viewModel.BibleViewModel(model);
                 ko.applyBindings(viewModel, $("#bible-panel")[0]);
-            }).fail(function (xhr) {
-                alert(xhr.statusText);
+            }).fail(function(xhr) {
+                alert(xhr);
             });
         });
-        //]]>
-    </script>
+    //]]>
+</script>
 }

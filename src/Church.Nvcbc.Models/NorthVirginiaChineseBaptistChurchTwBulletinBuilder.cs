@@ -29,7 +29,7 @@
         const string WeeklyReadingSectionKey = "本周讀經表";
         const string ChurchOfficeSectionKey = "* 教會辦公室地址";
 
-        public NorthVirginiaChineseBaptistChurchTwBulletinBuilder(CultureInfo culture) : base(culture) { }
+        public NorthVirginiaChineseBaptistChurchTwBulletinBuilder() : base(CultureInfo.CreateSpecificCulture("zh-TW")) { }
 
         [SectionSeparator(WordFromPasterSectionKey)]
         protected IEnumerable<string> ProcessWordFromPastor(NorthVirginiaChineseBaptistChurchBulletin bulletin, IEnumerable<string> lines)
@@ -188,7 +188,7 @@
             DateTime date;
             ExceptionUtilities.ThrowFormatExceptionIfFalse(DateTime.TryParse(cells[0], out date), "Could not parse the date '{0}'", cells[0]);
             bulletin.Date = date;
-            bulletin.DateString = date.ToString("D", this.culture.DateTimeFormat);
+            bulletin.DateString = date.ToString("D", this.Culture.DateTimeFormat);
 
             var worshipProgram = new List<NorthVirginiaChineseBaptistChurchBulletin.ProgramItem>();
             foreach (string l in lines.Skip(2).Take(lines.Count() - 3).Where(l => !string.IsNullOrWhiteSpace(l)))

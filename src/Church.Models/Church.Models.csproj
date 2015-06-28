@@ -42,8 +42,19 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IFactory.cs" />
+    <Compile Include="Bible.cs" />
+    <Compile Include="BibleBook.cs" />
+    <Compile Include="BibleChapter.cs" />
+    <Compile Include="BibleExtensions.cs" />
+    <Compile Include="BibleVerse.cs" />
+    <Compile Include="IBibleProvider.cs" />
+    <Compile Include="IChurchFactory.cs" />
     <Compile Include="BulletinTextBuilder.cs" />
+    <Compile Include="IHymn.cs" />
+    <Compile Include="IIncident.cs" />
+    <Compile Include="IRepository.cs" />
+    <Compile Include="IMaterial.cs" />
+    <Compile Include="ISermon.cs" />
     <Compile Include="IWeeklyBulletinPropertiescs.cs" />
     <Compile Include="WeeklyBulletin.cs" />
     <Compile Include="ExceptionUtilities.cs" />

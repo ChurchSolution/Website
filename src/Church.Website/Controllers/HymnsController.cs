@@ -1,9 +1,13 @@
-﻿namespace Church.Website.Controllers
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="HymnsController.cs" company="Church">
+//   Copyright (c) Rui Min. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Church.Website.Controllers
 {
-    using Church.Website.Models;
     using System;
     using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -11,137 +15,140 @@
     using System.Web.Http;
     using System.Web.Http.Description;
 
+    using Church.Models;
+    using Church.Website.Models;
+
+    /// <summary>
+    /// Provides the hymns controller.
+    /// </summary>
     public class HymnsController : ApiController
     {
-        private FrameworkEntities entities;
+        /// <summary>
+        /// The repository.
+        /// </summary>
+        private readonly IRepository repository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HymnsController"/> class.
+        /// </summary>
         public HymnsController()
-            : this(new FrameworkEntities())
+            : this(
+                Church.Models.EntityFramework.Repository.Create(
+                    Utilities.FrameworkEntitiesConnectionString,
+                    Utilities.Configuration.ChurchWebsiteLibrary))
         {
         }
 
-        internal HymnsController(FrameworkEntities entities)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HymnsController"/> class.
+        /// </summary>
+        /// <param name="repository">
+        /// The repository from unit tests.
+        /// </param>
+        internal HymnsController(IRepository repository)
         {
-            this.entities = entities;
+            this.repository = repository;
         }
 
-        // GET api/Hymns
-        [HttpGet]
-        public Task<IQueryable<Hymn>> GetHymns()
+        /// <summary>
+        /// Gets a list of hymns.
+        /// </summary>
+        /// <returns>The <see cref="IQueryable{IHymn}"/> on hymns.</returns>
+        public IQueryable<IHymn> Get()
         {
-            return Task.FromResult<IQueryable<Hymn>>(this.entities.Hymns);
+            return this.repository.GetHymns();
         }
 
-        // GET api/Hymns/5
-        [HttpGet]
-        [ResponseType(typeof(Hymn))]
-        public async Task<HttpResponseMessage> GetHymnAsync(string id, string name, string source)
+        /// <summary>
+        /// Gets a hymn.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="IHymn"/>.</returns>
+        [ResponseType(typeof(IHymn))]
+        public async Task<HttpResponseMessage> GetAsync(Guid id)
         {
-            Guid sermonId;
-            var sermon = Guid.TryParse(id, out sermonId) ? await this.entities.Hymns.FindAsync(id) :
-                await this.entities.Hymns.FirstOrDefaultAsync(
-                s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && s.Source.Equals(source, StringComparison.OrdinalIgnoreCase));
-            if (sermon == null)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.NotFound);
-            }
+            var hymn = await this.repository.GetHymns().SingleAsync(h => h.Id.Equals(id));
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, sermon);
+            return this.Request.CreateResponse(HttpStatusCode.OK, hymn);
         }
 
-        // PUT api/Sermons/5
-        public IHttpActionResult PutHymn(Guid id, Sermon sermon)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.BadRequest(ModelState);
-            }
-
-            if (id != sermon.Id)
-            {
-                return this.BadRequest();
-            }
-
-            this.entities.Entry(sermon).State = EntityState.Modified;
-
-            try
-            {
-                this.entities.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!this.HymnExists(id))
-                {
-                    return this.NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return this.StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST api/Hymns
-        [ResponseType(typeof(Hymn))]
-        public IHttpActionResult PostHymn(Sermon sermon)
+        /// <summary>
+        /// Updates a hymn.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="hymn">The hymn.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
+        public async Task<HttpResponseMessage> PutAsync(Guid id, IHymn hymn)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.BadRequest(ModelState);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            this.entities.Sermons.Add(sermon);
-
-            try
+            if (id != hymn.Id)
             {
-                this.entities.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (this.HymnExists(sermon.Id))
-                {
-                    return this.Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                var message = string.Format(
+                    "The id '{0}' in the URL doesn't match the one '{1}' in the request body.",
+                    id,
+                    hymn.Id);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
             }
 
-            return this.CreatedAtRoute("DefaultApi", new { id = sermon.Id }, sermon);
+            await this.repository.UpdateHymnsAsync(hymn);
+            return this.Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
-        // DELETE api/Hymns/5
-        [ResponseType(typeof(Hymn))]
-        public IHttpActionResult DeleteSermon(Guid id)
+        /// <summary>
+        /// Creates a hymn.
+        /// </summary>
+        /// <param name="hymn">The hymn.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="IHymn"/>.</returns>
+        [ResponseType(typeof(IHymn))]
+        public async Task<HttpResponseMessage> PostAsync(IHymn hymn)
         {
-            var sermon = this.entities.Sermons.Find(id);
-            if (sermon == null)
+            if (!this.ModelState.IsValid)
             {
-                return this.NotFound();
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            this.entities.Sermons.Remove(sermon);
-            this.entities.SaveChanges();
-
-            return this.Ok(sermon);
+            await this.repository.AddHymnAsync(hymn);
+            return this.Request.CreateResponse(HttpStatusCode.Created, hymn);
         }
 
+        /// <summary>
+        /// Deletes a hymn.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
+        public async Task<HttpResponseMessage> DeleteAsync(Guid id)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
+            }
+
+            await this.repository.DeleteHymnsAsync(id);
+            return this.Request.CreateResponse(HttpStatusCode.NoContent);
+        }
+
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        /// <param name="disposing">
+        /// The disposing.
+        /// </param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                this.entities.Dispose();
+                var disposable = this.repository as IDisposable;
+                if (disposable != null)
+                {
+                    disposable.Dispose();
+                }
             }
 
             base.Dispose(disposing);
-        }
-
-        private bool HymnExists(Guid id)
-        {
-            return this.entities.Hymns.Count(e => e.Id == id) > 0;
         }
     }
 }

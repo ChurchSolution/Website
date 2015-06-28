@@ -9,14 +9,14 @@ church.viewModel = (function (window, undefined) {
         this.selectedDate = ko.observable();
         this.calendar = ko.observable();
         this.searchBulletin = function () {
-            church.dataModel.bulletinsModel.getByDate(self.selectedDate()).done(function (data) {
-                self.date(data.bulletin.date);
-                self.dateString(data.bulletin.properties.dateString);
-                self.bulletinUrl(data.bulletin.fileUrl);
-                self.url("/Home/Bulletin?date=" + data.bulletin.date);
-                self.speaker(data.bulletin.speaker);
-                self.title(data.bulletin.messageTitle);
-                self.sermonUrl(data.sermon == null ? undefined : data.sermon.fileUrl);
+            church.dataModel.bulletinsModel.getByDate(self.selectedDate()).done(function (model) {
+                self.date(model.bulletin.date);
+                self.dateString(model.bulletin.properties.dateString);
+                self.bulletinUrl(model.bulletin.fileUrl);
+                self.url("/Home/Bulletin?date=" + model.bulletin.date);
+                self.speaker(model.bulletin.speaker);
+                self.title(model.bulletin.messageTitle);
+                self.sermonUrl(model.sermon == null ? undefined : model.sermon.fileUrl);
             }).fail(function (xhr) {
                 alert(xhr.statusText);
             })
@@ -42,11 +42,11 @@ church.viewModel = (function (window, undefined) {
     function sermonViewModel(dataModel) {
         var self = this;
         var promise = church.dataModel.sermonsModel.getBySpeakerDateTitle(dataModel.speaker, dataModel.date, dataModel.title);
-        promise.done(function (data) {
+        promise.done(function(data) {
             ko.mapping.fromJS(data, self);
-        }).fail(function (xhr) {
+        }).fail(function(xhr) {
             // Do nothing
-        })
+        });
 
         ko.mapping.fromJS(dataModel, {}, self);
     }
@@ -87,16 +87,6 @@ church.viewModel = (function (window, undefined) {
         };
     };
 
-    function _arrayBufferToBase64(buffer) {
-        var binary = ''
-        var bytes = new Uint8Array(buffer)
-        var len = bytes.byteLength;
-        for (var i = 0; i < len; i++) {
-            binary += String.fromCharCode(bytes[i])
-        }
-        return window.btoa(binary);
-    }
-
     function sermonsViewModel(data) {
         var sermonArray = [];
         data.forEach(function (element, index, array) {
@@ -117,33 +107,44 @@ church.viewModel = (function (window, undefined) {
 
     function bibleViewModel(data) {
         var self = this;
-        var updatePage = function () {
-            var abbreviation = self.abbreviation();
-            var promise = abbreviation === '' ? church.dataModel.bibleModel.get(self.selectedBook(), self.selectedChapter(), self.selectedVersion()) :
-                church.dataModel.bibleModel.getVerses(abbreviation, self.selectedVersion());
-            promise.done(function (data) {
-                data.errorMessage = '';
-                ko.mapping.fromJS(data, self);
+        ko.mapping.fromJS(data, {}, self);
+
+        var loadChapter = function (bibleId, bookOrder, chapterOrder) {
+            self.errorMessage("");
+            church.dataModel.bibleModel.getChapter(bibleId, bookOrder, chapterOrder).done(function (model) {
+                ko.mapping.fromJS(model, self);
             }).fail(function (xhr) {
-                self.errorMessage(xhr.statusText);
+                self.errorMessage(xhr.responseText);
             });
         }
+        var loadAbbreviation = function(bibleId, abbreviation) {
+            self.errorMessage("");
+            church.dataModel.bibleModel.getVerses(bibleId, abbreviation).done(function (model) {
+                self.verses(model);
+            }).fail(function (xhr) {
+                self.errorMessage(xhr.responseText);
+            });
+        }
+        var loadVerses = function (version, abbreviation) {
+            abbreviation = abbreviation.replace(/^\s\s*/, "").replace(/\s\s*$/, "");
+            if (abbreviation === "") {
+                loadChapter(version, self.selectedBook(), self.selectedChapter());
+            } else {
+                loadAbbreviation(version, abbreviation);
+            }
+        }
 
-        ko.mapping.fromJS(data, {}, self);
         self.selectedVersion.subscribe(function (item) {
-            self.abbreviation('');
-            updatePage();
+            loadVerses(item, self.abbreviation());
         });
-        self.selectedBook.subscribe(function (item) {
-            updatePage();
+        self.selectedBook.subscribe(function(item) {
+            loadChapter(self.selectedVersion(), item, 1);
         });
-        self.selectedChapter.subscribe(function (item) {
-            updatePage();
+        self.selectedChapter.subscribe(function(item) {
+            loadChapter(self.selectedVersion(), self.selectedBook(), item);
         });
         self.abbreviation.subscribe(function (item) {
-            var abbreviation = self.abbreviation().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-            self.abbreviation(abbreviation);
-            updatePage();
+            loadVerses(self.selectedVersion(), item);
         });
         self.getVerses = function () {
             // Do nothing

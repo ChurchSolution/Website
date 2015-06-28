@@ -3,8 +3,6 @@
     using Church.Models;
     using Church.Website.Models;
     using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
     using System.Globalization;
     using System.Linq;
     using System.Net;
@@ -16,31 +14,31 @@
 
     public class BulletinsController : ApiController
     {
-        private FrameworkEntities entities;
+        private readonly IRepository repository;
 
         public BulletinsController()
-            : this(new FrameworkEntities())
+            : this(Church.Models.EntityFramework.Repository.Create(Utilities.FrameworkEntitiesConnectionString, Utilities.Configuration.ChurchWebsiteLibrary))
         {
         }
 
-        internal BulletinsController(FrameworkEntities entities)
+        internal BulletinsController(IRepository repository)
         {
-            this.entities = entities;
+            this.repository = repository;
         }
 
         // GET api/Bulletins
         [HttpGet]
-        public Task<IQueryable<Bulletin>> GetBulletins()
+        public Task<IQueryable<WeeklyBulletin>> GetBulletins()
         {
-            return Task.FromResult<IQueryable<Bulletin>>(this.entities.Bulletins);
+            return this.repository.GetBulletinsAsync();
         }
 
         // GET api/Bulletins/5
         [HttpGet]
-        [ResponseType(typeof(Bulletin))]
+        [ResponseType(typeof(WeeklyBulletin))]
         public async Task<HttpResponseMessage> GetAsync(int id)
         {
-            var bulletin = await this.entities.GetDefaultBulletinAsync(CultureInfo.CurrentUICulture.Name);
+            var bulletin = await this.repository.GetDefaultBulletinAsync(CultureInfo.CurrentUICulture.Name);
             if (bulletin == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
@@ -51,10 +49,10 @@
 
         // GET api/Bulletins?date={date}
         [HttpGet]
-        [ResponseType(typeof(Bulletin))]
+        [ResponseType(typeof(WeeklyBulletin))]
         public async Task<HttpResponseMessage> GetAsync(DateTime date)
         {
-            var bulletin = await this.entities.GetBulletinByDateAsync(date, CultureInfo.CurrentUICulture.Name);
+            var bulletin = await this.repository.GetBulletinByDateAsync(CultureInfo.CurrentUICulture.Name, date);
             if (bulletin == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
@@ -65,12 +63,12 @@
 
         // POST api/Bulletins
         [Authorize(Roles = "Administrators")]
-        [ResponseType(typeof(Bulletin))]
-        public IHttpActionResult Post([FromBody]BulletinRequest request)
+        [ResponseType(typeof(WeeklyBulletin))]
+        public async Task<HttpResponseMessage> PostAsync([FromBody]BulletinRequest request)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.BadRequest(ModelState);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid model.");
             }
 
             string fileUrl = string.Empty;
@@ -86,58 +84,23 @@
                 fileUrl = Utilities.Configuration.ContentFolder.BulletinFolder + "/" + printFile.Filename;
             }
 
-            var bulletin = this.entities.Bulletins.FirstOrDefault(b => b.Date == request.Date && b.Culture == CultureInfo.CurrentUICulture.Name);
-            if (null == bulletin)
-            {
-                bulletin = new Bulletin
-                {
-                    PlainText = request.TextFileContent,
-                    Date = request.Date,
-                    Culture = CultureInfo.CurrentUICulture.Name,
-                    Id = Guid.NewGuid(),
-                    FileUrl = fileUrl,
-                };
-                this.entities.Bulletins.Add(bulletin);
-            }
-            else
-            {
-                bulletin.PlainText = request.TextFileContent;
-                bulletin.FileUrl = fileUrl;
-                this.entities.Entry(bulletin).State = EntityState.Modified;
-            }
+            var bulletin = await this.repository.AddOrUpdateBulletinAsync(request.Date, fileUrl, request.TextFileContent, CultureInfo.CurrentUICulture.Name);
 
-            try
-            {
-                this.entities.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (BulletinExists(bulletin.Id))
-                {
-                    return this.Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return this.CreatedAtRoute("DefaultApi", new { id = bulletin.Id }, bulletin);
+            return this.Request.CreateResponse(HttpStatusCode.Created, bulletin);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                this.entities.Dispose();
+                var disposable = this.repository as IDisposable;
+                if(disposable!=null)
+                {
+                    disposable.Dispose();
+                }
             }
 
             base.Dispose(disposing);
-        }
-
-        private bool BulletinExists(Guid id)
-        {
-            return this.entities.Bulletins.Count(e => e.Id == id) > 0;
         }
     }
 }

@@ -7,24 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Church.Website.Models
+namespace Church.Models.EntityFramework
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Bible
+    public partial class Bulletin
     {
-        public Bible()
-        {
-            this.BibleBooks = new HashSet<BibleBook>();
-        }
-    
         public System.Guid Id { get; set; }
-        public string Version { get; set; }
+        public System.DateTime Date { get; set; }
+        public string PlainText { get; set; }
+        public string FileUrl { get; set; }
         public string Culture { get; set; }
-        public string Language { get; set; }
-        public bool IsDefault { get; set; }
-    
-        public virtual ICollection<BibleBook> BibleBooks { get; set; }
     }
 }

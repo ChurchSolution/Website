@@ -1,10 +1,10 @@
 ﻿//-----------------------------------------------------------------------------
-// <copyright file="IFactory.cs">
+// <copyright file="BibleEntitiesAddon.cs">
 //     Copyright (c) Rui Min. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------------
 
-namespace Church.Models
+namespace Church.Models.EntityFramework
 {
     using System;
     using System.Collections.Generic;
@@ -12,8 +12,11 @@ namespace Church.Models
     using System.Text;
     using System.Threading.Tasks;
 
-    public interface IFactory
+    public partial class BibleEntities
     {
-        WeeklyBulletin CreateBulletin(DateTime date, string fileUri, string plainText);
+        public BibleEntities(string connectionString)
+            : base(connectionString)
+        {
+        }
     }
 }

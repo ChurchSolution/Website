@@ -3,6 +3,8 @@
     using System;
     using System.Web.Mvc;
 
+    using Church.Models.EntityFramework;
+
     public class DatabaseExceptionFilterAttribute : HandleErrorAttribute
     {
         public override void OnException(ExceptionContext filterContext)

@@ -1,150 +1,154 @@
-﻿namespace Church.Website.Controllers
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SermonsController.cs" company="Church">
+//   Copyright (c) Rui Min. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Church.Website.Controllers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Description;
 
+    using Church.Models;
     using Church.Website.Models;
-    using System.Threading.Tasks;
 
+    /// <summary>
+    /// Provides the sermons controller.
+    /// </summary>
     public class SermonsController : ApiController
     {
-        private FrameworkEntities entities;
+        /// <summary>
+        /// The repository.
+        /// </summary>
+        private readonly IRepository repository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SermonsController"/> class.
+        /// </summary>
         public SermonsController()
-            : this(new FrameworkEntities())
+            : this(
+                Church.Models.EntityFramework.Repository.Create(
+                    Utilities.FrameworkEntitiesConnectionString,
+                    Utilities.Configuration.ChurchWebsiteLibrary))
         {
         }
 
-        internal SermonsController(FrameworkEntities entities)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SermonsController"/> class.
+        /// </summary>
+        /// <param name="repository">
+        /// The repository from unit tests.
+        /// </param>
+        internal SermonsController(IRepository repository)
         {
-            this.entities = entities;
+            this.repository = repository;
         }
 
-        // GET api/Sermons
-        public Task<IQueryable<Sermon>> GetSermons()
+        /// <summary>
+        /// Gets a list of hymns.
+        /// </summary>
+        /// <returns>The <see cref="IQueryable{ISermon}"/> on sermons.</returns>
+        public IQueryable<ISermon> Get()
         {
-            return Task.FromResult<IQueryable<Sermon>>(this.entities.Sermons);
+            return this.repository.GetSermons();
         }
 
-        // GET api/Sermons/5
-        [ResponseType(typeof(Sermon))]
-        public async Task<HttpResponseMessage> GetSermonAsync(string id, string speaker, DateTime date, string title)
+        /// <summary>
+        /// Gets a sermon.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="ISermon"/>.</returns>
+        [ResponseType(typeof(ISermon))]
+        public async Task<HttpResponseMessage> GetAsync(Guid id)
         {
-            Guid sermonId;
-            var sermon = Guid.TryParse(id, out sermonId) ? await this.entities.Sermons.FindAsync(id) :
-                await this.entities.Sermons.FirstOrDefaultAsync(
-                s => s.Speaker.Equals(speaker, StringComparison.OrdinalIgnoreCase)
-                    && s.Date == date
-                    && s.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
-            if (sermon == null)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.NotFound);
-            }
+            var sermon = await this.repository.GetSermons().SingleAsync(s => s.Id.Equals(id));
 
             return this.Request.CreateResponse(HttpStatusCode.OK, sermon);
         }
 
-        // PUT api/Sermons/5
-        public IHttpActionResult PutSermon(Guid id, Sermon sermon)
+        /// <summary>
+        /// Updates a sermon.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="sermon">The sermon.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
+        public async Task<HttpResponseMessage> PutAsync(Guid id, ISermon sermon)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return this.BadRequest(ModelState);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
             if (id != sermon.Id)
             {
-                return this.BadRequest();
+                var message = string.Format(
+                    "The id '{0}' in the URL doesn't match the one '{1}' in the request body.",
+                    id,
+                    sermon.Id);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
             }
 
-            this.entities.Entry(sermon).State = EntityState.Modified;
-
-            try
-            {
-                this.entities.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SermonExists(id))
-                {
-                    return this.NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return this.StatusCode(HttpStatusCode.NoContent);
+            await this.repository.UpdateSermonAsync(sermon);
+            return this.Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
-        // POST api/Sermons
-        [ResponseType(typeof(Sermon))]
-        public IHttpActionResult PostSermon(Sermon sermon)
+        /// <summary>
+        /// Creates a sermon.
+        /// </summary>
+        /// <param name="sermon">The sermon.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="ISermon"/>.</returns>
+        [ResponseType(typeof(ISermon))]
+        public async Task<HttpResponseMessage> PostAsync(ISermon sermon)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.BadRequest(ModelState);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            this.entities.Sermons.Add(sermon);
-
-            try
-            {
-                this.entities.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (this.SermonExists(sermon.Id))
-                {
-                    return this.Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return this.CreatedAtRoute("DefaultApi", new { id = sermon.Id }, sermon);
+            await this.repository.AddSermonAsync(sermon);
+            return this.Request.CreateResponse(HttpStatusCode.Created, sermon);
         }
 
-        // DELETE api/Sermons/5
-        [ResponseType(typeof(Sermon))]
-        public IHttpActionResult DeleteSermon(Guid id)
+        /// <summary>
+        /// Deletes a sermon.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
+        public async Task<HttpResponseMessage> DeleteAsync(Guid id)
         {
-            var sermon = this.entities.Sermons.Find(id);
-            if (sermon == null)
+            if (!this.ModelState.IsValid)
             {
-                return this.NotFound();
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            this.entities.Sermons.Remove(sermon);
-            this.entities.SaveChanges();
-
-            return this.Ok(sermon);
+            await this.repository.DeleteSermonAsync(id);
+            return this.Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        /// <param name="disposing">
+        /// The disposing.
+        /// </param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                this.entities.Dispose();
+                var disposable = this.repository as IDisposable;
+                if (disposable != null)
+                {
+                    disposable.Dispose();
+                }
             }
 
             base.Dispose(disposing);
-        }
-
-        private bool SermonExists(Guid id)
-        {
-            return this.entities.Sermons.Count(e => e.Id == id) > 0;
         }
     }
 }

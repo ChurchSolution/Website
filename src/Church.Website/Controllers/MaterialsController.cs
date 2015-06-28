@@ -1,9 +1,13 @@
-﻿namespace Church.Website.Controllers
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MaterialsController.cs" company="Church">
+//   Copyright (c) Rui Min. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Church.Website.Controllers
 {
-    using Church.Website.Models;
     using System;
     using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -11,134 +15,140 @@
     using System.Web.Http;
     using System.Web.Http.Description;
 
+    using Church.Models;
+    using Church.Website.Models;
+
+    /// <summary>
+    /// Provides the materials controller.
+    /// </summary>
     public class MaterialsController : ApiController
     {
-        private FrameworkEntities entities;
+        /// <summary>
+        /// The repository.
+        /// </summary>
+        private readonly IRepository repository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MaterialsController"/> class.
+        /// </summary>
         public MaterialsController()
-            : this(new FrameworkEntities())
+            : this(
+                Church.Models.EntityFramework.Repository.Create(
+                    Utilities.FrameworkEntitiesConnectionString,
+                    Utilities.Configuration.ChurchWebsiteLibrary))
         {
         }
 
-        internal MaterialsController(FrameworkEntities entities)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MaterialsController"/> class.
+        /// </summary>
+        /// <param name="repository">
+        /// The repository from unit tests.
+        /// </param>
+        internal MaterialsController(IRepository repository)
         {
-            this.entities = entities;
+            this.repository = repository;
         }
 
-        // GET api/Materials
-        [HttpGet]
-        public Task<IQueryable<Material>> GetMaterials()
+        /// <summary>
+        /// Gets a list of materials.
+        /// </summary>
+        /// <returns>The <see cref="IQueryable{IMaterial}"/> on materials.</returns>
+        public IQueryable<IMaterial> Get()
         {
-            return Task.FromResult<IQueryable<Material>>(this.entities.Materials);
+            return this.repository.GetMaterials();
         }
 
-        // GET api/Materials/5
-        [HttpGet]
-        [ResponseType(typeof(Material))]
-        public async Task<HttpResponseMessage> GetMaterialAsync(Guid id)
+        /// <summary>
+        /// Gets a material.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="IMaterial"/>.</returns>
+        [ResponseType(typeof(IMaterial))]
+        public async Task<HttpResponseMessage> GetAsync(Guid id)
         {
-            var material = await this.entities.Materials.FindAsync(id);
-            if (material == null)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.NotFound);
-            }
+            var hymn = await this.repository.GetMaterials().SingleAsync(m => m.Id.Equals(id));
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, material);
+            return this.Request.CreateResponse(HttpStatusCode.OK, hymn);
         }
 
-        // PUT api/Materials/5
-        public IHttpActionResult PutMaterial(Guid id, Material material)
+        /// <summary>
+        /// Updates a material.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="material">The material.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
+        public async Task<HttpResponseMessage> PutAsync(Guid id, IMaterial material)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.BadRequest(ModelState);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
             if (id != material.Id)
             {
-                return this.BadRequest();
+                var message = string.Format(
+                    "The id '{0}' in the URL doesn't match the one '{1}' in the request body.",
+                    id,
+                    material.Id);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
             }
 
-            this.entities.Entry(material).State = EntityState.Modified;
-
-            try
-            {
-                this.entities.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!this.MaterialExists(id))
-                {
-                    return this.NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return this.StatusCode(HttpStatusCode.NoContent);
+            await this.repository.UpdateMaterialAsync(material);
+            return this.Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
-        // POST api/Materials
-        [ResponseType(typeof(Material))]
-        public IHttpActionResult PostMaterial(Material material)
+        /// <summary>
+        /// Creates a material.
+        /// </summary>
+        /// <param name="material">The material.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="IMaterial"/>.</returns>
+        [ResponseType(typeof(IMaterial))]
+        public async Task<HttpResponseMessage> PostAsync(IMaterial material)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.BadRequest(ModelState);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            this.entities.Materials.Add(material);
-
-            try
-            {
-                this.entities.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (this.MaterialExists(material.Id))
-                {
-                    return this.Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return this.CreatedAtRoute("DefaultApi", new { id = material.Id }, material);
+            await this.repository.AddMaterialAsync(material);
+            return this.Request.CreateResponse(HttpStatusCode.Created, material);
         }
 
-        // DELETE api/Materials/5
-        [ResponseType(typeof(Material))]
-        public IHttpActionResult DeleteMaterial(Guid id)
+        /// <summary>
+        /// Deletes a material.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
+        public async Task<HttpResponseMessage> DeleteAsync(Guid id)
         {
-            var material = this.entities.Materials.Find(id);
-            if (material == null)
+            if (!this.ModelState.IsValid)
             {
-                return this.NotFound();
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            this.entities.Materials.Remove(material);
-            this.entities.SaveChanges();
-
-            return this.Ok(material);
+            await this.repository.DeleteMaterialAsync(id);
+            return this.Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        /// <param name="disposing">
+        /// The disposing.
+        /// </param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                this.entities.Dispose();
+                var disposable = this.repository as IDisposable;
+                if (disposable != null)
+                {
+                    disposable.Dispose();
+                }
             }
 
             base.Dispose(disposing);
-        }
-
-        private bool MaterialExists(Guid id)
-        {
-            return this.entities.Materials.Count(e => e.Id == id) > 0;
         }
     }
 }

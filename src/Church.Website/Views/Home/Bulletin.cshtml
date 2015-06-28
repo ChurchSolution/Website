@@ -159,7 +159,7 @@
             var viewModel = new church.viewModel.SermonViewModel(dataModel);
             ko.applyBindings(viewModel, $("#sermonPanel")[0]);
             church.utilities.nailHymns('.hymn');
-            church.utilities.searchBibleVerses('#MessageVerseAbbr', '#SermonCompendium', '#WordFromPastor', '#FamilyWorship');
+            church.utilities.searchBibleVerses("@ViewBag.BibleId", "#MessageVerseAbbr", "#SermonCompendium", "#WordFromPastor", "#FamilyWorship");
         });
         //]]>
     </script>

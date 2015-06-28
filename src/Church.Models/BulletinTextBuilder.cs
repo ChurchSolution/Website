@@ -1,8 +1,11 @@
-﻿//-----------------------------------------------------------------------------
-// <copyright file="BulletinTextBuilder.cs">
-//     Copyright (c) Rui Min. All rights reserved.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BulletinTextBuilder.cs" company="Church">
+//   Copyright (c) Rui Min. All rights reserved.
 // </copyright>
-//-----------------------------------------------------------------------------
+// <summary>
+//   Defines the BulletinTextBuilder type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Church.Models
 {
@@ -17,12 +20,10 @@ namespace Church.Models
     {
         protected Dictionary<string, string> handlers;
 
-        protected CultureInfo culture;
-
         protected BulletinTextBuilder(CultureInfo culture)
         {
             this.handlers = new Dictionary<string, string>();
-            this.culture = culture;
+            this.Culture = culture;
 
             var members = this.GetType().GetMembers(BindingFlags.NonPublic | BindingFlags.Instance)
                 .Where(m => m.GetCustomAttributes(typeof(SectionSeparatorAttribute), false).Any());
@@ -33,6 +34,8 @@ namespace Church.Models
                 attribute.StartingStrings.ToList().ForEach(s => this.handlers.Add(s, m.Name));
             }
         }
+
+        public CultureInfo Culture { get; private set; }
 
         public virtual T Make<T>(string plainText) where T : IWeeklyBulletinProperties, new()
         {

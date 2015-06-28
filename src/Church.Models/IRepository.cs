@@ -1,0 +1,112 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IRepository.cs" company="Church">
+//   Copyright (c) Rui Min. All rights reserved.
+// </copyright>
+// <summary>
+//   Defines the IRepository interface.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Church.Models
+{
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    public interface IRepository
+    {
+        Task<IQueryable<WeeklyBulletin>> GetBulletinsAsync();
+
+        /// <summary>
+        /// Gets the default bulletin.
+        /// </summary>
+        /// <param name="cultureName">The culture name.</param>
+        /// <returns>The <see cref="WeeklyBulletin"/>.</returns>
+        Task<WeeklyBulletin> GetDefaultBulletinAsync(string cultureName);
+
+        Task<WeeklyBulletin> GetBulletinByDateAsync(string cultureName, DateTime date);
+
+        Task<WeeklyBulletin> AddOrUpdateBulletinAsync(DateTime date, string fileUrl, string planText, string culture);
+
+        /// <summary>
+        /// Gets a list of incidents.
+        /// </summary>
+        /// <param name="date">The date.</param>
+        /// <returns>The <see cref="IQueryable"/> of <see cref="IIncident"/>.</returns>
+        IQueryable<IIncident> GetIncidents(DateTime date);
+
+        #region Sermon
+
+        /// <summary>
+        /// Gets the list of sermons.
+        /// </summary>
+        /// <returns> The <see cref="IQueryable{ISermon}"/>.</returns>
+        IQueryable<ISermon> GetSermons();
+
+        /// <summary>
+        /// Adds a sermon.
+        /// </summary>
+        /// <param name="sermon">The sermon.</param>
+        /// <returns>The <see cref="Task{ISermon}"/>.</returns>
+        Task<ISermon> AddSermonAsync(ISermon sermon);
+
+        /// <summary>
+        /// Updates a sermon.
+        /// </summary>
+        /// <param name="sermon">The sermon.</param>
+        /// <returns>The <see cref="Task"/>.</returns>
+        Task UpdateSermonAsync(ISermon sermon);
+
+        /// <summary>
+        /// Deletes a sermon.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>The <see cref="Task"/>.</returns>
+        Task DeleteSermonAsync(Guid id);
+
+        #endregion
+
+        #region Material
+
+        /// <summary>
+        /// Gets the list of materials.
+        /// </summary>
+        /// <returns> The <see cref="IQueryable{IMaterial}"/>.</returns>
+        IQueryable<IMaterial> GetMaterials();
+
+        /// <summary>
+        /// Adds a material.
+        /// </summary>
+        /// <param name="material">The material.</param>
+        /// <returns>The <see cref="Task{IMaterial}"/>.</returns>
+        Task<IMaterial> AddMaterialAsync(IMaterial material);
+
+        /// <summary>
+        /// Updates a material.
+        /// </summary>
+        /// <param name="material">The material.</param>
+        /// <returns>The <see cref="Task"/>.</returns>
+        Task UpdateMaterialAsync(IMaterial material);
+
+        /// <summary>
+        /// Deletes a material.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>The <see cref="Task"/>.</returns>
+        Task DeleteMaterialAsync(Guid id);
+
+        #endregion
+
+        #region Hymn
+
+        IQueryable<IHymn> GetHymns();
+
+        Task<IHymn> AddHymnAsync(IHymn hymn);
+
+        Task UpdateHymnsAsync(IHymn hymn);
+
+        Task DeleteHymnsAsync(Guid id);
+
+        #endregion
+    }
+}

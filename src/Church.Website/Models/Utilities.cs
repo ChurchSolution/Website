@@ -8,15 +8,10 @@ namespace Church.Website.Models
 {
     using System;
     using System.Configuration;
-    using System.Globalization;
-    using System.IO;
     using System.Linq;
     using System.Net.Http;
-    using System.Reflection;
     using System.Web;
     using System.Web.Mvc;
-
-    using Church.Models;
 
     public static class SiteConstants
     {
@@ -38,22 +33,22 @@ namespace Church.Website.Models
     {
         private static readonly Lazy<IWebConfiguration> configuration =
             new Lazy<IWebConfiguration>(() => ConfigurationManager.GetSection("churchWeb") as ChurchWebSection);
+
         public static IWebConfiguration Configuration { get { return configuration.Value; } }
 
-        public static IFactory CreateFactory(string cultureName)
+        public static string BibleEntitiesConnectionString
         {
-            // Set culture infomation and set LongDatePattern if needed
-            var culture = CultureInfo.CurrentUICulture.Name == cultureName ?
-                CultureInfo.CurrentUICulture :
-                CultureInfo.CreateSpecificCulture(cultureName);
-            Resources.Framework.Culture = culture;
-
-            // Read from disk if the assembly is not loaded yet
-            var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name.Equals(Configuration.ChurchWebsiteLibrary)) ??
-                Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath, Configuration.ChurchWebsiteLibrary) + ".dll");
-            var type = assembly.GetTypes().First(t => typeof(IFactory).IsAssignableFrom(t) && 0 == (TypeAttributes.Interface & t.Attributes));
-
-            return type.GetMethod("Create").Invoke(null, new object[] { culture }) as IFactory;
+            get
+            {
+                return ConfigurationManager.ConnectionStrings["BibleEntities"].ConnectionString;
+            }
+        }
+        public static string FrameworkEntitiesConnectionString
+        {
+            get
+            {
+                return ConfigurationManager.ConnectionStrings["FrameworkEntities"].ConnectionString;
+            }
         }
 
         public static string GetClientIp(HttpRequestMessage request)

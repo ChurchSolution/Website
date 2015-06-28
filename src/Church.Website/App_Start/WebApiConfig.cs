@@ -14,9 +14,12 @@
             config.MapHttpAttributeRoutes();
 
             // Configure routes
-            config.Routes.MapHttpRoute("BibleVersePattern", "api/bible/versePattern", new { controller = "bible", action = "GetVersePatternAsync", });
-            config.Routes.MapHttpRoute("Bible", "api/bible/{book}/{chapter}", new { controller = "bible", action = "GetBibleAsync" });
-            config.Routes.MapHttpRoute("BibleVerses", "api/bible/{Abbreviation}", new { controller = "bible", action = "GetVersesAsync", });
+            config.Routes.MapHttpRoute("BibleVersePattern", "bible/{bibleId}/Abbreviations", new { controller = "bible", action = "GetAbbreviationsAsync", });
+            config.Routes.MapHttpRoute("BibleVerses", "bible/{bibleId}/Abbreviations/{Abbreviation}", new { controller = "bible", action = "GetAbbreviationAsync", });
+            config.Routes.MapHttpRoute(
+                "BibleChapter",
+                "bible/{bibleId}/book/{order}/chapter/{chapterOrder}",
+                new { controller = "bible", action = "GetChapterAsync" });
 
             config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
 

@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 不正确的简写 “{0}”.
+        /// </summary>
+        internal static string Bible_IncorrectAbbreviation {
+            get {
+                return ResourceManager.GetString("Bible_IncorrectAbbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 第一页.
         /// </summary>
         internal static string Control_DataTable_LanguageFirst {

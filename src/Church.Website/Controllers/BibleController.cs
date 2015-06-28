@@ -1,120 +1,157 @@
-﻿namespace Church.Website.Controllers
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BibleController.cs" company="Church">
+//   Copyright (c) Rui Min. All rights reserved.
+// </copyright>
+// <summary>
+//   Defines the BibleController type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Church.Website.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Diagnostics;
-    using System.Globalization;
     using System.Linq;
     using System.Net.Http;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using System.Web.Http;
+    using System.Web.Http.Description;
 
     using Church.Models;
     using Church.Website.Models;
 
+    /// <summary>
+    /// Provide the Bible controller.
+    /// </summary>
     public class BibleController : ApiController
     {
-        private BibleEntities entities;
+        /// <summary>
+        /// The provider.
+        /// </summary>
+        private readonly IBibleProvider provider;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BibleController"/> class.
+        /// </summary>
         public BibleController()
-            : this(new BibleEntities())
+            : this(Church.Models.EntityFramework.BibleProvider.Create(Utilities.BibleEntitiesConnectionString))
         {
         }
 
-        internal BibleController(BibleEntities entities)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BibleController"/> class.
+        /// </summary>
+        /// <param name="provider">The provider.s</param>
+        internal BibleController(IBibleProvider provider)
         {
-            this.entities = entities;
+            this.provider = provider;
         }
 
-        [HttpGet]
-        public async Task<HttpResponseMessage> GetBibleAsync(string book, int chapter, IEnumerable<int> indexes, Guid? id)
+        /// <summary>
+        /// Gets verses from a Bible chapter.
+        /// </summary>
+        /// <param name="bibleId">The bible id.</param>
+        /// <param name="order">The book order.</param>
+        /// <param name="chapterOrder">The chapter order.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
+        public async Task<HttpResponseMessage> GetChapterAsync(Guid bibleId, int order, int chapterOrder)
         {
-            const char SplitChar = '|';
+            var versions = this.provider.GetBibles().ToArray();
+            var version = await this.provider.GetBibleAsync(bibleId);
+            var books = version.Books.Select(b => new { b.Name, b.Order }).ToArray();
+            var book = version.Books.FirstOrDefault(b => b.Order == order) ?? version.Books.First();
+            var chapters = book.Chapters.Select(c => new { c.Order }).ToArray();
+            var chapter = book.Chapters.FirstOrDefault(c => c.Order == chapterOrder) ?? book.Chapters.First();
+            var verses = chapter.Verses.ToArray();
 
-            ExceptionUtilities.ThrowArgumentNullExceptionIfEmpty(book, "book");
-            ExceptionUtilities.ThrowArgumentNullExceptionIfEmpty(chapter, "chapter");
-
-            var bibles = this.entities.Bibles.OrderBy(b => b.Culture);
-            var bible = id.HasValue ? await this.entities.GetBibleAsync(id.Value) :
-                await this.entities.GetDefaultBibleAsync(CultureInfo.CurrentUICulture.Name);
-            var books = bible.BibleBooks;
-            int bookOrder;
-            var selectedBook = int.TryParse(book, out bookOrder) ? books.First(b => b.Order == bookOrder) :
-                books.First(b => b.Name.Equals(book, StringComparison.OrdinalIgnoreCase) || b.Abbreviation.Equals(book, StringComparison.OrdinalIgnoreCase));
-            var chapters = selectedBook.BibleChapters;
-            var selectedChapter = chapters.First(c => c.Order == chapter);
-            var indexSet = new HashSet<int>((indexes ?? Enumerable.Range(1, selectedChapter.VerseStrings.Length))
-                .Where(i => i <= selectedChapter.VerseStrings.Length));
-
-            var model = new
-            {
-                Versions = bibles.Select(b => new { Id = b.Id, Text = b.Language + b.Version }),
-                SelectedVersion = bible.Id,
-                Books = books.OrderBy(b => b.Order).Select(b => new { Id = b.Order, Text = b.Name }),
-                SelectedBook = selectedBook.Order,
-                Chapters = chapters.OrderBy(c => c.Order).Select(c => new { Id = c.Order, Text = c.Order.ToString() }),
-                SelectedChapter = selectedChapter.Order,
-                Verses = selectedChapter.VerseStrings.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(v =>
-                {
-                    var segments = v.Split(SplitChar);
-                    Trace.Assert(2 == segments.Length, string.Format("The verse string '{0}' is incorrect.", v));
-                    int order;
-                    Trace.Assert(int.TryParse(segments[0], out order), string.Format("The order '{0}' is not an integer", segments[0]));
-                    return new { Id = order, Text = segments[1] };
-                }).Where(v => indexSet.Contains(v.Id)),
-            };
+            var model =
+                new
+                    {
+                        Versions = versions,
+                        SelectedVersion = version.Id,
+                        Books = books,
+                        SelectedBook = book.Order,
+                        Chapters = chapters,
+                        SelectedChapter = chapter.Order,
+                        Verses = verses
+                    };
 
             return this.Request.CreateResponse(model);
         }
 
+        /// <summary>
+        /// Gets the verse pattern.
+        /// </summary>
+        /// <param name="bibleId">The Bible ID.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
         [HttpGet]
-        public async Task<HttpResponseMessage> GetVersesAsync(string abbreviation, Guid? id)
+        [ResponseType(typeof(string))]
+        public async Task<HttpResponseMessage> GetAbbreviationsAsync(Guid bibleId)
+        {
+            var bible = await this.provider.GetBibleAsync(bibleId);
+            var verserPattern = bible.GetAbbreviations();
+            return this.Request.CreateResponse(verserPattern);
+        }
+
+        /// <summary>
+        /// Gets the verses async.
+        /// </summary>
+        /// <param name="bibleId">The Bible ID.</param>
+        /// <param name="abbreviation">The abbreviation.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
+        [HttpGet]
+        [ResponseType(typeof(IEnumerable<BibleVerse>))]
+        [FormatExceptionFilter]
+        public async Task<HttpResponseMessage> GetAbbreviationAsync(Guid bibleId, string abbreviation)
         {
             ExceptionUtilities.ThrowArgumentNullExceptionIfEmpty(abbreviation, "abbreviation");
 
             // TODO Need to handle ":" in abbreviation
 
-            var culture = id.HasValue ? (await this.entities.GetBibleAsync(id.Value)).Culture : CultureInfo.CurrentUICulture.Name;
-            var pattern = await this.GetVersePatternAsync(culture);
+            var bible = await this.provider.GetBibleAsync(bibleId);
+            var pattern = bible.GetAbbreviations();
             var match = Regex.Match(abbreviation, pattern, RegexOptions.IgnoreCase);
-            ExceptionUtilities.ThrowFormatExceptionIfFalse(match.Success && match.Groups.Count >= 3, "Found an incorrect abbreviation '{0}'", abbreviation);
+            ExceptionUtilities.ThrowFormatExceptionIfFalse(
+                match.Success && match.Groups.Count >= 3,
+                Resources.Framework.Bible_IncorrectAbbreviation,
+                abbreviation);
 
             var book = match.Groups[1].Value;
             var chapter = int.Parse(match.Groups[2].Value);
             var others = match.Groups[3].Value;
 
             // TODO Considering to move to Bible handler for multiple languages.
-            return await this.GetBibleAsync(book, chapter, this.GetIndexes(others.Split(',', '，'), abbreviation), id);
+            var verses = await this.provider.GetVersesAsync(bibleId, book, chapter, GetIndexes(others.Split(',', '，'), abbreviation));
+            return this.Request.CreateResponse(verses);
         }
 
-        [HttpGet]
-        public async Task<string> GetVersePatternAsync(string culture)
-        {
-            if(string.IsNullOrWhiteSpace(culture))
-            {
-                culture = CultureInfo.CurrentUICulture.Name;
-            }
-
-            var bible = await this.entities.GetDefaultBibleAsync(culture);
-            var bookNames = bible.BibleBooks.SelectMany(b => new[] { b.Name, b.Abbreviation });
-
-            // TODO Considering to move to Bible handler for multiple languages.
-            return "(" + string.Join("|", bookNames) + ")[ ]*([0-9]+)[ ]*[:：]([ ]*[0-9]+(-[ ]*[0-9]+)?([，,][ ]*[0-9]+(-[ ]*[0-9]+)?)*)";
-        }
-
+        /// <summary>
+        /// Disposes the resources used by the controller.
+        /// </summary>
+        /// <param name="disposing">A value indicating whether the managed resource is disposed. </param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                entities.Dispose();
+                var disposable = this.provider as IDisposable;
+                if (disposable != null)
+                {
+                    disposable.Dispose();
+                }
             }
 
             base.Dispose(disposing);
         }
 
-        private IEnumerable<int> GetIndexes(IEnumerable<string> segments, string abbreviation)
+        /// <summary>
+        /// Gets indexes in an abbreviation.
+        /// </summary>
+        /// <param name="segments">The segments.</param>
+        /// <param name="abbreviation">The abbreviation.</param>
+        /// <returns>The <see cref="IEnumerable{T}"/> of <see cref="int"/>.</returns>
+        /// <exception cref="FormatException">While the abbreviation is in a wrong format.</exception>
+        private static IEnumerable<int> GetIndexes(IEnumerable<string> segments, string abbreviation)
         {
             foreach (var segment in segments)
             {
@@ -127,7 +164,10 @@
                     case 2:
                         var from = int.Parse(parts[0]);
                         var to = int.Parse(parts[1]);
-                        ExceptionUtilities.ThrowFormatExceptionIfFalse(from <= to, "Found an incorrect abbreviation '{0}'", abbreviation);
+                        ExceptionUtilities.ThrowFormatExceptionIfFalse(
+                            from <= to,
+                            "Found an incorrect abbreviation '{0}'",
+                            abbreviation);
                         for (int loop = from; loop <= to; loop++)
                         {
                             yield return loop;

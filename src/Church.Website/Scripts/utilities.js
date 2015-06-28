@@ -3,34 +3,12 @@
 church.utilities = (function (window, $, undefined) {
     "use strict";
 
-    function searchBibleVerses() {
-        var panels = arguments;
-
-        var promise = church.dataModel.bibleModel.getVersePattern("");
-        promise.done(function (response) {
-            var re = new RegExp("(" + response + ")", "g");
-            for (var loop = 0; loop < panels.length; loop++) {
-                //TODO Current panel could not hold javascript code, need to update this
-                var updated = $(panels[loop]).html().replace(re, '<a class="verseLink" href="#">$1</a>');
-                $(panels[loop]).html(updated);
-            }
-            var links = $(".verseLink");
-            links.click(function () {
-                var abbreviation = $(this).text();
-                showVerses(abbreviation);
-            });
-        }).fail(function (xhr) {
-            alert(xhr.statusText);
-        });
-    }
-
-    function showVerses(abbreviation) {
+    function showVerses(id, abbreviation) {
         // ':' cannot be transferred in RESTful
-        var promise = church.dataModel.bibleModel.getVerses(abbreviation, "");
-        promise.done(function (response) {
+        church.dataModel.bibleModel.getVerses(id, abbreviation).done(function (verses) {
             var lines = [];
-            $.each(response.verses, function () {
-                lines.push(response.selectedChapter + ':' + this.id + ' ' + this.text);
+            $.each(verses, function () {
+                lines.push(this.chapterOrder + ':' + this.order + ' ' + this.text);
             });
             var dig = '<div class="ui-helper-hidden" title="' + abbreviation + '">' + lines.join('<br />') + '</div>';
             $(dig).dialog({
@@ -39,6 +17,28 @@ church.utilities = (function (window, $, undefined) {
                 height: "auto"
             });
         }).fail(function (xhr) {
+            alert(xhr.statusText);
+        });
+    }
+
+    function searchBibleVerses() {
+        var bibleId = arguments[0];
+        var panels = arguments;
+
+        church.dataModel.bibleModel.getAbbreviations(bibleId).done(function(abbreviations) {
+            var re = new RegExp("(" + abbreviations + ")", "g");
+            for (var loop = 1; loop < panels.length; loop++) {
+                //TODO Current panel could not hold javascript code, need to update this
+                var updated = $(panels[loop]).html().replace(re, '<a class="verseLink" href="#">$1</a>');
+                $(panels[loop]).html(updated);
+            }
+
+            var links = $(".verseLink");
+            links.click(function() {
+                var abbreviation = $(this).text();
+                showVerses(bibleId, abbreviation);
+            });
+        }).fail(function(xhr) {
             alert(xhr.statusText);
         });
     }

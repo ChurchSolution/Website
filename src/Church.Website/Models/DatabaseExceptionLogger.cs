@@ -6,12 +6,12 @@
 
 namespace Microsoft.Nebula.ResourceProvider.Models
 {
-    using Church.Website.Models;
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Http.ExceptionHandling;
+
+    using Church.Models.EntityFramework;
+    using Church.Website.Models;
 
     public class DatabaseExceptionLogger : ExceptionLogger
     {
