@@ -143,9 +143,20 @@ namespace Church.Models.EntityFramework
         /// Gets the list of sermons.
         /// </summary>
         /// <returns> The <see cref="IQueryable{ISermon}"/>.</returns>
-        public IQueryable<ISermon> GetSermons()
+        public IQueryable<Models.Sermon> GetSermons()
         {
-            return this.entities.Sermons;
+            return
+                this.entities.Sermons.Select(
+                    sermon =>
+                    new Models.Sermon
+                        {
+                            Id = sermon.Id,
+                            Type = sermon.Type,
+                            Date = sermon.Date,
+                            Speaker = sermon.Speaker,
+                            Title = sermon.Title,
+                            FileUrl = sermon.FileUrl
+                        });
         }
 
         /// <summary>
@@ -153,21 +164,13 @@ namespace Church.Models.EntityFramework
         /// </summary>
         /// <param name="sermon">The sermon.</param>
         /// <returns>The <see cref="Task{ISermon}"/>.</returns>
-        public async Task<ISermon> AddSermonAsync(ISermon sermon)
+        public async Task<Models.Sermon> AddSermonAsync(Models.Sermon sermon)
         {
-            var newSermon = new Sermon
-                              {
-                                  Id = Guid.NewGuid(),
-                                  Type = sermon.Type,
-                                  Date = sermon.Date,
-                                  Speaker = sermon.Speaker,
-                                  Title = sermon.Title,
-                                  FileUrl = sermon.FileUrl,
-                              };
+            var newSermon = Sermon.Create(sermon);
             this.entities.Sermons.Add(newSermon);
             await this.entities.SaveChangesAsync();
 
-            return newSermon;
+            return newSermon.ToModel();
         }
 
         /// <summary>
@@ -175,7 +178,7 @@ namespace Church.Models.EntityFramework
         /// </summary>
         /// <param name="sermon">The sermon.</param>
         /// <returns>The <see cref="Task"/>.</returns>
-        public async Task UpdateSermonAsync(ISermon sermon)
+        public async Task UpdateSermonAsync(Models.Sermon sermon)
         {
             if (sermon == null)
             {
@@ -213,9 +216,20 @@ namespace Church.Models.EntityFramework
         /// Gets the list of materials.
         /// </summary>
         /// <returns> The <see cref="IQueryable{IMaterial}"/>.</returns>
-        public IQueryable<IMaterial> GetMaterials()
+        public IQueryable<Models.Material> GetMaterials()
         {
-            return this.entities.Materials;
+            return
+                this.entities.Materials.Select(
+                    material =>
+                    new Models.Material
+                        {
+                            Id = material.Id,
+                            Type = material.Type,
+                            Date = material.Date,
+                            Authors = material.Authors,
+                            Title = material.Title,
+                            FileUrl = material.FileUrl
+                        });
         }
 
         /// <summary>
@@ -223,21 +237,13 @@ namespace Church.Models.EntityFramework
         /// </summary>
         /// <param name="material">The material.</param>
         /// <returns>The <see cref="Task{IMaterial}"/>.</returns>
-        public async Task<IMaterial> AddMaterialAsync(IMaterial material)
+        public async Task<Models.Material> AddMaterialAsync(Models.Material material)
         {
-            var newMaterial = new Material
-                              {
-                                  Id = Guid.NewGuid(),
-                                  Type = material.Type,
-                                  Date = material.Date,
-                                  Authors = material.Authors,
-                                  Title = material.Title,
-                                  FileUrl = material.FileUrl,
-                              };
+            var newMaterial = Material.Create(material);
             this.entities.Materials.Add(newMaterial);
             await this.entities.SaveChangesAsync();
 
-            return newMaterial;
+            return newMaterial.ToModel();
         }
 
         /// <summary>
@@ -245,7 +251,7 @@ namespace Church.Models.EntityFramework
         /// </summary>
         /// <param name="material">The material.</param>
         /// <returns>The <see cref="Task"/>.</returns>
-        public async Task UpdateMaterialAsync(IMaterial material)
+        public async Task UpdateMaterialAsync(Models.Material material)
         {
             if (material == null)
             {

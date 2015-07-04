@@ -41,21 +41,21 @@ namespace Church.Models
         /// Gets the list of sermons.
         /// </summary>
         /// <returns> The <see cref="IQueryable{ISermon}"/>.</returns>
-        IQueryable<ISermon> GetSermons();
+        IQueryable<Sermon> GetSermons();
 
         /// <summary>
         /// Adds a sermon.
         /// </summary>
         /// <param name="sermon">The sermon.</param>
         /// <returns>The <see cref="Task{ISermon}"/>.</returns>
-        Task<ISermon> AddSermonAsync(ISermon sermon);
+        Task<Sermon> AddSermonAsync(Sermon sermon);
 
         /// <summary>
         /// Updates a sermon.
         /// </summary>
         /// <param name="sermon">The sermon.</param>
         /// <returns>The <see cref="Task"/>.</returns>
-        Task UpdateSermonAsync(ISermon sermon);
+        Task UpdateSermonAsync(Sermon sermon);
 
         /// <summary>
         /// Deletes a sermon.
@@ -72,21 +72,21 @@ namespace Church.Models
         /// Gets the list of materials.
         /// </summary>
         /// <returns> The <see cref="IQueryable{IMaterial}"/>.</returns>
-        IQueryable<IMaterial> GetMaterials();
+        IQueryable<Material> GetMaterials();
 
         /// <summary>
         /// Adds a material.
         /// </summary>
         /// <param name="material">The material.</param>
         /// <returns>The <see cref="Task{IMaterial}"/>.</returns>
-        Task<IMaterial> AddMaterialAsync(IMaterial material);
+        Task<Material> AddMaterialAsync(Material material);
 
         /// <summary>
         /// Updates a material.
         /// </summary>
         /// <param name="material">The material.</param>
         /// <returns>The <see cref="Task"/>.</returns>
-        Task UpdateMaterialAsync(IMaterial material);
+        Task UpdateMaterialAsync(Material material);
 
         /// <summary>
         /// Deletes a material.

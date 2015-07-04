@@ -53,8 +53,8 @@
     <Compile Include="IHymn.cs" />
     <Compile Include="IIncident.cs" />
     <Compile Include="IRepository.cs" />
-    <Compile Include="IMaterial.cs" />
-    <Compile Include="ISermon.cs" />
+    <Compile Include="Material.cs" />
+    <Compile Include="Sermon.cs" />
     <Compile Include="IWeeklyBulletinPropertiescs.cs" />
     <Compile Include="WeeklyBulletin.cs" />
     <Compile Include="ExceptionUtilities.cs" />

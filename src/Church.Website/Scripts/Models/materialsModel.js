@@ -5,7 +5,7 @@ church.dataModel.materialsModel = (function (window, undefined) {
     "use strict";
 
     function get() {
-        return $.getJSON("/api/materials");
+        return $.getJSON("/OData/Materials");
     };
 
     return {

@@ -5,6 +5,42 @@
 
     public static class FrameworkEntitiesExtensions
     {
+        /// <summary>
+        /// Converts to Sermon model class.
+        /// </summary>
+        /// <param name="sermon">The sermon.</param>
+        /// <returns>The <see cref="Models.Sermon"/>.</returns>
+        public static Models.Sermon ToModel(this Sermon sermon)
+        {
+            return new Models.Sermon
+                       {
+                           Id = sermon.Id,
+                           Type = sermon.Type,
+                           Date = sermon.Date,
+                           Speaker = sermon.Speaker,
+                           Title = sermon.Title,
+                           FileUrl = sermon.FileUrl
+                       };
+        }
+
+        /// <summary>
+        /// Converts to Material model class.
+        /// </summary>
+        /// <param name="material">The material.</param>
+        /// <returns>The <see cref="Models.Material"/>.</returns>
+        public static Models.Material ToModel(this Material material)
+        {
+            return new Models.Material
+            {
+                Id = material.Id,
+                Type = material.Type,
+                Date = material.Date,
+                Authors = material.Authors,
+                Title = material.Title,
+                FileUrl = material.FileUrl
+            };
+        }
+
         public static Task LogInfoAsync(this FrameworkEntities entities, string ipAddress, string username, string content)
         {
             const string EventType = "Information";

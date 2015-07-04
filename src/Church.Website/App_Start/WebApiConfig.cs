@@ -1,8 +1,22 @@
-﻿namespace Church.Website
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="WebApiConfig.cs" company="Church">
+//   Copyright (c) Rui Min. All rights reserved.
+// </copyright>
+// <summary>
+//   Defines the WebApiConfig type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Church.Website
 {
-    using Microsoft.Nebula.ResourceProvider.Models;
     using System.Web.Http;
     using System.Web.Http.ExceptionHandling;
+    using System.Web.OData.Builder;
+    using System.Web.OData.Extensions;
+
+    using Church.Models;
+
+    using Microsoft.Nebula.ResourceProvider.Models;
 
     public static class WebApiConfig
     {
@@ -12,6 +26,12 @@
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+
+            // Enable OData URLs
+            ODataModelBuilder builder = new ODataConventionModelBuilder();
+            builder.EntitySet<Sermon>("Sermons");
+            builder.EntitySet<Material>("Materials");
+            config.MapODataServiceRoute("ODataRoute", "OData", builder.GetEdmModel());
 
             // Configure routes
             config.Routes.MapHttpRoute("BibleVersePattern", "bible/{bibleId}/Abbreviations", new { controller = "bible", action = "GetAbbreviationsAsync", });

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ISermon.cs" company="Church">
+// <copyright file="Material.cs" company="Church">
 //   Copyright (c) Rui Min. All rights reserved.
 // </copyright>
 // <summary>
-//   Defines the ISermon type.
+//   Defines the Material type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,38 +12,38 @@ namespace Church.Models
     using System;
 
     /// <summary>
-    /// Provides an interface for Sermon instance.
+    /// Provides a model class for Material.
     /// </summary>
-    public interface ISermon
+    public class Material
     {
         /// <summary>
-        /// Gets the id.
+        /// Gets or sets the id.
         /// </summary>
-        Guid Id { get; }
+        public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets the type.
+        /// Gets or sets the type.
         /// </summary>
-        string Type { get; }
+        public string Type { get; set; }
 
         /// <summary>
-        /// Gets the date.
+        /// Gets or sets the date.
         /// </summary>
-        DateTime? Date { get; }
+        public DateTime? Date { get; set; }
 
         /// <summary>
-        /// Gets the speaker.
+        /// Gets or sets the authors.
         /// </summary>
-        string Speaker { get; }
+        public string Authors { get; set; }
 
         /// <summary>
-        /// Gets the title.
+        /// Gets or sets the title.
         /// </summary>
-        string Title { get; }
+        public string Title { get; set; }
 
         /// <summary>
-        /// Gets the file url.
+        /// Gets or sets the file url.
         /// </summary>
-        string FileUrl { get; }
+        public string FileUrl { get; set; }
     }
 }

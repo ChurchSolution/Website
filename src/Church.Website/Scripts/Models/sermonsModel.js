@@ -3,7 +3,7 @@ church.dataModel = church.dataModel || {};
 
 church.dataModel.sermonsModel = (function (window, undefined) {
     "use strict";
-    var url = "/api/sermons";
+    var url = "/OData/Sermons";
 
     function get() {
         return $.getJSON(url);

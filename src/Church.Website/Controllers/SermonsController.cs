@@ -14,6 +14,7 @@ namespace Church.Website.Controllers
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Description;
+    using System.Web.OData;
 
     using Church.Models;
     using Church.Website.Models;
@@ -54,7 +55,8 @@ namespace Church.Website.Controllers
         /// Gets a list of hymns.
         /// </summary>
         /// <returns>The <see cref="IQueryable{ISermon}"/> on sermons.</returns>
-        public IQueryable<ISermon> Get()
+        [EnableQuery]
+        public IQueryable<Sermon> Get()
         {
             return this.repository.GetSermons();
         }
@@ -62,49 +64,22 @@ namespace Church.Website.Controllers
         /// <summary>
         /// Gets a sermon.
         /// </summary>
-        /// <param name="id">The id.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="ISermon"/>.</returns>
-        [ResponseType(typeof(ISermon))]
-        public async Task<HttpResponseMessage> GetAsync(Guid id)
+        /// <param name="key">The key.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="Sermon"/>.</returns>
+        [EnableQuery]
+        public async Task<Sermon> GetAsync([FromODataUri] Guid key)
         {
-            var sermon = await this.repository.GetSermons().SingleAsync(s => s.Id.Equals(id));
-
-            return this.Request.CreateResponse(HttpStatusCode.OK, sermon);
-        }
-
-        /// <summary>
-        /// Updates a sermon.
-        /// </summary>
-        /// <param name="id">The id.</param>
-        /// <param name="sermon">The sermon.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
-        public async Task<HttpResponseMessage> PutAsync(Guid id, ISermon sermon)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
-            }
-
-            if (id != sermon.Id)
-            {
-                var message = string.Format(
-                    "The id '{0}' in the URL doesn't match the one '{1}' in the request body.",
-                    id,
-                    sermon.Id);
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
-            }
-
-            await this.repository.UpdateSermonAsync(sermon);
-            return this.Request.CreateResponse(HttpStatusCode.Accepted);
+            var sermon = await this.repository.GetSermons().SingleAsync(s => s.Id.Equals(key));
+            return sermon;
         }
 
         /// <summary>
         /// Creates a sermon.
         /// </summary>
         /// <param name="sermon">The sermon.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="ISermon"/>.</returns>
-        [ResponseType(typeof(ISermon))]
-        public async Task<HttpResponseMessage> PostAsync(ISermon sermon)
+        /// <returns>The <see cref="HttpResponseMessage"/> with the <see cref="Sermon"/>.</returns>
+        [ResponseType(typeof(Sermon))]
+        public async Task<HttpResponseMessage> PostAsync(Sermon sermon)
         {
             if (!this.ModelState.IsValid)
             {
@@ -116,18 +91,65 @@ namespace Church.Website.Controllers
         }
 
         /// <summary>
-        /// Deletes a sermon.
+        /// Patches a sermon.
         /// </summary>
-        /// <param name="id">The id.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
-        public async Task<HttpResponseMessage> DeleteAsync(Guid id)
+        /// <param name="key">The key.</param>
+        /// <param name="sermon">The sermon.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the <see cref="Sermon"/>.</returns>
+        [ResponseType(typeof(Sermon))]
+        public async Task<HttpResponseMessage> PatchAsync([FromODataUri] Guid key, Delta<Sermon> sermon)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            await this.repository.DeleteSermonAsync(id);
+            var sermonToBeUpdated = await this.repository.GetSermons().SingleAsync(s => s.Id.Equals(key));
+            sermon.Patch(sermonToBeUpdated);
+            await this.repository.UpdateSermonAsync(sermonToBeUpdated);
+            return this.Request.CreateResponse(HttpStatusCode.Accepted, sermonToBeUpdated);
+        }
+
+        /// <summary>
+        /// Updates a sermon.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="sermon">The sermon.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the <see cref="Sermon"/>.</returns>
+        [ResponseType(typeof(Sermon))]
+        public async Task<HttpResponseMessage> PutAsync([FromODataUri] Guid key, Sermon sermon)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
+            }
+
+            if (key != sermon.Id)
+            {
+                var message = string.Format(
+                    "The key '{0}' in the URL doesn't match the one '{1}' in the request body.",
+                    key,
+                    sermon.Id);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
+            }
+
+            await this.repository.UpdateSermonAsync(sermon);
+            return this.Request.CreateResponse(HttpStatusCode.Accepted, sermon);
+        }
+
+        /// <summary>
+        /// Deletes a sermon.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
+        public async Task<HttpResponseMessage> DeleteAsync([FromODataUri] Guid key)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
+            }
+
+            await this.repository.DeleteSermonAsync(key);
             return this.Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
