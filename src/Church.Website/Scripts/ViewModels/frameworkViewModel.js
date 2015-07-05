@@ -87,18 +87,18 @@ church.viewModel = (function (window, undefined) {
         };
     };
 
-    function sermonsViewModel(data) {
+    function sermonsViewModel(sermons) {
         var sermonArray = [];
-        data.value.forEach(function (element, index, array) {
+        sermons.forEach(function (element, index, array) {
             var item = [element.type, new Date(element.date).toLocaleDateString(), element.speaker, "<a href='" + element.fileUrl + "'>" + element.title + "</a>"];
             sermonArray.push(item);
         });
         this.sermons = ko.observableArray(sermonArray);
     };
 
-    function materialsViewModel(data) {
+    function materialsViewModel(materials) {
         var materialArray = [];
-        data.value.forEach(function (element, index, array) {
+        materials.forEach(function (element, index, array) {
             var item = [element.type, new Date(element.date).toLocaleDateString(), element.authors, "<a href='" + element.fileUrl + "'>" + element.title + "</a>"];
             materialArray.push(item);
         });

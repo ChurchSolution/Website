@@ -75,15 +75,15 @@
                 alert(xhr.statusText);
             });
 
-            church.dataModel.sermonsModel.get().done(function (data) {
-                var viewModel = new church.viewModel.SermonsViewModel(data);
+            church.dataModel.sermonsModel.get().done(function (model) {
+                var viewModel = new church.viewModel.SermonsViewModel(model.value);
                 ko.applyBindings(viewModel, $("#sermon-panel")[0]);
             }).fail(function (xhr) {
                 alert(xhr.statusText);
-            });
+            });  
 
-            church.dataModel.materialsModel.get().done(function (data) {
-                var viewModel = new church.viewModel.MaterialsViewModel(data);
+            church.dataModel.materialsModel.get().done(function (model) {
+                var viewModel = new church.viewModel.MaterialsViewModel(model.value);
                 ko.applyBindings(viewModel, $("#material-panel")[0]);
             }).fail(function (xhr) {
                 alert(xhr.statusText);
