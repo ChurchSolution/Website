@@ -15,8 +15,7 @@ namespace Church.Website
     using System.Web.OData.Extensions;
 
     using Church.Models;
-
-    using Microsoft.Nebula.ResourceProvider.Models;
+    using Church.Website.Models;
 
     public static class WebApiConfig
     {
@@ -28,9 +27,11 @@ namespace Church.Website
             config.MapHttpAttributeRoutes();
 
             // Enable OData URLs
-            ODataModelBuilder builder = new ODataConventionModelBuilder();
+            var builder = new ODataConventionModelBuilder();
             builder.EntitySet<Sermon>("Sermons");
             builder.EntitySet<Material>("Materials");
+            builder.EntitySet<Hymn>("Hymns");
+            builder.EnableLowerCamelCase();
             config.MapODataServiceRoute("ODataRoute", "OData", builder.GetEdmModel());
 
             // Configure routes

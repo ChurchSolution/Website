@@ -4,14 +4,13 @@
 // </copyright>
 //-----------------------------------------------------------------------------
 
-namespace Microsoft.Nebula.ResourceProvider.Models
+namespace Church.Website.Models
 {
     using System.Threading;
     using System.Threading.Tasks;
     using System.Web.Http.ExceptionHandling;
 
     using Church.Models.EntityFramework;
-    using Church.Website.Models;
 
     public class DatabaseExceptionLogger : ExceptionLogger
     {

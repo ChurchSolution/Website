@@ -12,8 +12,8 @@ namespace Church.Website.Controllers
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using System.Web.Http;
     using System.Web.Http.Description;
+    using System.Web.OData;
 
     using Church.Models;
     using Church.Website.Models;
@@ -21,7 +21,7 @@ namespace Church.Website.Controllers
     /// <summary>
     /// Provides the hymns controller.
     /// </summary>
-    public class HymnsController : ApiController
+    public class HymnsController : ODataController
     {
         /// <summary>
         /// The repository.
@@ -54,7 +54,8 @@ namespace Church.Website.Controllers
         /// Gets a list of hymns.
         /// </summary>
         /// <returns>The <see cref="IQueryable{IHymn}"/> on hymns.</returns>
-        public IQueryable<IHymn> Get()
+        [EnableQuery]
+        public IQueryable<Hymn> Get()
         {
             return this.repository.GetHymns();
         }
@@ -62,49 +63,22 @@ namespace Church.Website.Controllers
         /// <summary>
         /// Gets a hymn.
         /// </summary>
-        /// <param name="id">The id.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="IHymn"/>.</returns>
-        [ResponseType(typeof(IHymn))]
-        public async Task<HttpResponseMessage> GetAsync(Guid id)
+        /// <param name="key">The key.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the <see cref="Hymn"/>.</returns>
+        [EnableQuery]
+        public async Task<Hymn> GetAsync(Guid key)
         {
-            var hymn = await this.repository.GetHymns().SingleAsync(h => h.Id.Equals(id));
-
-            return this.Request.CreateResponse(HttpStatusCode.OK, hymn);
-        }
-
-        /// <summary>
-        /// Updates a hymn.
-        /// </summary>
-        /// <param name="id">The id.</param>
-        /// <param name="hymn">The hymn.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
-        public async Task<HttpResponseMessage> PutAsync(Guid id, IHymn hymn)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
-            }
-
-            if (id != hymn.Id)
-            {
-                var message = string.Format(
-                    "The id '{0}' in the URL doesn't match the one '{1}' in the request body.",
-                    id,
-                    hymn.Id);
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
-            }
-
-            await this.repository.UpdateHymnsAsync(hymn);
-            return this.Request.CreateResponse(HttpStatusCode.Accepted);
+            var hymn = await this.repository.GetHymns().SingleAsync(h => h.Id.Equals(key));
+            return hymn;
         }
 
         /// <summary>
         /// Creates a hymn.
         /// </summary>
         /// <param name="hymn">The hymn.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="IHymn"/>.</returns>
-        [ResponseType(typeof(IHymn))]
-        public async Task<HttpResponseMessage> PostAsync(IHymn hymn)
+        /// <returns>The <see cref="HttpResponseMessage"/> with the <see cref="Hymn"/>.</returns>
+        [ResponseType(typeof(Hymn))]
+        public async Task<HttpResponseMessage> PostAsync(Hymn hymn)
         {
             if (!this.ModelState.IsValid)
             {
@@ -116,18 +90,65 @@ namespace Church.Website.Controllers
         }
 
         /// <summary>
-        /// Deletes a hymn.
+        /// Patches a hymn.
         /// </summary>
-        /// <param name="id">The id.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
-        public async Task<HttpResponseMessage> DeleteAsync(Guid id)
+        /// <param name="key">The key.</param>
+        /// <param name="hymn">The hymn.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the <see cref="Hymn"/>.</returns>
+        [ResponseType(typeof(Hymn))]
+        public async Task<HttpResponseMessage> PatchAsync([FromODataUri] Guid key, Delta<Hymn> hymn)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            await this.repository.DeleteHymnsAsync(id);
+            var hymnToBeUpdated = await this.repository.GetHymns().SingleAsync(s => s.Id.Equals(key));
+            hymn.Patch(hymnToBeUpdated);
+            await this.repository.UpdateHymnAsync(hymnToBeUpdated);
+            return this.Request.CreateResponse(HttpStatusCode.Accepted, hymnToBeUpdated);
+        }
+
+        /// <summary>
+        /// Updates a hymn.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="hymn">The hymn.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the <see cref="Hymn"/>.</returns>
+        [ResponseType(typeof(Hymn))]
+        public async Task<HttpResponseMessage> PutAsync([FromODataUri] Guid key, Hymn hymn)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
+            }
+
+            if (key != hymn.Id)
+            {
+                var message = string.Format(
+                    "The key '{0}' in the URL doesn't match the one '{1}' in the request body.",
+                    key,
+                    hymn.Id);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
+            }
+
+            await this.repository.UpdateHymnAsync(hymn);
+            return this.Request.CreateResponse(HttpStatusCode.Accepted, hymn);
+        }
+
+        /// <summary>
+        /// Deletes a hymn.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
+        public async Task<HttpResponseMessage> DeleteAsync([FromODataUri] Guid key)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
+            }
+
+            await this.repository.DeleteHymnAsync(key);
             return this.Request.CreateResponse(HttpStatusCode.NoContent);
         }
 

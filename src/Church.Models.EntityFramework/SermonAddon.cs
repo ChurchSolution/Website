@@ -10,7 +10,7 @@
 namespace Church.Models.EntityFramework
 {
     /// <summary>
-    /// Provides the sermon class from ISermon interface.
+    /// Provides the sermon class for sermon model.
     /// </summary>
     public partial class Sermon
     {
@@ -30,6 +30,23 @@ namespace Church.Models.EntityFramework
                            Title = sermon.Title,
                            FileUrl = sermon.FileUrl
                        };
+        }
+
+        /// <summary>
+        /// Converts to Sermon model class.
+        /// </summary>
+        /// <returns>The <see cref="Models.Sermon"/>.</returns>
+        public Models.Sermon ToModel()
+        {
+            return new Models.Sermon
+            {
+                Id = this.Id,
+                Type = this.Type,
+                Date = this.Date,
+                Speaker = this.Speaker,
+                Title = this.Title,
+                FileUrl = this.FileUrl
+            };
         }
     }
 }

@@ -12,7 +12,6 @@ namespace Church.Website.Controllers
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using System.Web.Http;
     using System.Web.Http.Description;
     using System.Web.OData;
 
@@ -22,7 +21,7 @@ namespace Church.Website.Controllers
     /// <summary>
     /// Provides the sermons controller.
     /// </summary>
-    public class SermonsController : ApiController
+    public class SermonsController : ODataController
     {
         /// <summary>
         /// The repository.

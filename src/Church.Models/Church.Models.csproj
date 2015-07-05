@@ -50,7 +50,7 @@
     <Compile Include="IBibleProvider.cs" />
     <Compile Include="IChurchFactory.cs" />
     <Compile Include="BulletinTextBuilder.cs" />
-    <Compile Include="IHymn.cs" />
+    <Compile Include="Hymn.cs" />
     <Compile Include="IIncident.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Material.cs" />

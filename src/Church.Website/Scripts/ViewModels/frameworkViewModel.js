@@ -89,7 +89,7 @@ church.viewModel = (function (window, undefined) {
 
     function sermonsViewModel(data) {
         var sermonArray = [];
-        data.forEach(function (element, index, array) {
+        data.value.forEach(function (element, index, array) {
             var item = [element.type, new Date(element.date).toLocaleDateString(), element.speaker, "<a href='" + element.fileUrl + "'>" + element.title + "</a>"];
             sermonArray.push(item);
         });
@@ -98,7 +98,7 @@ church.viewModel = (function (window, undefined) {
 
     function materialsViewModel(data) {
         var materialArray = [];
-        data.forEach(function (element, index, array) {
+        data.value.forEach(function (element, index, array) {
             var item = [element.type, new Date(element.date).toLocaleDateString(), element.authors, "<a href='" + element.fileUrl + "'>" + element.title + "</a>"];
             materialArray.push(item);
         });

@@ -12,7 +12,6 @@ namespace Church.Website.Controllers
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using System.Web.Http;
     using System.Web.Http.Description;
     using System.Web.OData;
 
@@ -22,7 +21,7 @@ namespace Church.Website.Controllers
     /// <summary>
     /// Provides the materials controller.
     /// </summary>
-    public class MaterialsController : ApiController
+    public class MaterialsController : ODataController
     {
         /// <summary>
         /// The repository.
@@ -55,6 +54,7 @@ namespace Church.Website.Controllers
         /// Gets a list of materials.
         /// </summary>
         /// <returns>The <see cref="IQueryable{IMaterial}"/> on materials.</returns>
+        [EnableQuery]
         public IQueryable<Material> Get()
         {
             return this.repository.GetMaterials();
@@ -64,7 +64,8 @@ namespace Church.Website.Controllers
         /// Gets a material.
         /// </summary>
         /// <param name="key">The key.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="Material"/>.</returns>
+        /// <returns>The <see cref="HttpResponseMessage"/> with the <see cref="Material"/>.</returns>
+        [EnableQuery]
         public async Task<Material> GetAsync(Guid key)
         {
             var material = await this.repository.GetMaterials().SingleAsync(m => m.Id.Equals(key));
@@ -115,7 +116,7 @@ namespace Church.Website.Controllers
         /// <param name="material">The material.</param>
         /// <returns>The <see cref="HttpResponseMessage"/> with the <see cref="Material"/>.</returns>
         [ResponseType(typeof(Material))]
-        public async Task<HttpResponseMessage> PutAsync(Guid key, Material material)
+        public async Task<HttpResponseMessage> PutAsync([FromODataUri] Guid key, Material material)
         {
             if (!this.ModelState.IsValid)
             {

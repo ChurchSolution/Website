@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IHymn.cs" company="Church">
+// <copyright file="Hymn.cs" company="Church">
 //   Copyright (c) Rui Min. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -9,38 +9,38 @@ namespace Church.Models
     using System;
 
     /// <summary>
-    /// Provides the Hymn interface.
+    /// Provides the Hymn model.
     /// </summary>
-    public interface IHymn
+    public class Hymn
     {
         /// <summary>
-        /// Gets the id.
+        /// Gets or sets the id.
         /// </summary>
-        Guid Id { get; }
+        public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets the name.
+        /// Gets or sets the name.
         /// </summary>
-        string Name { get; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Gets the source.
+        /// Gets or sets the source.
         /// </summary>
-        string Source { get; }
+        public string Source { get; set; }
 
         /// <summary>
-        /// Gets the lyrics.
+        /// Gets or sets the lyrics.
         /// </summary>
-        string Lyrics { get; }
+        public string Lyrics { get; set; }
 
         /// <summary>
-        /// Gets the links.
+        /// Gets or sets the links.
         /// </summary>
-        string Links { get; }
+        public string Links { get; set; }
 
         /// <summary>
-        /// Gets the culture.
+        /// Gets or sets the culture.
         /// </summary>
-        string Culture { get; }
+        public string Culture { get; set; }
     }
 }

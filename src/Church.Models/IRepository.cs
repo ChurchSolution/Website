@@ -99,13 +99,13 @@ namespace Church.Models
 
         #region Hymn
 
-        IQueryable<IHymn> GetHymns();
+        IQueryable<Hymn> GetHymns();
 
-        Task<IHymn> AddHymnAsync(IHymn hymn);
+        Task<Hymn> AddHymnAsync(Hymn hymn);
 
-        Task UpdateHymnsAsync(IHymn hymn);
+        Task UpdateHymnAsync(Hymn hymn);
 
-        Task DeleteHymnsAsync(Guid id);
+        Task DeleteHymnAsync(Guid id);
 
         #endregion
     }

@@ -142,7 +142,7 @@ namespace Church.Models.EntityFramework
         /// <summary>
         /// Gets the list of sermons.
         /// </summary>
-        /// <returns> The <see cref="IQueryable{ISermon}"/>.</returns>
+        /// <returns> The <see cref="IQueryable{Sermon}"/>.</returns>
         public IQueryable<Models.Sermon> GetSermons()
         {
             return
@@ -163,7 +163,7 @@ namespace Church.Models.EntityFramework
         /// Adds a sermon.
         /// </summary>
         /// <param name="sermon">The sermon.</param>
-        /// <returns>The <see cref="Task{ISermon}"/>.</returns>
+        /// <returns>The <see cref="Task{Sermon}"/>.</returns>
         public async Task<Models.Sermon> AddSermonAsync(Models.Sermon sermon)
         {
             var newSermon = Sermon.Create(sermon);
@@ -178,6 +178,7 @@ namespace Church.Models.EntityFramework
         /// </summary>
         /// <param name="sermon">The sermon.</param>
         /// <returns>The <see cref="Task"/>.</returns>
+        /// <exception cref="ArgumentNullException">While material is null. </exception>
         public async Task UpdateSermonAsync(Models.Sermon sermon)
         {
             if (sermon == null)
@@ -215,7 +216,7 @@ namespace Church.Models.EntityFramework
         /// <summary>
         /// Gets the list of materials.
         /// </summary>
-        /// <returns> The <see cref="IQueryable{IMaterial}"/>.</returns>
+        /// <returns> The <see cref="IQueryable{Material}"/>.</returns>
         public IQueryable<Models.Material> GetMaterials()
         {
             return
@@ -236,7 +237,7 @@ namespace Church.Models.EntityFramework
         /// Adds a material.
         /// </summary>
         /// <param name="material">The material.</param>
-        /// <returns>The <see cref="Task{IMaterial}"/>.</returns>
+        /// <returns>The <see cref="Task{Material}"/>.</returns>
         public async Task<Models.Material> AddMaterialAsync(Models.Material material)
         {
             var newMaterial = Material.Create(material);
@@ -251,6 +252,7 @@ namespace Church.Models.EntityFramework
         /// </summary>
         /// <param name="material">The material.</param>
         /// <returns>The <see cref="Task"/>.</returns>
+        /// <exception cref="ArgumentNullException">While material is null. </exception>
         public async Task UpdateMaterialAsync(Models.Material material)
         {
             if (material == null)
@@ -283,29 +285,49 @@ namespace Church.Models.EntityFramework
 
         #endregion
 
-        public async Task<IHymn> AddHymnAsync(IHymn hymn)
+        #region Hymn
+
+        /// <summary>
+        /// Gets the list of hymns.
+        /// </summary>
+        /// <returns>The <see cref="IQueryable{Hymn}"/>.</returns>
+        public IQueryable<Models.Hymn> GetHymns()
         {
-            var newHymn = new Hymn
-                              {
-                                  Culture = hymn.Culture,
-                                  Id = Guid.NewGuid(),
-                                  Lyrics = hymn.Lyrics,
-                                  Links = hymn.Links,
-                                  Name = hymn.Name,
-                                  Source = hymn.Source,
-                              };
+            return
+                this.entities.Hymns.Select(
+                    hymn =>
+                    new Models.Hymn
+                        {
+                            Id = hymn.Id,
+                            Name = hymn.Name,
+                            Source = hymn.Source,
+                            Lyrics = hymn.Lyrics,
+                            Links = hymn.Links,
+                            Culture = hymn.Culture
+                        });
+        }
+
+        /// <summary>
+        /// Adds a hymn.
+        /// </summary>
+        /// <param name="hymn">The hymn.</param>
+        /// <returns>The <see cref="Task{Hymn}"/>.</returns>
+        public async Task<Models.Hymn> AddHymnAsync(Models.Hymn hymn)
+        {
+            var newHymn = Hymn.Create(hymn);
             this.entities.Hymns.Add(newHymn);
             await this.entities.SaveChangesAsync();
 
-            return newHymn;
+            return newHymn.ToModel();
         }
 
-        public IQueryable<IHymn> GetHymns()
-        {
-            return this.entities.Hymns;
-        }
-
-        public async Task UpdateHymnsAsync(IHymn hymn)
+        /// <summary>
+        /// Updates a hymn.
+        /// </summary>
+        /// <param name="hymn">The hymn.</param>
+        /// <returns>The <see cref="Task"/>.</returns>
+        /// <exception cref="ArgumentNullException">While hymn is null. </exception>
+        public async Task UpdateHymnAsync(Models.Hymn hymn)
         {
             if (hymn == null)
             {
@@ -322,13 +344,20 @@ namespace Church.Models.EntityFramework
             await this.entities.SaveChangesAsync();
         }
 
-        public async Task DeleteHymnsAsync(Guid id)
+        /// <summary>
+        /// Deletes a hymn.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>The <see cref="Task"/>.</returns>
+        public async Task DeleteHymnAsync(Guid id)
         {
             var hymn = await this.GetHymnAsync(id);
 
             this.entities.Hymns.Remove(hymn);
             await this.entities.SaveChangesAsync();
         }
+
+        #endregion
 
         /// <summary>
         /// Implements the dispose pattern.

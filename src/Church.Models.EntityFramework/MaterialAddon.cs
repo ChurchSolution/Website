@@ -10,7 +10,7 @@
 namespace Church.Models.EntityFramework
 {
     /// <summary>
-    /// Provides the sermon class from IMaterial interface.
+    /// Provides the sermon class from Material model.
     /// </summary>
     public partial class Material
     {
@@ -29,6 +29,23 @@ namespace Church.Models.EntityFramework
                 Authors = material.Authors,
                 Title = material.Title,
                 FileUrl = material.FileUrl
+            };
+        }
+
+        /// <summary>
+        /// Converts to Material model class.
+        /// </summary>
+        /// <returns>The <see cref="Models.Material"/>.</returns>
+        public Models.Material ToModel()
+        {
+            return new Models.Material
+            {
+                Id = this.Id,
+                Type = this.Type,
+                Date = this.Date,
+                Authors = this.Authors,
+                Title = this.Title,
+                FileUrl = this.FileUrl
             };
         }
     }
