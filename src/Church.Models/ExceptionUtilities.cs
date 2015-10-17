@@ -8,7 +8,6 @@ namespace Church.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     public static class ExceptionUtilities
@@ -39,8 +38,6 @@ namespace Church.Models
 
         public static void ThrowFormatExceptionIfFalse(bool prediction, string format, params string[] args)
         {
-            Trace.Assert(!string.IsNullOrEmpty(format));
-
             if (!prediction)
             {
                 throw new FormatException(string.Format(format, args));

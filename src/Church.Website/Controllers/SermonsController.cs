@@ -21,35 +21,8 @@ namespace Church.Website.Controllers
     /// <summary>
     /// Provides the sermons controller.
     /// </summary>
-    public class SermonsController : ODataController
+    public class SermonsController : AbstractODataController
     {
-        /// <summary>
-        /// The repository.
-        /// </summary>
-        private readonly IRepository repository;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SermonsController"/> class.
-        /// </summary>
-        public SermonsController()
-            : this(
-                Church.Models.EntityFramework.Repository.Create(
-                    Utilities.FrameworkEntitiesConnectionString,
-                    Utilities.Configuration.ChurchWebsiteLibrary))
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SermonsController"/> class.
-        /// </summary>
-        /// <param name="repository">
-        /// The repository from unit tests.
-        /// </param>
-        internal SermonsController(IRepository repository)
-        {
-            this.repository = repository;
-        }
-
         /// <summary>
         /// Gets a list of hymns.
         /// </summary>
@@ -57,7 +30,7 @@ namespace Church.Website.Controllers
         [EnableQuery]
         public IQueryable<Sermon> Get()
         {
-            return this.repository.GetSermons();
+            return this.Repository.GetSermons();
         }
 
         /// <summary>
@@ -68,7 +41,7 @@ namespace Church.Website.Controllers
         [EnableQuery]
         public async Task<Sermon> GetAsync([FromODataUri] Guid key)
         {
-            var sermon = await this.repository.GetSermons().SingleAsync(s => s.Id.Equals(key));
+            var sermon = await this.Repository.GetSermons().SingleAsync(s => s.Id.Equals(key));
             return sermon;
         }
 
@@ -85,7 +58,7 @@ namespace Church.Website.Controllers
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            await this.repository.AddSermonAsync(sermon);
+            await this.Repository.AddSermonAsync(sermon);
             return this.Request.CreateResponse(HttpStatusCode.Created, sermon);
         }
 
@@ -103,9 +76,9 @@ namespace Church.Website.Controllers
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            var sermonToBeUpdated = await this.repository.GetSermons().SingleAsync(s => s.Id.Equals(key));
+            var sermonToBeUpdated = await this.Repository.GetSermons().SingleAsync(s => s.Id.Equals(key));
             sermon.Patch(sermonToBeUpdated);
-            await this.repository.UpdateSermonAsync(sermonToBeUpdated);
+            await this.Repository.UpdateSermonAsync(sermonToBeUpdated);
             return this.Request.CreateResponse(HttpStatusCode.Accepted, sermonToBeUpdated);
         }
 
@@ -132,7 +105,7 @@ namespace Church.Website.Controllers
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
             }
 
-            await this.repository.UpdateSermonAsync(sermon);
+            await this.Repository.UpdateSermonAsync(sermon);
             return this.Request.CreateResponse(HttpStatusCode.Accepted, sermon);
         }
 
@@ -148,28 +121,8 @@ namespace Church.Website.Controllers
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            await this.repository.DeleteSermonAsync(key);
+            await this.Repository.DeleteSermonAsync(key);
             return this.Request.CreateResponse(HttpStatusCode.NoContent);
-        }
-
-        /// <summary>
-        /// The dispose.
-        /// </summary>
-        /// <param name="disposing">
-        /// The disposing.
-        /// </param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                var disposable = this.repository as IDisposable;
-                if (disposable != null)
-                {
-                    disposable.Dispose();
-                }
-            }
-
-            base.Dispose(disposing);
         }
     }
 }

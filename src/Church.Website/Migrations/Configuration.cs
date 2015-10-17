@@ -6,8 +6,8 @@ namespace Church.Website.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
-            ContextKey = "Church.Website.Models.ApplicationDbContext";
+            this.AutomaticMigrationsEnabled = false;
+            this.ContextKey = "Church.Website.Models.ApplicationDbContext";
         }
 
         protected override void Seed(Church.Website.Models.ApplicationDbContext context)

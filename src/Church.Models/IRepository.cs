@@ -13,8 +13,13 @@ namespace Church.Models
     using System.Linq;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Provide the Repository interface.
+    /// </summary>
     public interface IRepository
     {
+        #region Bulletin
+
         Task<IQueryable<WeeklyBulletin>> GetBulletinsAsync();
 
         /// <summary>
@@ -27,6 +32,8 @@ namespace Church.Models
         Task<WeeklyBulletin> GetBulletinByDateAsync(string cultureName, DateTime date);
 
         Task<WeeklyBulletin> AddOrUpdateBulletinAsync(DateTime date, string fileUrl, string planText, string culture);
+
+        #endregion
 
         /// <summary>
         /// Gets a list of incidents.
@@ -99,12 +106,32 @@ namespace Church.Models
 
         #region Hymn
 
+        /// <summary>
+        /// Gets the list of hymns.
+        /// </summary>
+        /// <returns>The <see cref="IQueryable{Hymn}"/>.</returns>
         IQueryable<Hymn> GetHymns();
 
+        /// <summary>
+        /// Adds a hymn.
+        /// </summary>
+        /// <param name="hymn">The hymn.</param>
+        /// <returns>The <see cref="Task{Hymn}"/>.</returns>
         Task<Hymn> AddHymnAsync(Hymn hymn);
 
+        /// <summary>
+        /// Updates a hymn.
+        /// </summary>
+        /// <param name="hymn">The hymn.</param>
+        /// <returns>The <see cref="Task"/>.</returns>
+        /// <exception cref="ArgumentNullException">While hymn is null. </exception>
         Task UpdateHymnAsync(Hymn hymn);
 
+        /// <summary>
+        /// Deletes a hymn.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>The <see cref="Task"/>.</returns>
         Task DeleteHymnAsync(Guid id);
 
         #endregion

@@ -16,40 +16,12 @@ namespace Church.Website.Controllers
     using System.Web.OData;
 
     using Church.Models;
-    using Church.Website.Models;
 
     /// <summary>
     /// Provides the materials controller.
     /// </summary>
-    public class MaterialsController : ODataController
+    public class MaterialsController : AbstractODataController
     {
-        /// <summary>
-        /// The repository.
-        /// </summary>
-        private readonly IRepository repository;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MaterialsController"/> class.
-        /// </summary>
-        public MaterialsController()
-            : this(
-                Church.Models.EntityFramework.Repository.Create(
-                    Utilities.FrameworkEntitiesConnectionString,
-                    Utilities.Configuration.ChurchWebsiteLibrary))
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MaterialsController"/> class.
-        /// </summary>
-        /// <param name="repository">
-        /// The repository from unit tests.
-        /// </param>
-        internal MaterialsController(IRepository repository)
-        {
-            this.repository = repository;
-        }
-
         /// <summary>
         /// Gets a list of materials.
         /// </summary>
@@ -57,7 +29,7 @@ namespace Church.Website.Controllers
         [EnableQuery]
         public IQueryable<Material> Get()
         {
-            return this.repository.GetMaterials();
+            return this.Repository.GetMaterials();
         }
 
         /// <summary>
@@ -66,9 +38,9 @@ namespace Church.Website.Controllers
         /// <param name="key">The key.</param>
         /// <returns>The <see cref="HttpResponseMessage"/> with the <see cref="Material"/>.</returns>
         [EnableQuery]
-        public async Task<Material> GetAsync(Guid key)
+        public async Task<Material> GetAsync([FromODataUri] Guid key)
         {
-            var material = await this.repository.GetMaterials().SingleAsync(m => m.Id.Equals(key));
+            var material = await this.Repository.GetMaterials().SingleAsync(m => m.Id.Equals(key));
             return material;
         }
 
@@ -85,7 +57,7 @@ namespace Church.Website.Controllers
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            await this.repository.AddMaterialAsync(material);
+            await this.Repository.AddMaterialAsync(material);
             return this.Request.CreateResponse(HttpStatusCode.Created, material);
         }
 
@@ -103,9 +75,9 @@ namespace Church.Website.Controllers
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            var materialToBeUpdated = await this.repository.GetMaterials().SingleAsync(s => s.Id.Equals(key));
+            var materialToBeUpdated = await this.Repository.GetMaterials().SingleAsync(s => s.Id.Equals(key));
             material.Patch(materialToBeUpdated);
-            await this.repository.UpdateMaterialAsync(materialToBeUpdated);
+            await this.Repository.UpdateMaterialAsync(materialToBeUpdated);
             return this.Request.CreateResponse(HttpStatusCode.Accepted, materialToBeUpdated);
         }
 
@@ -132,7 +104,7 @@ namespace Church.Website.Controllers
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
             }
 
-            await this.repository.UpdateMaterialAsync(material);
+            await this.Repository.UpdateMaterialAsync(material);
             return this.Request.CreateResponse(HttpStatusCode.Accepted, material);
         }
 
@@ -148,28 +120,8 @@ namespace Church.Website.Controllers
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
-            await this.repository.DeleteMaterialAsync(key);
+            await this.Repository.DeleteMaterialAsync(key);
             return this.Request.CreateResponse(HttpStatusCode.NoContent);
-        }
-
-        /// <summary>
-        /// The dispose.
-        /// </summary>
-        /// <param name="disposing">
-        /// The disposing.
-        /// </param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                var disposable = this.repository as IDisposable;
-                if (disposable != null)
-                {
-                    disposable.Dispose();
-                }
-            }
-
-            base.Dispose(disposing);
         }
     }
 }
