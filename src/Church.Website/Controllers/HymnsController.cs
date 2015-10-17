@@ -16,7 +16,6 @@ namespace Church.Website.Controllers
     using System.Web.OData;
 
     using Church.Models;
-    using Church.Website.Models;
 
     /// <summary>
     /// Provides the hymns controller.
@@ -38,11 +37,9 @@ namespace Church.Website.Controllers
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The <see cref="HttpResponseMessage"/> with the <see cref="Hymn"/>.</returns>
-        [EnableQuery]
         public async Task<Hymn> GetAsync([FromODataUri] Guid key)
         {
-            var hymn = await this.Repository.GetHymns().SingleAsync(h => h.Id.Equals(key));
-            return hymn;
+            return await this.Repository.GetHymns().SingleOrDefaultAsync(h => h.Id.Equals(key));
         }
 
         /// <summary>

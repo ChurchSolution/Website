@@ -37,11 +37,9 @@ namespace Church.Website.Controllers
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The <see cref="HttpResponseMessage"/> with the <see cref="Material"/>.</returns>
-        [EnableQuery]
         public async Task<Material> GetAsync([FromODataUri] Guid key)
         {
-            var material = await this.Repository.GetMaterials().SingleAsync(m => m.Id.Equals(key));
-            return material;
+            return await this.Repository.GetMaterials().SingleOrDefaultAsync(m => m.Id.Equals(key));
         }
 
         /// <summary>

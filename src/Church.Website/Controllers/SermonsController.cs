@@ -16,7 +16,6 @@ namespace Church.Website.Controllers
     using System.Web.OData;
 
     using Church.Models;
-    using Church.Website.Models;
 
     /// <summary>
     /// Provides the sermons controller.
@@ -38,11 +37,9 @@ namespace Church.Website.Controllers
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The <see cref="HttpResponseMessage"/> with the  <see cref="Sermon"/>.</returns>
-        [EnableQuery]
         public async Task<Sermon> GetAsync([FromODataUri] Guid key)
         {
-            var sermon = await this.Repository.GetSermons().SingleAsync(s => s.Id.Equals(key));
-            return sermon;
+            return await this.Repository.GetSermons().SingleOrDefaultAsync(s => s.Id.Equals(key));
         }
 
         /// <summary>
