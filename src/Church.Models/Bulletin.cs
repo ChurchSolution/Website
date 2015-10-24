@@ -1,20 +1,22 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Sermon.cs" company="Church">
+// <copyright file="Bulletin.cs" company="Church">
 //   Copyright (c) Rui Min. All rights reserved.
 // </copyright>
 // <summary>
-//   Defines the Sermon type.
+//   Defines the bulletin type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Church.Models
 {
     using System;
+    using System.Collections.Generic;
+    using System.Globalization;
 
     /// <summary>
-    /// Provides Sermon model class.
+    /// Provides a bulletin model.
     /// </summary>
-    public class Sermon
+    public class Bulletin
     {
         /// <summary>
         /// Gets or sets the id.
@@ -22,28 +24,23 @@ namespace Church.Models
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the type.
-        /// </summary>
-        public string Type { get; set; }
-
-        /// <summary>
         /// Gets or sets the date.
         /// </summary>
         public DateTime? Date { get; set; }
 
         /// <summary>
-        /// Gets or sets the speaker.
+        /// Gets or sets the file uri.
         /// </summary>
-        public string Speaker { get; set; }
+        public string FileUri { get; set; }
 
         /// <summary>
-        /// Gets or sets the title.
+        /// Gets or sets the culture.
         /// </summary>
-        public string Title { get; set; }
+        public string Culture { get; set; }
 
         /// <summary>
-        /// Gets or sets the file url.
+        /// Gets or sets the properties.
         /// </summary>
-        public string FileUrl { get; set; }
+        public IDictionary<string, object> Properties { get; set; }
     }
 }

@@ -27,7 +27,8 @@ namespace Church.Website
             config.MapHttpAttributeRoutes();
 
             // Enable OData URLs
-            var builder = new ODataConventionModelBuilder();
+            var builder = new ODataConventionModelBuilder { Namespace = "Church.Website", ContainerName = "ODataService" };
+            builder.EntitySet<Bulletin>("Bulletins");
             builder.EntitySet<Sermon>("Sermons");
             builder.EntitySet<Material>("Materials");
             builder.EntitySet<Hymn>("Hymns");

@@ -47,6 +47,7 @@
     <Compile Include="BibleChapter.cs" />
     <Compile Include="BibleExtensions.cs" />
     <Compile Include="BibleVerse.cs" />
+    <Compile Include="Bulletin.cs" />
     <Compile Include="IBibleProvider.cs" />
     <Compile Include="IChurchFactory.cs" />
     <Compile Include="BulletinTextBuilder.cs" />
