@@ -62,6 +62,7 @@
             //    ClientSecret = ""
             //});
 
+            // Run C:\Windows\Microsoft.NET\Framework\v4.0.30319\aspnet_regsql to generate role tables.
             const string RoleAdministrators = "Administrators";
             const string RoleUsers = "Users";
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(dbContext));
