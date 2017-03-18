@@ -47,7 +47,7 @@ namespace Church.Models
         /// <param name="culture">The culture.</param>
         /// <param name="date">The date.</param>
         /// <param name="fileUri">The file uri.</param>
-        /// <param name="plainText"> The plain text.</param>
+        /// <param name="plainText">The plain text.</param>
         /// <returns> The <see cref="WeeklyBulletin"/>.</returns>
         public WeeklyBulletin CreateBulletin(string culture, DateTime date, string fileUri, string plainText)
         {

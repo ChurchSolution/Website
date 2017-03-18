@@ -18,6 +18,8 @@ namespace Church.Models.EntityFramework
     using System.Reflection;
     using System.Threading.Tasks;
 
+    using Newtonsoft.Json;
+
     /// <summary>
     /// Provides the implementation of the repository interface.
     /// </summary>
@@ -127,9 +129,10 @@ namespace Church.Models.EntityFramework
                 this.entities.Entry(bulletin).State = EntityState.Modified;
             }
 
+            var instance = this.GetBulletin(bulletin);
+            bulletin.JsonString = JsonConvert.SerializeObject(instance, new JsonSerializerSettings { Culture = new CultureInfo(culture) });
             await this.entities.SaveChangesAsync();
-
-            return this.GetBulletin(bulletin);
+            return instance;
         }
 
         public IQueryable<IIncident> GetIncidents(DateTime date)
@@ -400,11 +403,13 @@ namespace Church.Models.EntityFramework
                 return null;
             }
 
-            var weeklyBulletin = this.factory.Value.CreateBulletin(
-                bulletin.Culture,
-                bulletin.Date,
-                bulletin.FileUrl,
-                bulletin.PlainText);
+            var weeklyBulletin = string.IsNullOrWhiteSpace(bulletin.JsonString) ?
+                this.factory.Value.CreateBulletin(
+                    bulletin.Culture,
+                    bulletin.Date,
+                    bulletin.FileUrl,
+                    bulletin.PlainText) :
+                JsonConvert.DeserializeObject<WeeklyBulletin>(bulletin.JsonString);
             return weeklyBulletin;
         }
 
