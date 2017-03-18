@@ -39,7 +39,7 @@ namespace Church.Models
 
         public virtual T Make<T>(string plainText) where T : IWeeklyBulletinProperties, new()
         {
-            var lines = plainText.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            var lines = plainText.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None);
 
             var properties = new T();
             this.Fill(properties, lines);
@@ -162,7 +162,7 @@ namespace Church.Models
             return null;
         }
 
-        private IEnumerable<string> ProcessSection(string methodName, IWeeklyBulletinProperties properties, IEnumerable<string> lines)
+        private IEnumerable<string> ProcessSection(string methodName, IWeeklyBulletinProperties properties, IList<string> lines)
         {
             try
             {

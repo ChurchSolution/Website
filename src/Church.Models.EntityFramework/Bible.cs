@@ -9,7 +9,6 @@
 
 namespace Church.Models.EntityFramework
 {
-    using System;
     using System.Collections.Generic;
     
     public partial class Bible
