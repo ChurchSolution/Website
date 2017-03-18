@@ -19,5 +19,6 @@ namespace Church.Models.EntityFramework
         public string PlainText { get; set; }
         public string FileUrl { get; set; }
         public string Culture { get; set; }
+        public string JsonString { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Workspaces\GitHub\Website\src\Church.Models.EntityFramework\FrameworkEntities.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Workspaces\Website\src\Church.Models.EntityFramework\FrameworkEntities.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

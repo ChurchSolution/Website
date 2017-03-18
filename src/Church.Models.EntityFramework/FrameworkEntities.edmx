@@ -14,6 +14,7 @@
           <Property Name="PlainText" Type="nvarchar(max)" Nullable="false" />
           <Property Name="FileUrl" Type="nvarchar" MaxLength="256" />
           <Property Name="Culture" Type="nvarchar" MaxLength="8" />
+          <Property Name="JsonString" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Events">
           <Key>
@@ -111,6 +112,7 @@
           <Property Name="PlainText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FileUrl" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Culture" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="JsonString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Event">
           <Key>
@@ -204,6 +206,7 @@
           <EntitySetMapping Name="Bulletins">
             <EntityTypeMapping TypeName="Church.Website.Models.Bulletin">
               <MappingFragment StoreEntitySet="Bulletins">
+                <ScalarProperty Name="JsonString" ColumnName="JsonString" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="PlainText" ColumnName="PlainText" />
